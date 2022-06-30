@@ -1,0 +1,22 @@
+{
+  "id": "",
+  "type": "codeSurfer",
+  "steps": [
+    {
+      "fileName": "index.php",
+      "showNumbers": true,
+      "title": "Üdvözlünk a CodeStepper szerkesztőben!",
+      "focus": "",
+      "label": "Bevezetés",
+      "content": "/*\n    Segítsd a Kódbázis munkáját és készíts feladatsort! \n    Mi közzétesszük az oldalon, hogy a többiek tanulhassanak belőle.  \n\n    Szerkesztéshez kattints a jobb felső sarokban lévő szerkesztés gombra!  \n*/\n\n<?php\n\n// Feladat: Csak a 45 karakternél hosszabb elemek kiírása\n$elemek = [\n    \"Nulla posuere aliquam mauris et convallis.\",\n    \"Proin mattis felis quis dictum tincidunt.\",\n    \"Donec in lorem eu velit viverra pulvinar sit amet vel tortor.\",\n    \"Nunc efficitur quis mi commodo efficitur.\",\n    \"Nunc sit amet aliquet nulla.\",\n    \"Maecenas quis ex sit amet lorem venenatis accumsan.\",\n];\n"
+    },
+    {
+      "fileName": "index.php",
+      "showNumbers": true,
+      "title": "A megoldás során végigiterálunk az összes elemen és a strlen függvénnyel megvizsgáljuk az adott elem hosszát",
+      "focus": "10:24",
+      "label": "Megoldás",
+      "content": "/*\n    Segítsd a Kódbázis munkáját és készíts feladatsort! \n    Mi közzétesszük az oldalon, hogy a többiek tanulhassanak belőle.  \n\n    Szerkesztéshez kattints a jobb felső sarokban lévő szerkesztés gombra!  \n*/\n\n<?php\n\n// Feladat: Csak a 45 karakternél hosszabb elemek kiírása\n$elemek = [\n    \"Nulla posuere aliquam mauris et convallis.\",\n    \"Proin mattis felis quis dictum tincidunt.\",\n    \"Donec in lorem eu velit viverra pulvinar sit amet vel tortor.\",\n    \"Nunc efficitur quis mi commodo efficitur.\",\n    \"Nunc sit amet aliquet nulla.\",\n    \"Maecenas quis ex sit amet lorem venenatis accumsan.\",\n];\n\nforeach($elemek as $elem) {\n    if(strlen($elem) <= 45) {\n        echo $elem . \"<br>\";\n    }\n}"
+    }
+  ]
+}

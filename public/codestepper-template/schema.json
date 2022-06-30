@@ -1,0 +1,16 @@
+{
+  "slug": "",
+  "title": "Készítő Neve",
+  "logoUrl": "",
+  "primaryColor": "#33691e",
+  "secondaryColor": "#541e69",
+  "isDrawerOpenByDefault": false,
+  "parts": [
+    {
+      "slug": "",
+      "title": "Feladat címe",
+      "layout": "cr-4",
+      "modulePaths": []
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+<?xml version = "1.0"?>
+<root>
+  <meta>
+    <type>htmlArray</type>
+  </meta>
+
+  <body>
+
+    <item>
+      <start>1</start>
+      <end>1</end>
+      <content>
+        <aside class="container">
+          <p class="fw-bold display-6 text-center">
+            Kiegészítő infó 1.
+          </p>
+        </aside>
+      </content>
+    </item>
+    <item>
+      <start>2</start>
+      <end>2</end>
+      <content>
+        <aside class="container">
+          <p class="fw-bold display-6 text-center">
+            Kiegészítő infó 2.
+          </p>
+        </aside>
+      </content>
+    </item>
+    <item>
+      <start>3</start>
+      <end>3</end>
+      <content>
+        <aside class="container">
+          <p class="fw-bold display-6 text-center">
+            Kiegészítő infó 3.
+          </p>
+        </aside>
+      </content>
+    </item>
+
+  </body>
+</root>

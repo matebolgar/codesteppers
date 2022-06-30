@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico?v=3"/>
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css?v=3">
+    <link rel="stylesheet" href="/public/css/cookiealert.css?v=2">
+
+    {% for style in styles %}
+      {% if style.isCdn %}
+        <link rel="stylesheet" href="{{ style.path }}">
+      {% else %}
+        {% if style.path is not empty %}
+          <link rel="stylesheet" href="/public/{{ style.path }}?v=30">
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+    <link type="text/css" href="public/css/pages.css?v=43" media="all" rel="stylesheet"/>
+    <title>
+      {% if metaTitle is defined and metaTitle is not empty %}
+        {{metaTitle}}
+      {% elseif title is defined and title is not empty %}
+        {{title}}
+        | Kódbázis
+      {% else %}
+        Kódbázis - Programozás egyszerűen elmagyarázva
+      {% endif %}
+    </title>
+    {% if structuredData is defined %}
+      <script type="application/ld+json">
+        {{structuredData | raw}}
+      </script>
+    {% endif %}
+    <meta property="og:locale" content="hu_HU"/>
+    <meta name="description" content="{{ description is defined ? description : 'Programozás egyszerűen elmagyarázva' }}"/>
+    {% for ogTag in ogTags %}
+      <meta property="{{ogTag.property}}" content="{{ogTag.content}}"/>
+    {% endfor %}
+
+    {% if noIndex is defined and noIndex %}
+      <meta name="robots" content="noindex"/>
+    {% endif %}
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-188538631-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-188538631-1');
+    </script>
+  </head>
+  <body class="home">
+
+    {% if isNavbarDisabled is not defined %}
+      {% include 'navbar.twig' with {
+        'subscriberLabel' : subscriberLabel is defined? subscriberLabel : ''
+      } %}
+    {% endif %}
+
+    {{ content | raw }}
+
+    {# <div class="text-center cookiealert d-none p-2">
+      A weboldalunkon cookie-kat használunk, hogy a legjobb felhasználói élményt nyújthassuk.
+      <a href="/sutik-kezelese" target="_blank">Részletes leírás »</a>
+
+      <button type="button" class="btn btn-primary btn-sm acceptcookies">
+        Rendben
+      </button>
+    </div> #}
+
+    <div class="spacer layer1"></div>
+
+    {% include 'footer.html' %}
+
+    {% if scripts is defined %}
+      {% for script in scripts %}
+        {% if script.isCdn %}
+          <script src="{{ script.path }}"></script>
+        {% else %}
+          {% if script.path is not empty %}
+            <script defer="defer" src="/public/{{ script.path }}"></script>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+    {% if isNavbarDisabled is not defined %}
+      <script async="async" src="./public/js/navbar.js?v=8"></script>
+    {% endif %}
+    {# <script async="async" src="./public/js/cookiealert.js"></script> #}
+
+  </body>
+</html>

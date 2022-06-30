@@ -1,0 +1,16 @@
+<section class="bg bg-aligned">
+	<h1 id="main-title" class="pt-3 text-center m-auto helvetica" style="letter-spacing: 0em">Programozás egyszerűen elmagyarázva.</h1>
+	{# <div id="slideshow">
+		<img src="/public/images/slideshow/stack.webp" class="slide active" width="600"/>
+		<img src="/public/images/slideshow/code.webp" class="slide" width="600"/>
+		<img src="/public/images/slideshow/yellow.webp" class="slide" width="600"/>
+	</div> #}
+</section>
+
+<section class="tutorial content-body">
+  <h1 class="p-3 lead text-center p-2 display-5">
+    <b style="letter-spacing: -0.04em">Welcome to CodeSteppers</span>
+  </h1>
+	{{ content | raw }}
+	{% include 'home-links.twig' %}
+</section>
