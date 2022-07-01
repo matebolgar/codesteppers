@@ -1,0 +1,63 @@
+<?xml version = "1.0"?>
+<root>
+  <meta>
+    <type>app</type>
+  </meta>
+
+  <body>
+    <scriptUrls>
+      <item>/public/codeStepperContent/javascript-gyakorlo-feladatsor/teendok/script.js</item>
+    </scriptUrls>
+    <content>
+
+      <div style="font-size:0.8em">
+        <h1 class="text-center display-6">
+         <b>Második feladat</b>        
+        </h1>
+        <div class="text-center m-2 d-flex">
+          <a class="m-auto btn btn-sm btn-primary me-2" href="/public/codeStepperContent/javascript-gyakorlo-feladatsor/teendok/teendok-sablon.zip">
+            Töltsd le a sablon fájlokat
+          </a>
+          <a target="_blank" class="m-auto btn btn-sm btn-outline-danger" href="/codestepper-szerkeszto">
+            Készíts feladatsort
+            <span class="fa fa-arrow-circle-right"></span>
+          </a>
+        </div>
+        <p class="mb-2">
+          1. Gombnyomásra küldj AJAX kérést a
+          <br/>
+          <small>
+            <a target="_blank" href="http://jsonplaceholder.typicode.com/todos" style="word-break: break-all; word-wrap:break-word;">
+              http://jsonplaceholder.typicode.com/todos
+            </a>
+          </small>
+          URL-re és szerezd meg a teendők (angolul "todo"-k) listáját!
+        </p>
+
+        <p class="mb-2">
+          2. Amíg a lekérdezés folyamatban van, jeleníts meg egy <code>"Betöltés folyamatban..."</code> feliratot!
+        </p>
+
+        <p class="mb-2">
+          3. A kapott adathalmazt array methodok segítségével alakítsd át úgy, hogy a végeredmény csak azon teendők címeiből álljon, amelyeknél a
+          <code>completed</code>
+          kulcs alatt
+          <code>true</code>
+          érték van.
+        </p>
+
+        <p class="mb-2">
+          4. Jelenítsd meg a címeket!
+        </p>
+
+        <p class="mb-2 text-center">
+          A kívánt végeredmény:
+        </p>
+        <button class="btn btn-primary mb-2 m-auto d-flex" id="fetch-btn">Próbáld ki</button>
+
+      </div>
+      <div id="todo-list"></div>
+
+    </content>
+  </body>
+</root>

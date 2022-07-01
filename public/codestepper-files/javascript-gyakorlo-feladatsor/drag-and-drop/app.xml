@@ -1,0 +1,34 @@
+<?xml version = "1.0"?>
+<root>
+  <meta>
+    <type>app</type>
+  </meta>
+
+  <body>
+    <scriptUrls>
+      <item>/public/codeStepperContent/javascript-gyakorlo-feladatsor/drag-and-drop/script.js</item>
+    </scriptUrls>
+    <styleUrls>
+      <item>/public/codeStepperContent/javascript-gyakorlo-feladatsor/drag-and-drop/style.css</item>
+    </styleUrls>
+    <content>
+
+      <h1 class="text-center display-6"><b>3. Feladat:</b></h1>
+      <p class="text-center">
+        Valósíts meg drag and drop funkcionalitást!
+        <div class="text-center m-2 d-flex">
+          <a class="m-auto btn btn-sm btn-primary me-2" href="/public/codeStepperContent/javascript-gyakorlo-feladatsor/drag-and-drop/drag-and-drop-sablon.zip">
+            Töltsd le a sablon fájlokat
+          </a>
+          <a target="_blank" class="m-auto btn btn-sm btn-outline-danger" href="/codestepper-szerkeszto">
+          Készíts feladatsort
+          <span class="fa fa-arrow-circle-right"></span>
+        </a>
+        </div>
+        <div id="drag-and-drop-app" style="min-height: 500px;"></div>
+        Kész app:
+      </p>
+
+    </content>
+  </body>
+</root>

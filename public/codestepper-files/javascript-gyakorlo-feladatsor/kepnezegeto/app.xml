@@ -1,0 +1,35 @@
+<?xml version = "1.0"?>
+<root>
+  <meta>
+    <type>app</type>
+  </meta>
+
+  <body>
+    <scriptUrls>
+      <item>/public/codeStepperContent/javascript-gyakorlo-feladatsor/kepnezegeto/script.js</item>
+    </scriptUrls>
+    <styleUrls>
+      <item>/public/codeStepperContent/javascript-gyakorlo-feladatsor/kepnezegeto/style.css</item>
+    </styleUrls>
+    <content>
+
+      <div class="d-flex">
+        <div class="m-auto w-100">
+          <h1 class="text-center display-6"><b>5. Feladat:</b></h1>
+          <p class="text-center mb-2">Valósíts meg képnézegetőt!</p>
+          <div id="gallery-app"></div>
+        </div>
+        <div class="text-center m-2 d-flex">
+          <a class="m-auto btn btn-sm btn-primary me-2" href="/public/codeStepperContent/javascript-gyakorlo-feladatsor/kepnezegeto/kepnezegeto-sablon.zip">
+            Töltsd le a sablon fájlokat
+          </a>
+          <a target="_blank" class="m-auto btn btn-sm btn-outline-danger" href="/codestepper-szerkeszto">
+            Készíts feladatsort
+            <span class="fa fa-arrow-circle-right"></span>
+          </a>
+        </div>
+      </div>
+
+    </content>
+  </body>
+</root>

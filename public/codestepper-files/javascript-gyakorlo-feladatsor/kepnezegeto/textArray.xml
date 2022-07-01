@@ -1,0 +1,39 @@
+<?xml version = "1.0"?>
+<root>
+  <meta>
+    <type>htmlArray</type>
+  </meta>
+
+  <body>
+
+    <item>
+      <start>30</start>
+      <end>30</end>
+      <content>
+        <aside class="container">
+          <h2 class="display-6 mb-2">A reflow-ról röviden</h2>
+          <p class="text-center mb-2">
+            A reflow a böngészőben végbemenő folyamat, amelynek során a böngésző újraszámolja egy element megjelenését és elrendezését.
+          </p>
+
+          <p class="text-center mb-2">
+            A reflow-t olyan műveletek után végzi el a böngésző, amelyek egy element dimenzióival kapcsolatosak. Ezen műveletek listáját itt találod:
+          </p>
+
+          <p class="text-center mb-2">
+            <a target="_blank" href="https://gist.github.com/paulirish/5d52fb081b3570c81e3a" style="word-break: break-all; word-wrap:break-word;">
+              https://gist.github.com/paulirish/5d52fb081b3570c81e3a
+            </a>
+          </p>
+          <p class="text-center mb-2">
+            A reflow drága műveletnek számít, így általában arra kell törekedni, hogy minél kevesebbszer menjen végbe. Ebben az esetben viszont szánt szándékkal végre kell hajtatnunk a böngészővel, hogy a transition rendben végbemehessen.
+          </p>
+          <p class="text-center mb-2">
+            Jelen példánkban az "offsetHeight" kikérésével kényszerítjük a böngészőt, a reflow végrehajtására.
+          </p>
+        </aside>
+      </content>
+    </item>
+
+  </body>
+</root>

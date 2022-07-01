@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="/favicon.ico?v=3"/>
     <link rel="stylesheet" href="/public/css/bootstrap.min.css?v=3">
-    <link rel="stylesheet" href="/public/css/cookiealert.css?v=2">
+    <link rel="stylesheet" href="/public/css/sidebar.css?v=3">
+    <link rel="stylesheet" href="/public/css/fontawesome-all.css?v=3">
 
     {% for style in styles %}
       {% if style.isCdn %}
@@ -22,11 +23,6 @@
     <title>
       {% if metaTitle is defined and metaTitle is not empty %}
         {{metaTitle}}
-      {% elseif title is defined and title is not empty %}
-        {{title}}
-        | Kódbázis
-      {% else %}
-        Kódbázis - Programozás egyszerűen elmagyarázva
       {% endif %}
     </title>
     {% if structuredData is defined %}
@@ -35,7 +31,7 @@
       </script>
     {% endif %}
     <meta property="og:locale" content="hu_HU"/>
-    <meta name="description" content="{{ description is defined ? description : 'Programozás egyszerűen elmagyarázva' }}"/>
+    <meta name="description" content="{{ description }}"/>
     {% for ogTag in ogTags %}
       <meta property="{{ogTag.property}}" content="{{ogTag.content}}"/>
     {% endfor %}
@@ -74,9 +70,9 @@
       </button>
     </div> #}
 
-    <div class="spacer layer1"></div>
+    {# <div class="spacer layer1"></div> #}
 
-    {% include 'footer.html' %}
+    {# {% include 'footer.html' %} #}
 
     {% if scripts is defined %}
       {% for script in scripts %}
@@ -90,7 +86,7 @@
       {% endfor %}
     {% endif %}
     {% if isNavbarDisabled is not defined %}
-      <script async="async" src="./public/js/navbar.js?v=8"></script>
+
     {% endif %}
     {# <script async="async" src="./public/js/cookiealert.js"></script> #}
 

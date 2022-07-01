@@ -1,0 +1,715 @@
+<?xml version = "1.0"?>
+<root>
+  <meta>
+    <type>codeSurfer</type>
+    <!-- <customSubtitles>1</customSubtitles> -->
+  </meta>
+
+  <body>
+    <item>
+      <label>Bevezetés</label>
+      
+      <title>Kövesd az alábbi lépéseket és próbáld meg önállóan megvalósítani az alkalmazást!</title>
+      <showNumbers>1</showNumbers>
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+// Belső állapot
+let state = {
+  circle: 0,
+  square: 0,
+  rectangle: 0,
+};
+
+/*
+    1. Selecteld ki id alapján a form elementet és submit eseményre 
+    köss be funkcionalitást
+
+    2. Az esemény bekövetkezésekor olvasd ki az input mezőkben lévő adatokat
+
+    3. Az adatok alapján módosítsd az alkalmazás belső állapotát
+
+    4. A belső állapot alapján rajzold újra a formákat
+*/
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>A sablon fájlokat a feladat alatti linken tudod letölteni. Sok sikert!</title>
+    </item>
+
+    <item>
+      <label>Megoldás</label>
+      <!-- <labelArrowRight>1</labelArrowRight> -->
+      <title>A megoldás első lépése, hogy megnézzük a HTML tartalomban, hogy mi az id-ja annak az elementnek, amivel kapcsolatban eseményre szeretnénk reagálni.</title>
+      <focus>9,10</focus>
+    </item>
+
+    <item>
+      <title>A megoldás első lépése, hogy megnézzük a HTML tartalomban, hogy mi az id-ja annak az elementnek, amivel kapcsolatban eseményre szeretnénk reagálni.</title>
+      <fileName>index.html</fileName>
+      <focus>8[9:19]</focus>
+      <content>
+        <![CDATA[
+<div class="container">
+  <h1 class="text-center display-6">Feladat:</h1>
+  <p>
+    A gombra kattintáskor növeld, vagy csökkentsd 1-gyel a kiválasztott 
+    formában lévő értéket, attól függően, hogy a radio gombok közül 
+    melyik van bepipálva.
+  </p>        
+  <form id="shapes">
+    <select class="form-control" name="selectedShape">
+      <option value="circle">Kör</option>
+      <option value="square" selected="selected">Négyzet</option>
+      <option value="rectangle">Téglalap</option>
+    </select>
+    <br/>
+    <label class="radio-inline me-5">
+      <span class="fa fa-plus"></span>
+      <input type="radio" name="action" value="increment" checked="checked"/>
+    </label>
+    <label class="radio-inline">
+      <span class="fa fa-minus"></span>
+      <input type="radio" name="action" value="decrement"/>
+    </label>
+    <br/>
+    <br/>
+    <button type="submit" class="btn btn-primary d-inline-block">
+      Próbáld ki
+    </button>
+  </form>
+</div>
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>Ez alapján tudjuk elvégezni az id alapú kikérést a document.getElementById() függvénnyel. Így kezünkbe jut az adott elementet reprezentáló JS objektum.</title>
+      <fileName>script.js</fileName>
+      <focus>9,10,12</focus>
+      <content>
+        <![CDATA[
+// Belső állapot
+let state = {
+  circle: 0,
+  square: 0,
+  rectangle: 0,
+};
+
+
+// 1. Selecteld ki id alapján a form elementet és submit eseményre 
+// köss be funkcionalitást
+
+document.getElementById("shapes")
+
+// 2. Az esemény bekövetkezésekor olvasd ki az input mezőkben lévő adatokat
+// 3. Az adatok alapján módosítsd az alkalmazás belső állapotát
+// 4. A belső állapot alapján rajzold újra a formákat
+]]>
+      </content>
+    </item>
+
+    <item>
+      <label>1. Form submit</label>
+      
+      <title>
+        Erre az objektumra bármilyen esemény kapcsán ráköthetünk funkcionalitást.
+      </title>
+      <focus>9,10,12</focus>
+      <fileName>script.js</fileName>
+    </item>
+
+    <item>
+      <title>
+        A funkcionalitást addEventListener-el, vagy onsubmit-tal lehet bekötni.
+      </title>
+      <focus>8:15</focus>
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+// Belső állapot
+let state = {
+  circle: 0,
+  square: 0,
+  rectangle: 0,
+};
+
+
+// 1. Selecteld ki id alapján a form elementet és submit eseményre 
+// köss be funkcionalitást
+
+document.getElementById("shapes").addEventListener("submit", function (event) {
+
+});
+
+// 2. Az esemény bekövetkezésekor olvasd ki az input mezőkben lévő adatokat
+// 3. Az adatok alapján módosítsd az alkalmazás belső állapotát
+// 4. A belső állapot alapján rajzold újra a formákat
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>
+        A függvényen belül az event.preventDefault function-t meg kell hívnunk, hogy felülírjuk a HTML form alapértelmezett működését. Máskülönben a form elküldődne és lefrissülne az oldal.
+      </title>
+      <fileName>script.js</fileName>
+      <focus>12[71:77],13</focus>
+      <content>
+        <![CDATA[
+// Belső állapot
+let state = {
+  circle: 0,
+  square: 0,
+  rectangle: 0,
+};
+
+
+// 1. Selecteld ki id alapján a form elementet és submit eseményre 
+// köss be funkcionalitást
+
+document.getElementById("shapes").addEventListener("submit", function (event) {
+  event.preventDefault();
+});
+
+// 2. Az esemény bekövetkezésekor olvasd ki az input mezőkben lévő adatokat
+// 3. Az adatok alapján módosítsd az alkalmazás belső állapotát
+// 4. A belső állapot alapján rajzold újra a formákat
+]]>
+      </content>
+    </item>
+    <item>
+      <title>
+        Ha most logolunk a konzolba, akkor form submit-kor látnunk kell megjelenni a szöveget.
+      </title>
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+// Belső állapot
+let state = {
+  circle: 0,
+  square: 0,
+  rectangle: 0,
+};
+
+
+// 1. Selecteld ki id alapján a form elementet és submit eseményre 
+// köss be funkcionalitást
+
+document.getElementById("shapes").addEventListener("submit", function (event) {
+  event.preventDefault();
+  console.log("teszt");
+});
+
+// 2. Az esemény bekövetkezésekor olvasd ki az input mezőkben lévő adatokat
+// 3. Az adatok alapján módosítsd az alkalmazás belső állapotát
+// 4. A belső állapot alapján rajzold újra a formákat
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>
+        Most, hogy sikeresen reagálunk a submit eseményre, a következő lépés, hogy hozzájutunk az input mezőkbe beírt adatokhoz.
+      </title>
+    </item>
+
+    <item>
+      <label>
+        2. Az input adatok kinyerése
+      </label>
+      <title>
+        Az input adatokhoz hozzájutni, legkönnyebben az event object target kulcsán keresztül lehet. A target kulcs alatt értékként mindig az az element van, amire az adott esemény bekövetkezett. Például jelen esetben a form element van alatta, mert erre történt a submit esemény.
+      </title>
+      <fileName>script.js</fileName>
+      <focus>12[71:77],15,16</focus>
+      <content>
+        <![CDATA[
+// Belső állapot
+let state = {
+  circle: 0,
+  square: 0,
+  rectangle: 0,
+};
+
+
+// 1. Selecteld ki id alapján a form elementet és submit eseményre 
+// köss be funkcionalitást
+
+document.getElementById("shapes").addEventListener("submit", function (event) {
+  event.preventDefault();
+
+    // 2. Az esemény bekövetkezésekor olvasd ki az input mezőkben lévő adatokat
+    event.target; // <- Form element
+  
+
+});
+
+// 3. Az adatok alapján módosítsd az alkalmazás belső állapotát
+// 4. A belső állapot alapján rajzold újra a formákat
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>
+        A form element alatt pedig van egy "elements" nevű kulcs, ami értékként mindig a formban lévő input mezőket tartalmazza.
+      </title>
+      <focus>12[71:77],15,16</focus>
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+// Belső állapot
+let state = {
+  circle: 0,
+  square: 0,
+  rectangle: 0,
+};
+
+
+// 1. Selecteld ki id alapján a form elementet és submit eseményre 
+// köss be funkcionalitást
+
+document.getElementById("shapes").addEventListener("submit", function (event) {
+  event.preventDefault();
+
+    // 2. Az esemény bekövetkezésekor olvasd ki az input mezőkben lévő adatokat
+    event.target.elements // <- A formban lévő összes input element
+
+});
+
+// 3. Az adatok alapján módosítsd az alkalmazás belső állapotát
+// 4. A belső állapot alapján rajzold újra a formákat
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>
+        Ebből lehet kiszedni az adott input mezőben lévő értéket.
+      </title>
+      <focus>12[71:77],15,16</focus>
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+// Belső állapot
+let state = {
+  circle: 0,
+  square: 0,
+  rectangle: 0,
+};
+
+
+// 1. Selecteld ki id alapján a form elementet és submit eseményre 
+// köss be funkcionalitást
+
+document.getElementById("shapes").addEventListener("submit", function (event) {
+  event.preventDefault();
+
+    // 2. Az esemény bekövetkezésekor olvasd ki az input mezőkben lévő adatokat
+    event.target.elements.selectedShape.value // <- Select input mezőben lévő érték
+
+});
+
+// 3. Az adatok alapján módosítsd az alkalmazás belső állapotát
+// 4. A belső állapot alapján rajzold újra a formákat
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>
+        A "selectedShape" kulcsnév nem beépített a JS-ben, hanem az input mező name attribútuma szerint került be az elements objectbe.
+      </title>
+      <fileName>script.js</fileName>
+      <focus>16[27:39]</focus>
+    </item>
+
+    <item>
+      <title>
+        A "selectedShape" kulcsnév nem beépített a JS-ben, hanem az input mező name attribútuma szerint került be az elements objectbe.
+      </title>
+      <fileName>index.html</fileName>
+      <focus>9[34:53]</focus>
+      <content>
+        <![CDATA[
+<div class="container">
+  <h1 class="text-center display-6">Feladat:</h1>
+  <p>
+    A gombra kattintáskor növeld, vagy csökkentsd 1-gyel a kiválasztott 
+    formában lévő értéket, attól függően, hogy a radio gombok közül 
+    melyik van bepipálva.
+  </p>
+  <form id="shapes">
+    <select class="form-control" name="selectedShape">
+      <option value="circle">Kör</option>
+      <option value="square" selected="selected">Négyzet</option>
+      <option value="rectangle">Téglalap</option>
+    </select>
+    <br />
+    <label class="radio-inline me-5">
+      <span class="fa fa-plus"></span>
+      <input type="radio" name="action" value="increment" checked="checked" />
+    </label>
+    <label class="radio-inline">
+      <span class="fa fa-minus"></span>
+      <input type="radio" name="action" value="decrement" />
+    </label>
+    <br />
+    <br />
+    <button type="submit" class="btn btn-primary d-inline-block">Próbáld ki</button>
+  </form>
+</div>
+]]>
+      </content>
+    </item>
+
+    <item>
+      <focus>17[27:40],21[27:39]</focus>
+      <title>
+        Az radio input kapcsán ugyanez a helyzet. Erre az input elementre "action" néven tudunk hivatkozni az elements object-ben.
+      </title>
+    </item>
+
+    <item>
+      <title>
+        Ami értékek pedig végül a kezünkbe kerülnek, azok a value attribútumban vannak megadva itt a HTML-ben.
+      </title>
+      <fileName>index.html</fileName>
+      <focus>10[15:28],11[15:28],12[15:31],17[41:57],21[41:57]</focus>
+    </item>
+
+    <item>
+      <title>
+        A kinyert adatokat kirakhatjuk változókba pl. action és shapeName néven.
+      </title>
+      <focus>12:20</focus>
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+// Belső állapot
+let state = {
+  circle: 0,
+  square: 0,
+  rectangle: 0,
+};
+
+
+// 1. Selecteld ki id alapján a form elementet és submit eseményre 
+// köss be funkcionalitást
+
+document.getElementById("shapes").addEventListener("submit", function (event) {
+  event.preventDefault();
+
+    // 2. Az esemény bekövetkezésekor olvasd ki az input mezőkben lévő adatokat
+    let action = event.target.elements.action.value; // increment|decrement
+    let shapeName = event.target.elements.selectedShape.value; // circle|rectangle|square
+
+});
+
+// 3. Az adatok alapján módosítsd az alkalmazás belső állapotát
+// 4. A belső állapot alapján rajzold újra a formákat
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>
+        Ha megvannak a részeredmények, azokat mindig érdemes kilogolni.
+      </title>
+      <focus>16[9:15],17[9:18],19</focus>
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+// Belső állapot
+let state = {
+  circle: 0,
+  square: 0,
+  rectangle: 0,
+};
+
+
+// 1. Selecteld ki id alapján a form elementet és submit eseményre 
+// köss be funkcionalitást
+
+document.getElementById("shapes").addEventListener("submit", function (event) {
+  event.preventDefault();
+
+    // 2. Az esemény bekövetkezésekor olvasd ki az input mezőkben lévő adatokat
+    let action = event.target.elements.action.value; // increment|decrement
+    let shapeName = event.target.elements.selectedShape.value; // circle|rectangle|square
+
+    console.log(action, shapeName);
+
+});
+
+// 3. Az adatok alapján módosítsd az alkalmazás belső állapotát
+// 4. A belső állapot alapján rajzold újra a formákat
+]]>
+      </content>
+    </item>
+
+    <item>
+      
+      <title>
+        Ha idáig eljutottál gratulálok! Próbáld meg ettől a ponttól befejezni az alkalmazást! A kód kimásolásához kattints a Copy gombra!
+      </title>
+    </item>
+
+    <item>
+      <label>3. A belső állapot módosítása</label>
+      
+      <title>A következő lépés a belső állapot módosítása.</title>
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+// Belső állapot
+let state = {
+  circle: 0,
+  square: 0,
+  rectangle: 0,
+};
+
+
+// 1. Selecteld ki id alapján a form elementet és submit eseményre 
+// köss be funkcionalitást
+
+document.getElementById("shapes").addEventListener("submit", function (event) {
+  event.preventDefault();
+
+    // 2. Az esemény bekövetkezésekor olvasd ki az input mezőkben lévő adatokat
+    let action = event.target.elements.action.value; // increment|decrement
+    let shapeName = event.target.elements.selectedShape.value; // circle|rectangle|square
+
+    // 3. Az adatok alapján módosítsd az alkalmazás belső állapotát
+
+});
+
+// 4. A belső állapot alapján rajzold újra a formákat
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>Ehhez elágazást készíthetünk az action függvényében.</title>
+      <focus>16,20:24</focus>
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+// Belső állapot
+let state = {
+  circle: 0,
+  square: 0,
+  rectangle: 0,
+};
+
+
+// 1. Selecteld ki id alapján a form elementet és submit eseményre 
+// köss be funkcionalitást
+
+document.getElementById("shapes").addEventListener("submit", function (event) {
+  event.preventDefault();
+
+    // 2. Az esemény bekövetkezésekor olvasd ki az input mezőkben lévő adatokat
+    let action = event.target.elements.action.value; // increment|decrement
+    let shapeName = event.target.elements.selectedShape.value; // circle|rectangle|square
+
+    // 3. Az adatok alapján módosítsd az alkalmazás belső állapotát
+    if (action === "increment") {
+      
+    } else {
+      
+    }
+
+});
+
+// 4. A belső állapot alapján rajzold újra a formákat
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>A shapeName értékét felhasználhatjuk dinamikusan kulcsként, hogy a state object megfelelő értéke változhasson meg.</title>
+      <fileName>script.js</fileName>
+      <focus>2,3,4,5,6,7,17,21,23,27</focus>
+      <content>
+        <![CDATA[
+// Belső állapot
+let state = {
+  circle: 0,
+  square: 0,
+  rectangle: 0,
+};
+
+
+// 1. Selecteld ki id alapján a form elementet és submit eseményre 
+// köss be funkcionalitást
+
+document.getElementById("shapes").addEventListener("submit", function (event) {
+  event.preventDefault();
+
+    // 2. Az esemény bekövetkezésekor olvasd ki az input mezőkben lévő adatokat
+    let action = event.target.elements.action.value; // increment|decrement
+    let shapeName = event.target.elements.selectedShape.value; // circle|rectangle|square
+
+    // 3. Az adatok alapján módosítsd az alkalmazás belső állapotát
+    if (action === "increment") {
+      state[shapeName]++;
+    } else {
+      state[shapeName]--;
+    }
+
+});
+
+// 4. A belső állapot alapján rajzold újra a formákat
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>Ha most kilogolod a state-et, akkor láthatod, hogy a belső állapot megfelelően változik, a kiválasztott értékek szerint.</title>
+      <fileName>script.js</fileName>
+      <focus>2,3,4,5,6,7,17,21,23,26,27</focus>
+      <content>
+        <![CDATA[
+// Belső állapot
+let state = {
+  circle: 0,
+  square: 0,
+  rectangle: 0,
+};
+
+
+// 1. Selecteld ki id alapján a form elementet és submit eseményre 
+// köss be funkcionalitást
+
+document.getElementById("shapes").addEventListener("submit", function (event) {
+  event.preventDefault();
+
+    // 2. Az esemény bekövetkezésekor olvasd ki az input mezőkben lévő adatokat
+    let action = event.target.elements.action.value; // increment|decrement
+    let shapeName = event.target.elements.selectedShape.value; // circle|rectangle|square
+
+    // 3. Az adatok alapján módosítsd az alkalmazás belső állapotát
+    if (action === "increment") {
+      state[shapeName]++;
+    } else {
+      state[shapeName]--;
+    }
+
+    console.log(state);
+});
+
+// 4. A belső állapot alapján rajzold újra a formákat
+]]>
+      </content>
+    </item>
+
+    <item>
+      <label>4. Formák újrarajzolása, a state alapján</label>
+      <title>A következő lépés, hogy az állapotváltozás beállta után, újra kell renderelnünk a felhasználói felületet.</title>
+    </item>
+
+    <item>
+      <title>Az újrarajzolásért felelős kódot kiszervezhetjük egy függvénybe, mert tipikusan többször is szükség lehet rá.</title>
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+// Belső állapot
+let state = {
+  circle: 0,
+  square: 0,
+  rectangle: 0,
+};
+
+
+// 1. Selecteld ki id alapján a form elementet és submit eseményre 
+// köss be funkcionalitást
+
+document.getElementById("shapes").addEventListener("submit", function (event) {
+  event.preventDefault();
+
+    // 2. Az esemény bekövetkezésekor olvasd ki az input mezőkben lévő adatokat
+    let action = event.target.elements.action.value; // increment|decrement
+    let shapeName = event.target.elements.selectedShape.value; // circle|rectangle|square
+
+    // 3. Az adatok alapján módosítsd az alkalmazás belső állapotát
+    if (action === "increment") {
+      state[shapeName]++;
+    } else {
+      state[shapeName]--;
+    }
+
+    render();
+});
+
+// 4. A belső állapot alapján rajzold újra a formákat
+function render() {
+
+}
+
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>A renderelés során kiolvassuk a state-ből az adatokat és beírjuk a megfelelő elementbe, innerHTML kulcs alá.</title>
+      <fileName>script.js</fileName>
+      <focus>30:34</focus>
+      <content>
+        <![CDATA[
+// Belső állapot
+let state = {
+  circle: 0,
+  square: 0,
+  rectangle: 0,
+};
+
+
+// 1. Selecteld ki id alapján a form elementet és submit eseményre 
+// köss be funkcionalitást
+
+document.getElementById("shapes").addEventListener("submit", function (event) {
+  event.preventDefault();
+
+    // 2. Az esemény bekövetkezésekor olvasd ki az input mezőkben lévő adatokat
+    let action = event.target.elements.action.value; // increment|decrement
+    let shapeName = event.target.elements.selectedShape.value; // circle|rectangle|square
+
+    // 3. Az adatok alapján módosítsd az alkalmazás belső állapotát
+    if (action === "increment") {
+      state[shapeName]++;
+    } else {
+      state[shapeName]--;
+    }
+
+    render();
+});
+
+// 4. A belső állapot alapján rajzold újra a formákat
+function render() {
+    document.getElementById("sh-circle").innerHTML = state.circle;
+    document.getElementById("sh-square").innerHTML = state.square;
+    document.getElementById("sh-rectangle").innerHTML = state.rectangle;
+}
+
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>Az efféle renderelő függvények tipikusan csak kiolvasnak a state-ből, de nem írnak bele.</title>
+      <focus>30:34</focus>
+    </item>
+
+    <item>
+      <label>Kész</label>
+      
+      <title>Kész</title>
+      <fileName>script.js</fileName>
+    </item>
+  </body>
+
+</root>

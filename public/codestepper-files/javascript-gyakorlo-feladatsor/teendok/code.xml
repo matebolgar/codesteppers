@@ -1,0 +1,679 @@
+<?xml version = "1.0"?>
+<root>
+  <meta>
+    <type>codeSurfer</type>
+  </meta>
+
+  <body>
+    <item>
+      <label>Bevezető</label>
+      
+      <title>Az alábbi lépésekkel tudod megvalósítani az alkalmazást:</title>
+      <showNumbers>1</showNumbers>
+      <fileName>script.js</fileName>
+      <focus>1:25</focus>
+      <content>
+        <![CDATA[
+let state = {
+  teendok: [],
+  isPending: false,
+};
+
+// 1. Kattintás eseményre köss be funkcionalitást
+
+// 2. A esemény bekövetkezésekor állítsd a state isPending értékét true-ra
+
+// 3. Küldj AJAX kérést a beépített "fetch" függvény segítségével
+
+// 4. A válaszként kapott adatokat szűrd meg a "filter" függvénnyel
+
+// 5. A megszűrt adatokat írd be a state teendok kulcsa alá
+
+// 6. Ezután állítsd vissza az isPending-et false-ra
+
+/* 7. Készíts egy renderelő függvényt, ami
+  - Ha az isPending true, akkor egy "Betöltés folyamatban" feliratot ír ki
+  - Ha az isPending false, akkor pedig kirajzolja az összes teendőt, 
+    ami a state-ben van
+*/
+
+// 8. Hívd meg a renderelő függvényt a 2. és az 4. pont után is
+
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>Sok sikert a megvalósításhoz!</title>
+      <focus>1:25</focus>
+      <fileName>script.js</fileName>
+    </item>
+
+    <item>
+      <title>A megoldás első lépése, hogy klikk eseményre kötünk be funkcionalitást.</title>
+      <label>1. 2. Klikk esemény</label>
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+let state = {
+  teendok: [],
+  isPending: false,
+};
+
+// 1. Kattintás eseményre köss be funkcionalitást
+document.getElementById("fetch-btn").addEventListener("click", () => {
+
+});
+
+// 2. A esemény bekövetkezésekor állítsd a state isPending értékét true-ra
+
+// 3. Küldj AJAX kérést a beépített "fetch" függvény segítségével
+
+// 4. A válaszként kapott adatokat szűrd meg a "filter" függvénnyel
+
+// 5. A megszűrt adatokat írd be a state teendok kulcsa alá
+
+// 6. Ezután állítsd vissza az isPending-et false-ra
+
+/* 7. Készíts egy renderelő függvényt, ami
+  - Ha az isPending true, akkor egy "Betöltés folyamatban" feliratot ír ki
+  - Ha az isPending false, akkor pedig kirajzolja az összes teendőt, 
+    ami a state-ben van
+*/
+
+// 8. Hívd meg a renderelő függvényt a 2. és az 4. pont után is
+
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>Az esemény bekövetkezésekor átállítjuk az isPending értékét true-ra.</title>
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+let state = {
+  teendok: [],
+  isPending: false,
+};
+
+// 1. Kattintás eseményre köss be funkcionalitást
+document.getElementById("fetch-btn").addEventListener("click", () => {
+  // 2. A esemény bekövetkezésekor állítsd a state isPending értékét true-ra
+  state.isPending = true;
+
+});
+
+
+// 3. Küldj AJAX kérést a beépített "fetch" függvény segítségével
+
+// 4. A válaszként kapott adatokat szűrd meg a "filter" függvénnyel
+
+// 5. A megszűrt adatokat írd be a state teendok kulcsa alá
+
+// 6. Ezután állítsd vissza az isPending-et false-ra
+
+/* 7. Készíts egy renderelő függvényt, ami
+  - Ha az isPending true, akkor egy "Betöltés folyamatban" feliratot ír ki
+  - Ha az isPending false, akkor pedig kirajzolja az összes teendőt, 
+    ami a state-ben van
+*/
+
+// 8. Hívd meg a renderelő függvényt a 2. és az 4. pont után is
+
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>
+        Később a renderelő függvény az isPending értékből fog dolgozni és ennek alapján dönti el, hogy mit kell megjelenítenie.
+      </title>
+      <focus>8,9</focus>
+    </item>
+
+    <item>
+      <title>
+        Következő lépés az AJAX kérés kiküldése szerver oldalra.
+      </title>
+      <label>3. AJAX kérés küldése</label>
+      
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+let state = {
+  teendok: [],
+  isPending: false,
+};
+
+// 1. Kattintás eseményre köss be funkcionalitást
+document.getElementById("fetch-btn").addEventListener("click", () => {
+  // 2. A esemény bekövetkezésekor állítsd a state isPending értékét true-ra
+  state.isPending = true;
+
+  // 3. Küldj AJAX kérést a beépített "fetch" függvény segítségével
+
+});
+
+
+
+// 4. A válaszként kapott adatokat szűrd meg a "filter" függvénnyel
+
+// 5. A megszűrt adatokat írd be a state teendok kulcsa alá
+
+// 6. Ezután állítsd vissza az isPending-et false-ra
+
+/* 7. Készíts egy renderelő függvényt, ami
+  - Ha az isPending true, akkor egy "Betöltés folyamatban" feliratot ír ki
+  - Ha az isPending false, akkor pedig kirajzolja az összes teendőt, 
+    ami a state-ben van
+*/
+
+// 8. Hívd meg a renderelő függvényt a 2. és az 4. pont után is
+
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>
+        A fetch function-t így tudjuk meghívni.
+      </title>
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+let state = {
+  teendok: [],
+  isPending: false,
+};
+
+// 1. Kattintás eseményre köss be funkcionalitást
+document.getElementById("fetch-btn").addEventListener("click", () => {
+  // 2. A esemény bekövetkezésekor állítsd a state isPending értékét true-ra
+  state.isPending = true;
+
+  // 3. Küldj AJAX kérést a beépített "fetch" függvény segítségével
+  fetch("https://jsonplaceholder.typicode.com/todos")
+
+});
+
+
+
+// 4. A válaszként kapott adatokat szűrd meg a "filter" függvénnyel
+
+// 5. A megszűrt adatokat írd be a state teendok kulcsa alá
+
+// 6. Ezután állítsd vissza az isPending-et false-ra
+
+/* 7. Készíts egy renderelő függvényt, ami
+  - Ha az isPending true, akkor egy "Betöltés folyamatban" feliratot ír ki
+  - Ha az isPending false, akkor pedig kirajzolja az összes teendőt, 
+    ami a state-ben van
+*/
+
+// 8. Hívd meg a renderelő függvényt a 2. és az 4. pont után is
+
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>
+        Ezután ki kell parse-olnunk a kapott JSON tartalmat.
+      </title>
+      <focus>12,13</focus>
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+let state = {
+  teendok: [],
+  isPending: false,
+};
+
+// 1. Kattintás eseményre köss be funkcionalitást
+document.getElementById("fetch-btn").addEventListener("click", () => {
+  // 2. A esemény bekövetkezésekor állítsd a state isPending értékét true-ra
+  state.isPending = true;
+
+  // 3. Küldj AJAX kérést a beépített "fetch" függvény segítségével
+  fetch("https://jsonplaceholder.typicode.com/todos")
+    .then((res) => res.json())
+
+});
+
+
+
+// 4. A válaszként kapott adatokat szűrd meg a "filter" függvénnyel
+
+// 5. A megszűrt adatokat írd be a state teendok kulcsa alá
+
+// 6. Ezután állítsd vissza az isPending-et false-ra
+
+/* 7. Készíts egy renderelő függvényt, ami
+  - Ha az isPending true, akkor egy "Betöltés folyamatban" feliratot ír ki
+  - Ha az isPending false, akkor pedig kirajzolja az összes teendőt, 
+    ami a state-ben van
+*/
+
+// 8. Hívd meg a renderelő függvényt a 2. és az 4. pont után is
+
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>
+        A kódnak kompaktabb kinézetet kölcsönözhetünk, ha a then blokkba bepasszolt függvényt arrow functionként hozzuk létre.
+      </title>
+      <focus>12,13</focus>
+    </item>
+
+    <item>
+      <title>
+        A következő then blokkban elvégezhetjük a szűrést
+      </title>
+      <focus>12:14</focus>
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+let state = {
+  teendok: [],
+  isPending: false,
+};
+
+// 1. Kattintás eseményre köss be funkcionalitást
+document.getElementById("fetch-btn").addEventListener("click", () => {
+  // 2. A esemény bekövetkezésekor állítsd a state isPending értékét true-ra
+  state.isPending = true;
+
+  // 3. Küldj AJAX kérést a beépített "fetch" függvény segítségével
+  // 4. A válaszként kapott adatokat szűrd meg a "filter" függvénnyel
+  fetch("https://jsonplaceholder.typicode.com/todos")
+    .then((res) => res.json())
+
+});
+
+// 5. A megszűrt adatokat írd be a state teendok kulcsa alá
+
+// 6. Ezután állítsd vissza az isPending-et false-ra
+
+/* 7. Készíts egy renderelő függvényt, ami
+  - Ha az isPending true, akkor egy "Betöltés folyamatban" feliratot ír ki
+  - Ha az isPending false, akkor pedig kirajzolja az összes teendőt, 
+    ami a state-ben van
+*/
+
+// 8. Hívd meg a renderelő függvényt a 2. és az 4. pont után is
+
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title></title>
+      <focus>12:15</focus>
+      <label>4. 5. 6. Szűrés és state módosítás</label>
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+let state = {
+  teendok: [],
+  isPending: false,
+};
+
+// 1. Kattintás eseményre köss be funkcionalitást
+document.getElementById("fetch-btn").addEventListener("click", () => {
+  // 2. A esemény bekövetkezésekor állítsd a state isPending értékét true-ra
+  state.isPending = true;
+
+  // 3. Küldj AJAX kérést a beépített "fetch" függvény segítségével
+  // 4. A válaszként kapott adatokat szűrd meg a "filter" függvénnyel
+  fetch("https://jsonplaceholder.typicode.com/todos")
+    .then((res) => res.json())
+    .then((todos) => todos.filter((todo) => todo.completed))
+
+});
+
+// 5. A megszűrt adatokat írd be a state teendok kulcsa alá
+
+// 6. Ezután állítsd vissza az isPending-et false-ra
+
+/* 7. Készíts egy renderelő függvényt, ami
+  - Ha az isPending true, akkor egy "Betöltés folyamatban" feliratot ír ki
+  - Ha az isPending false, akkor pedig kirajzolja az összes teendőt, 
+    ami a state-ben van
+*/
+
+// 8. Hívd meg a renderelő függvényt a 2. és az 4. pont után is
+
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>
+        Ezekután a elvégezhetjük az alkalmazás állapotának megváltoztatását.
+      </title>
+      <focus>1:4,16:21</focus>
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+let state = {
+  teendok: [],
+  isPending: false,
+};
+
+// 1. Kattintás eseményre köss be funkcionalitást
+document.getElementById("fetch-btn").addEventListener("click", () => {
+  // 2. A esemény bekövetkezésekor állítsd a state isPending értékét true-ra
+  state.isPending = true;
+
+  // 3. Küldj AJAX kérést a beépített "fetch" függvény segítségével
+  // 4. A válaszként kapott adatokat szűrd meg a "filter" függvénnyel
+  fetch("https://jsonplaceholder.typicode.com/todos")
+    .then((res) => res.json())
+    .then((todos) => todos.filter((todo) => todo.completed))
+    .then((todos) => {
+      // 5. A megszűrt adatokat írd be a state teendok kulcsa alá
+      state.teendok = todos;
+      // 6. Ezután állítsd vissza az isPending-et false-ra
+      state.isPending = false;
+    })
+
+});
+
+/* 7. Készíts egy renderelő függvényt, ami
+  - Ha az isPending true, akkor egy "Betöltés folyamatban" feliratot ír ki
+  - Ha az isPending false, akkor pedig kirajzolja az összes teendőt, 
+    ami a state-ben van
+*/
+
+// 8. Hívd meg a renderelő függvényt a 2. és az 4. pont után is
+
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>
+        A promise láncot mindig érdemes lezárni egy catch blokk-kal, ami lekezeli az esetleges hibákat.
+      </title>
+      <focus>1:4,16:23</focus>
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+let state = {
+  teendok: [],
+  isPending: false,
+};
+
+// 1. Kattintás eseményre köss be funkcionalitást
+document.getElementById("fetch-btn").addEventListener("click", () => {
+  // 2. A esemény bekövetkezésekor állítsd a state isPending értékét true-ra
+  state.isPending = true;
+
+  // 3. Küldj AJAX kérést a beépített "fetch" függvény segítségével
+  // 4. A válaszként kapott adatokat szűrd meg a "filter" függvénnyel
+  fetch("https://jsonplaceholder.typicode.com/todos")
+    .then((res) => res.json())
+    .then((todos) => todos.filter((todo) => todo.completed))
+    .then((todos) => {
+      // 5. A megszűrt adatokat írd be a state teendok kulcsa alá
+      state.teendok = todos;
+      // 6. Ezután állítsd vissza az isPending-et false-ra
+      state.isPending = false;
+    })
+    .catch(console.log);
+
+});
+
+/* 7. Készíts egy renderelő függvényt, ami
+  - Ha az isPending true, akkor egy "Betöltés folyamatban" feliratot ír ki
+  - Ha az isPending false, akkor pedig kirajzolja az összes teendőt, 
+    ami a state-ben van
+*/
+
+// 8. Hívd meg a renderelő függvényt a 2. és az 4. pont után is
+
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>
+        A következő lépés a renderelő függvény elkészítése
+      </title>
+      <label>7. Render függvény deklarálása</label>
+      
+      <fileName>script.js</fileName>
+    </item>
+
+    <item>
+      <focus>26:33</focus>
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+let state = {
+  teendok: [],
+  isPending: false,
+};
+
+// 1. Kattintás eseményre köss be funkcionalitást
+document.getElementById("fetch-btn").addEventListener("click", () => {
+  // 2. A esemény bekövetkezésekor állítsd a state isPending értékét true-ra
+  state.isPending = true;
+
+  // 3. Küldj AJAX kérést a beépített "fetch" függvény segítségével
+  // 4. A válaszként kapott adatokat szűrd meg a "filter" függvénnyel
+  fetch("https://jsonplaceholder.typicode.com/todos")
+    .then((res) => res.json())
+    .then((todos) => todos.filter((todo) => todo.completed))
+    .then((todos) => {
+      // 5. A megszűrt adatokat írd be a state teendok kulcsa alá
+      state.teendok = todos;
+      // 6. Ezután állítsd vissza az isPending-et false-ra
+      state.isPending = false;
+    })
+    .catch(console.log);
+
+});
+
+/* 7. Készíts egy renderelő függvényt, ami
+  - Ha az isPending true, akkor egy "Betöltés folyamatban" feliratot ír ki
+  - Ha az isPending false, akkor pedig kirajzolja az összes teendőt, 
+    ami a state-ben van
+*/
+function render() {
+  
+}
+
+// 8. Hívd meg a renderelő függvényt a 2. és az 4. pont után is
+
+]]>
+      </content>
+    </item>
+
+    <item>
+      <focus>27,31:37</focus>
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+let state = {
+  teendok: [],
+  isPending: false,
+};
+
+// 1. Kattintás eseményre köss be funkcionalitást
+document.getElementById("fetch-btn").addEventListener("click", () => {
+  // 2. A esemény bekövetkezésekor állítsd a state isPending értékét true-ra
+  state.isPending = true;
+
+  // 3. Küldj AJAX kérést a beépített "fetch" függvény segítségével
+  // 4. A válaszként kapott adatokat szűrd meg a "filter" függvénnyel
+  fetch("https://jsonplaceholder.typicode.com/todos")
+    .then((res) => res.json())
+    .then((todos) => todos.filter((todo) => todo.completed))
+    .then((todos) => {
+      // 5. A megszűrt adatokat írd be a state teendok kulcsa alá
+      state.teendok = todos;
+      // 6. Ezután állítsd vissza az isPending-et false-ra
+      state.isPending = false;
+    })
+    .catch(console.log);
+
+});
+
+/* 7. Készíts egy renderelő függvényt, ami
+  - Ha az isPending true, akkor egy "Betöltés folyamatban" feliratot ír ki
+  - Ha az isPending false, akkor pedig kirajzolja az összes teendőt, 
+    ami a state-ben van
+*/
+function render() {
+  if (state.isPending) {
+    document.getElementById("todo-list").innerHTML = "Betöltés folyamatban...";
+    return;
+  }
+  
+}
+
+// 8. Hívd meg a renderelő függvényt a 2. és az 4. pont után is
+
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>A map function-nel kompakt módon ki tudod generálni a HTML tartalmat.</title>
+      <focus>28,29,37:41</focus>
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+let state = {
+  teendok: [],
+  isPending: false,
+};
+
+// 1. Kattintás eseményre köss be funkcionalitást
+document.getElementById("fetch-btn").addEventListener("click", () => {
+  // 2. A esemény bekövetkezésekor állítsd a state isPending értékét true-ra
+  state.isPending = true;
+
+  // 3. Küldj AJAX kérést a beépített "fetch" függvény segítségével
+  // 4. A válaszként kapott adatokat szűrd meg a "filter" függvénnyel
+  fetch("https://jsonplaceholder.typicode.com/todos")
+    .then((res) => res.json())
+    .then((todos) => todos.filter((todo) => todo.completed))
+    .then((todos) => {
+      // 5. A megszűrt adatokat írd be a state teendok kulcsa alá
+      state.teendok = todos;
+      // 6. Ezután állítsd vissza az isPending-et false-ra
+      state.isPending = false;
+    })
+    .catch(console.log);
+
+});
+
+/* 7. Készíts egy renderelő függvényt, ami
+  - Ha az isPending true, akkor egy "Betöltés folyamatban" feliratot ír ki
+  - Ha az isPending false, akkor pedig kirajzolja az összes teendőt, 
+    ami a state-ben van
+*/
+function render() {
+  if (state.isPending) {
+    document.getElementById("todo-list").innerHTML = "Betöltés folyamatban...";
+    return;
+  }
+
+  document.getElementById("todo-list").innerHTML = state.teendok
+    .map((teendo, i) => 
+      `<span class="badge bg-primary me-1 mb-1">${i + 1}. ${teendo.title}</span>`
+    )
+    .join("");
+
+}
+
+// 8. Hívd meg a renderelő függvényt a 2. és az 4. pont után is
+
+]]>
+      </content>
+    </item>
+
+    <item>
+      <label>8. Renderelés</label>
+      <title>
+        Az utolsó lépés a render függvény meghívása a minden alkalommal, amikor valamilyen state változás történt.
+      </title>
+      <focus>45</focus>
+    </item>
+
+    <item>
+      <title>
+        Az utolsó lépés a render függvény meghívása a minden alkalommal, amikor valamilyen state változás történt.
+      </title>
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+let state = {
+  teendok: [],
+  isPending: false,
+};
+
+// 1. Kattintás eseményre köss be funkcionalitást
+document.getElementById("fetch-btn").addEventListener("click", () => {
+  // 2. A esemény bekövetkezésekor állítsd a state isPending értékét true-ra
+  state.isPending = true;
+  render();
+
+  // 3. Küldj AJAX kérést a beépített "fetch" függvény segítségével
+  // 4. A válaszként kapott adatokat szűrd meg a "filter" függvénnyel
+  fetch("https://jsonplaceholder.typicode.com/todos")
+    .then((res) => res.json())
+    .then((todos) => todos.filter((todo) => todo.completed))
+    .then((todos) => {
+      // 5. A megszűrt adatokat írd be a state teendok kulcsa alá
+      state.teendok = todos;
+      // 6. Ezután állítsd vissza az isPending-et false-ra
+      state.isPending = false;
+      render();
+    })
+    .catch(console.log);
+
+});
+
+/* 7. Készíts egy renderelő függvényt, ami
+  - Ha az isPending true, akkor egy "Betöltés folyamatban" feliratot ír ki
+  - Ha az isPending false, akkor pedig kirajzolja az összes teendőt, 
+    ami a state-ben van
+*/
+function render() {
+  if (state.isPending) {
+    document.getElementById("todo-list").innerHTML = "Betöltés folyamatban...";
+    return;
+  }
+
+  document.getElementById("todo-list").innerHTML = state.teendok
+    .map((teendo, i) => 
+      `<span class="badge bg-primary me-1 mb-1">${i + 1}. ${teendo.title}</span>`
+    )
+    .join("");
+
+}
+
+// 8. Hívd meg a renderelő függvényt a 2. és az 4. pont után is
+
+]]>
+      </content>
+    </item>
+
+    <item>
+      <label>Kész</label>
+      <focus>5:29</focus>
+      
+      <title>
+        Ezzel készen vagyunk a megvalósítással!
+      </title>
+    </item>
+
+  </body>
+
+</root>

@@ -1,0 +1,30 @@
+<?xml version = "1.0"?>
+<root>
+  <meta>
+    <type>htmlArray</type>
+  </meta>
+
+  <body>
+    <item>
+      <start>21</start>
+      <end>24</end>
+      <content>
+
+        <aside class="container">
+          <p class="text-center mb-2">Ha a state fogalma nem hangzik ismerősen, akkor ismételd át a témakört itt:</p>
+          <div class="row pb-3">
+            <div class="card offset-sm-3 col-sm-6 hover11">
+              <a target="_blank" href="/javascript-az-alapoktol/egyszeru-programok-epitese">
+                <div class="w-100">
+                  <img class="card-img-top" src="/public/files/md-7874515926130c584bde6c6.84019888.webp" alt=""/>
+                </div>
+              </a>
+            </div>
+          </div>
+        </aside>
+
+      </content>
+    </item>
+
+  </body>
+</root>

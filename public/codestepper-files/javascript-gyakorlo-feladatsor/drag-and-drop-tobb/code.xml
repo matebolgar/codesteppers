@@ -1,0 +1,588 @@
+<?xml version = "1.0"?>
+<root>
+  <meta>
+    <type>codeSurfer</type>
+  </meta>
+
+  <body>
+
+    <item>
+      <title>Itt hagytuk abba</title>
+      <fileName>script.js</fileName>
+      <showNumbers>1</showNumbers>
+      <focus>1:12</focus>
+      <content>
+        <![CDATA[
+let state = {
+  x: undefined,
+  y: undefined,
+  isDragged: false,
+};
+
+const container = document.getElementById("drag-and-drop-app");
+state.x = container.offsetLeft;
+state.y = container.offsetTop;
+
+window.onload = render;
+
+function render() {
+  const doboz = `
+    <div
+      style="width: 200px; position: absolute; left: ${state.x}px; top: ${state.y}px;"
+      class="box ${state.isDragged ? "grabbed" : "not-grabbed"}"
+      onmousedown="dobozDragStart()"
+      onmouseup="dobozDragEnd()"
+      onmousemove="dobozMouseMove(window.event)"
+    >
+      <div class="card-body">
+        <h5 class="card-title display-4"># húzd arrébb</h5>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("drag-and-drop-app").innerHTML = doboz;
+}
+
+function dobozDragStart() {
+  state.isDragged = true;
+  render();
+}
+
+function dobozDragEnd() {
+  state.isDragged = false;
+  render();
+}
+
+function dobozMouseMove(event) {
+  if (state.isDragged) {
+    const box = event.target.closest(".box");
+    if (!box) {
+      return;
+    }
+    state.x = document.documentElement.scrollLeft + event.clientX - box.offsetWidth / 2;
+    state.y = document.documentElement.scrollTop + event.clientY - box.offsetHeight / 2;
+    render();
+  }
+}
+
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>Az első lépés az, hogy lecseréljük a state-et az új struktúrára.</title>
+      <label>State lecserélése</label>
+      
+      <fileName>script.js</fileName>
+      <focus>1:22</focus>
+      <content>
+        <![CDATA[
+const container = document.getElementById("drag-and-drop-app");
+let state = {
+  elemek: {
+    "elso": {
+        id: "elso",
+        x: container.offsetLeft,
+        y: container.offsetTop,
+    },
+    "masodik": {
+        id: "masodik",
+        x: container.offsetLeft + 20,
+        y: container.offsetTop + 150,
+    },
+    "harmadik": {
+        id: "harmadik",
+        x: container.offsetLeft + 40,
+        y: container.offsetTop + 300,
+    }
+  },
+  draggedId: ""
+};
+
+window.onload = render;
+
+function render() {
+  const doboz = `
+    <div
+      style="width: 200px; position: absolute; left: ${state.x}px; top: ${state.y}px;"
+      class="box ${state.isDragged ? "grabbed" : "not-grabbed"}"
+      onmousedown="dobozDragStart()"
+      onmouseup="dobozDragEnd()"
+      onmousemove="dobozMouseMove(window.event)"
+    >
+      <div class="card-body">
+        <h5 class="card-title display-4"># húzd arrébb</h5>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("drag-and-drop-app").innerHTML = doboz;
+}
+
+function dobozDragStart() {
+  state.isDragged = true;
+  render();
+}
+
+function dobozDragEnd() {
+  state.isDragged = false;
+  render();
+}
+
+function dobozMouseMove(event) {
+  if (state.isDragged) {
+    const box = event.target.closest(".box");
+    if (!box) {
+      return;
+    }
+    state.x = document.documentElement.scrollLeft + event.clientX - box.offsetWidth / 2;
+    state.y = document.documentElement.scrollTop + event.clientY - box.offsetHeight / 2;
+    render();
+  }
+}
+
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>Ezután módosítanunk kell a render függvényt, hogy az elemeken végigiterálva az összes dobozt rajzolja ki.</title>
+      <focus>25:42</focus>
+    </item>
+
+    <item>
+      <title>A kirajzoláshoz inicializálunk egy dobozokHTML nevű változót üres string értékkel. Az iteráció során ide ollózzuk össze a HTML tartalmat, majd bekötjük innerHTML-nek.</title>
+      <label>Render függvény módosítása</label>
+      <fileName>script.js</fileName>
+      <focus>24:47</focus>
+
+      <content>
+        <![CDATA[
+const container = document.getElementById("drag-and-drop-app");
+let state = {
+  elemek: {
+    "elso": {
+        id: "elso",
+        x: container.offsetLeft,
+        y: container.offsetTop,
+    },
+    "masodik": {
+        id: "masodik",
+        x: container.offsetLeft + 20,
+        y: container.offsetTop + 150,
+    },
+    "harmadik": {
+        id: "harmadik",
+        x: container.offsetLeft + 40,
+        y: container.offsetTop + 300,
+    }
+  },
+  draggedId: ""
+};
+
+window.onload = render;
+
+function render() {
+  let dobozokHTML = '';
+  for(let elem of Object.values(state.elemek)) {
+ 
+    dobozokHTML += `
+      <div
+        class="box ${state.draggedId === elem.id ? "grabbed" : "not-grabbed"}"
+        style="position: absolute; left: ${elem.x}px; top: ${elem.y}px;"
+        onmousedown="dobozDragStart(window.event)"
+        onmouseup="dobozDragEnd(window.event)"
+        onmousemove="dobozMouseMove(window.event)"
+        data-egyedi-azonosito="${elem.id}"
+      >
+        <div class="card-body">
+          <h5 class="card-title display-4">${elem.id}</h5>
+        </div>
+      </div> 
+    `;
+  }
+
+  document.getElementById("drag-and-drop-app").innerHTML = dobozokHTML;
+}
+
+function dobozDragStart() {
+  state.isDragged = true;
+  render();
+}
+
+function dobozDragEnd() {
+  state.isDragged = false;
+  render();
+}
+
+function dobozMouseMove(event) {
+  if (state.isDragged) {
+    const box = event.target.closest(".box");
+    if (!box) {
+      return;
+    }
+    state.x = document.documentElement.scrollLeft + event.clientX - box.offsetWidth / 2;
+    state.y = document.documentElement.scrollTop + event.clientY - box.offsetHeight / 2;
+    render();
+  }
+}
+
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>Data attribútumnak beírjuk az adott elem egyedi azonosítóját, azért hogy később meg tudjuk állapítani, hogy melyik dobozra történt az onmousedown esemény.</title>
+      <focus>24,36,47</focus>
+    </item>
+
+    <item>
+      <label>Eseménykezelők átírása</label>
+      
+      <title>Ezek után a dobozDragStart függvényt módosítjuk úgy, hogy beíródjon a state.draggedId alá annak az elemnek az id-ja amelyre az esemény onmousedown bekövetkezett.</title>
+      <focus>47:53</focus>
+    </item>
+
+    <item>
+      <title>Ehhez az event object-en keresztül beazonosíthatjuk az adott doboz elementet és a data attribútumból kiszedhetjük az egyedi azonosítóját.</title>
+      <fileName>script.js</fileName>
+      <focus>47:53</focus>
+
+      <content>
+        <![CDATA[
+const container = document.getElementById("drag-and-drop-app");
+let state = {
+  elemek: {
+    "elso": {
+        id: "elso",
+        x: container.offsetLeft,
+        y: container.offsetTop,
+    },
+    "masodik": {
+        id: "masodik",
+        x: container.offsetLeft + 20,
+        y: container.offsetTop + 150,
+    },
+    "harmadik": {
+        id: "harmadik",
+        x: container.offsetLeft + 40,
+        y: container.offsetTop + 300,
+    }
+  },
+  draggedId: ""
+};
+
+window.onload = render;
+
+function render() {
+  let dobozokHTML = '';
+  for(let elem of Object.values(state.elemek)) {
+ 
+    dobozokHTML += `
+      <div
+        class="box ${state.draggedId === elem.id ? "grabbed" : "not-grabbed"}"
+        style="position: absolute; left: ${elem.x}px; top: ${elem.y}px;"
+        onmousedown="dobozDragStart(window.event)"
+        onmouseup="dobozDragEnd(window.event)"
+        onmousemove="dobozMouseMove(window.event)"
+        data-egyedi-azonosito="${elem.id}"
+      >
+        <div class="card-body">
+          <h5 class="card-title display-4">${elem.id}</h5>
+        </div>
+      </div> 
+    `;
+  }
+
+  document.getElementById("drag-and-drop-app").innerHTML = dobozokHTML;
+}
+
+function dobozDragStart(event) {
+  const box = event.target.closest(".box");
+  state.draggedId = box.dataset.egyediAzonosito;
+  render();
+}
+
+function dobozDragEnd() {
+  state.isDragged = false;
+  render();
+}
+
+function dobozMouseMove(event) {
+  if (state.isDragged) {
+    const box = event.target.closest(".box");
+    if (!box) {
+      return;
+    }
+    state.x = document.documentElement.scrollLeft + event.clientX - box.offsetWidth / 2;
+    state.y = document.documentElement.scrollTop + event.clientY - box.offsetHeight / 2;
+    render();
+  }
+}
+
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>Doboz drag end-re pedig visszaírhatjuk a state.draggeId értékét null-ra.</title>
+      <fileName>script.js</fileName>
+      <focus>47:58</focus>
+
+      <content>
+        <![CDATA[
+const container = document.getElementById("drag-and-drop-app");
+let state = {
+  elemek: {
+    "elso": {
+        id: "elso",
+        x: container.offsetLeft,
+        y: container.offsetTop,
+    },
+    "masodik": {
+        id: "masodik",
+        x: container.offsetLeft + 20,
+        y: container.offsetTop + 150,
+    },
+    "harmadik": {
+        id: "harmadik",
+        x: container.offsetLeft + 40,
+        y: container.offsetTop + 300,
+    }
+  },
+  draggedId: ""
+};
+
+window.onload = render;
+
+function render() {
+  let dobozokHTML = '';
+  for(let elem of Object.values(state.elemek)) {
+ 
+    dobozokHTML += `
+      <div
+        class="box ${state.draggedId === elem.id ? "grabbed" : "not-grabbed"}"
+        style="position: absolute; left: ${elem.x}px; top: ${elem.y}px;"
+        onmousedown="dobozDragStart(window.event)"
+        onmouseup="dobozDragEnd(window.event)"
+        onmousemove="dobozMouseMove(window.event)"
+        data-egyedi-azonosito="${elem.id}"
+      >
+        <div class="card-body">
+          <h5 class="card-title display-4">${elem.id}</h5>
+        </div>
+      </div> 
+    `;
+  }
+
+  document.getElementById("drag-and-drop-app").innerHTML = dobozokHTML;
+}
+
+function dobozDragStart(event) {
+  const box = event.target.closest(".box");
+  state.draggedId = box.dataset.egyediAzonosito;
+  render();
+}
+
+function dobozDragEnd() {
+  state.draggedId = null;
+  render();
+}
+
+function dobozMouseMove(event) {
+  if (state.isDragged) {
+    const box = event.target.closest(".box");
+    if (!box) {
+      return;
+    }
+    state.x = document.documentElement.scrollLeft + event.clientX - box.offsetWidth / 2;
+    state.y = document.documentElement.scrollTop + event.clientY - box.offsetHeight / 2;
+    render();
+  }
+}
+
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>Ezek után már csak a dobozMouseMove függvényt módosítása van hátra. Itt azt kell elérnünk, hogy azon elem x és y értéke változzon a state-ben, amelyiknek az id-ja éppen bele van írva a state.draggedId alá.</title>
+      <focus>58:70</focus>
+    </item>
+
+    <item>
+      <label>State változtatás újraírása</label>
+      <title>Ehhez először megvizsgálhatjuk, hogy van-e valami beírva a state.draggedId alá és ha igen, hozzájuthatunk az adott doboz elementhez.</title>
+      <fileName>script.js</fileName>
+
+      <content>
+        <![CDATA[
+const container = document.getElementById("drag-and-drop-app");
+let state = {
+  elemek: {
+    "elso": {
+        id: "elso",
+        x: container.offsetLeft,
+        y: container.offsetTop,
+    },
+    "masodik": {
+        id: "masodik",
+        x: container.offsetLeft + 20,
+        y: container.offsetTop + 150,
+    },
+    "harmadik": {
+        id: "harmadik",
+        x: container.offsetLeft + 40,
+        y: container.offsetTop + 300,
+    }
+  },
+  draggedId: ""
+};
+
+window.onload = render;
+
+function render() {
+  let dobozokHTML = '';
+  for(let elem of Object.values(state.elemek)) {
+ 
+    dobozokHTML += `
+      <div
+        class="box ${state.draggedId === elem.id ? "grabbed" : "not-grabbed"}"
+        style="position: absolute; left: ${elem.x}px; top: ${elem.y}px;"
+        onmousedown="dobozDragStart(window.event)"
+        onmouseup="dobozDragEnd(window.event)"
+        onmousemove="dobozMouseMove(window.event)"
+        data-egyedi-azonosito="${elem.id}"
+      >
+        <div class="card-body">
+          <h5 class="card-title display-4">${elem.id}</h5>
+        </div>
+      </div> 
+    `;
+  }
+
+  document.getElementById("drag-and-drop-app").innerHTML = dobozokHTML;
+}
+
+function dobozDragStart(event) {
+  const box = event.target.closest(".box");
+  state.draggedId = box.dataset.egyediAzonosito;
+  render();
+}
+
+function dobozDragEnd() {
+  state.draggedId = null;
+  render();
+}
+
+function dobozMouseMove(event) {
+  if (!state.draggedId) {
+    return;
+  } 
+
+  const box = event.target.closest(".box");
+  if(!box) {
+    return;
+  } 
+  render();
+}
+
+]]>
+      </content>
+    </item>
+
+    <item>
+      <title>Ezek után a state.draggedId értékét dinamikus kulcsként felhasználva, módosíthatjuk a state-ben a megfelelő elem x, y értékét.</title>
+      <focus>58,69,70</focus>
+      <fileName>script.js</fileName>
+      <content>
+        <![CDATA[
+
+const container = document.getElementById("drag-and-drop-app");
+let state = {
+  elemek: {
+    "elso": {
+        id: "elso",
+        x: container.offsetLeft,
+        y: container.offsetTop,
+    },
+    "masodik": {
+        id: "masodik",
+        x: container.offsetLeft + 20,
+        y: container.offsetTop + 150,
+    },
+    "harmadik": {
+        id: "harmadik",
+        x: container.offsetLeft + 40,
+        y: container.offsetTop + 300,
+    }
+  },
+  draggedId: ""
+};
+
+window.onload = render;
+
+function render() {
+  let dobozokHTML = '';
+  for(let elem of Object.values(state.elemek)) {
+ 
+    dobozokHTML += `
+      <div
+        class="box ${state.draggedId === elem.id ? "grabbed" : "not-grabbed"}"
+        style="position: absolute; left: ${elem.x}px; top: ${elem.y}px;"
+        onmousedown="dobozDragStart(window.event)"
+        onmouseup="dobozDragEnd(window.event)"
+        onmousemove="dobozMouseMove(window.event)"
+        data-egyedi-azonosito="${elem.id}"
+      >
+        <div class="card-body">
+          <h5 class="card-title display-4">${elem.id}</h5>
+        </div>
+      </div> 
+    `;
+  }
+
+  document.getElementById("drag-and-drop-app").innerHTML = dobozokHTML;
+}
+
+function dobozDragStart(event) {
+  const box = event.target.closest(".box");
+  state.draggedId = box.dataset.egyediAzonosito;
+  render();
+}
+
+function dobozDragEnd() {
+  state.draggedId = null;
+  render();
+}
+
+function dobozMouseMove(event) {
+  if (!state.draggedId) {
+    return;
+  } 
+
+  const box = event.target.closest(".box");
+  if(!box) {
+    return;
+  } 
+ 
+  state.elemek[state.draggedId].x = document.documentElement.scrollLeft + event.clientX - box.offsetWidth / 2;
+  state.elemek[state.draggedId].y = document.documentElement.scrollTop + event.clientY - box.offsetHeight / 2;
+  render();
+  
+}
+
+]]>
+      </content>
+    </item>
+
+    <item>
+      <label>Kész</label>
+      
+      <title>Így elvégeztük a módosításokat és az app több dobozra is működik!</title>
+      <focus>58:75</focus>
+    </item>
+
+  </body>
+
+</root>

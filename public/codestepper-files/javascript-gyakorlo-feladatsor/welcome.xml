@@ -1,0 +1,21 @@
+<?xml version = "1.0"?>
+<root>
+  <meta>
+    <type>html</type>
+    <lg>12</lg>
+    <md>12</md>
+    <xs>12</xs>
+  </meta>
+
+  <body>
+    <h1 style="margin-bottom: 20px; text-align:center">Üdvözöllek a JavaScript gyakorló feladatsorban!</h1>
+    <h2 class="text-center" style="font-size: 2em">
+      <b>
+        Öt kihívás, feladatleírás, magyarázat és megoldás.
+      </b>
+    </h2>
+    <h3 class="text-center" style="font-size: 2em">
+      <b>A kezdéshez kattints az alábbi gombra!</b>
+    </h3>
+  </body>
+</root>

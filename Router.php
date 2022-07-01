@@ -42,6 +42,7 @@ class Router
         }
 
         $routes = [
+            CodeStepper::class,
             PublicSite::class,
         ];
 

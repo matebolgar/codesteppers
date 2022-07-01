@@ -1,6 +1,7 @@
 <section class="bg bg-aligned">
-	<h1 id="main-title" class="pt-3 text-center m-auto helvetica" style="letter-spacing: 0em">Programozás egyszerűen elmagyarázva.</h1>
-	{# <div id="slideshow">
+  <h1 id="main-title" class="pt-3 text-center m-auto helvetica bg-dark" style="letter-spacing: 0em">Embeddable presentation for schools and teachers.
+  </h1>
+  {# <div id="slideshow">
 		<img src="/public/images/slideshow/stack.webp" class="slide active" width="600"/>
 		<img src="/public/images/slideshow/code.webp" class="slide" width="600"/>
 		<img src="/public/images/slideshow/yellow.webp" class="slide" width="600"/>
@@ -11,6 +12,39 @@
   <h1 class="p-3 lead text-center p-2 display-5">
     <b style="letter-spacing: -0.04em">Welcome to CodeSteppers</span>
   </h1>
-	{{ content | raw }}
-	{% include 'home-links.twig' %}
+
+  <div class="m-2">
+    {% for row in codeSteppers %}
+      <div class="row m-0">
+        {% for codeStepper in row %}
+          <div class="col-md-3 mb-2">
+
+            <a href="edit/{{codeStepper.slug}}">
+              <div class="card p-2 w-100 overlay-container scroller-item hover11 list-group shadow">
+                <div>
+                  {{codeStepper.title}}
+                </div>
+              </div>
+            </a>
+
+          </div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+
+
+  {# <div class="content-body" style="min-height: 780px; background-color: #fefefe">
+    <div class="code-stepper-editor" data-schema-url="/public/codestepper-files/javascript-gyakorlo-feladatsor">
+      Betöltés...
+    </div>
+  </div>
+
+  <div class="content-body" style="min-height: 780px; background-color: #fefefe">
+
+    <div class="code-stepper-editor" data-schema-url="/public/codestepper-files/625c478352fb6">
+      Betöltés...
+    </div>
+  </div> #}
+
 </section>

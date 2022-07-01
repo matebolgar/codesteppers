@@ -125,6 +125,7 @@ body {
   color: #333;
   line-height: 1.4;
   font-size: 14px;
+  background-color: rgb(0 0 0 / 10%) !important;
 }
 
 .helvetica {
@@ -135,7 +136,7 @@ html,
 body {
   /* color: #999; */
   background-repeat: repeat;
-  background-image: url(/public/images/circles-light.png);
+  /* background-image: url(/public/images/circles-light.png); */
   display: flex;
   flex-direction: column;
 }
@@ -156,9 +157,11 @@ body {
 }
 
 .content-body {
-  width: 1300px;
+  width: 100%;
   margin: 0 auto;
-  min-height: 90%;
+  min-height: 100%;
+  overflow-y: scroll;
+  background: transparent !important;
 }
 
 .kodseged-inline {
@@ -241,7 +244,7 @@ textarea {
 }
 
 .bg {
-  background: url(/public/images/main-bg-3.webp);
+  /* background: url(/public/images/main-bg-3.webp); */
   background-size: cover;
 }
 
@@ -341,7 +344,7 @@ textarea {
   bottom: 0;
   width: 100%;
   height: 9px;
-  background: url(../images/section-shadow.png) repeat-x;
+  /* background: url(../images/section-shadow.png) repeat-x; */
 }
 
 footer {
@@ -464,17 +467,6 @@ footer .right {
 }
 
 @font-face {
-  font-family: "Main-Regular";
-  font-display: block;
-  src: url("/public/fonts/main/09c8fb44d2c62d99647e4ce58736293e.eot");
-  src: url("/public/fonts/main/09c8fb44d2c62d99647e4ce58736293e.eot?#iefix") format("embedded-opentype"),
-    url("/public/fonts/main/09c8fb44d2c62d99647e4ce58736293e.woff2") format("woff2"),
-    url("/public/fonts/main/09c8fb44d2c62d99647e4ce58736293e.woff") format("woff"),
-    url("/public/fonts/main/09c8fb44d2c62d99647e4ce58736293e.ttf") format("truetype"),
-    url("/public/fonts/main/09c8fb44d2c62d99647e4ce58736293e.svg#Main-Regular") format("svg");
-}
-
-@font-face {
   font-family: "Din";
   font-display: block;
   src: url("/public/fonts/din-condensed/DINCondensed-Bold.ttf") format("woff");
@@ -565,9 +557,9 @@ p {
   background-size: cover;
 }
 
-.layer1 {
+/* .layer1 {
   background-image: url(/public/images/layered-waves-haikei.svg);
-}
+} */
 
 /* NAVBAR */
 .navbar-visible {
