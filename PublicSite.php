@@ -94,7 +94,7 @@ class PublicSite
         $id = $request->vars["subscriber"]->getId();
         $allCodeSteppers = (new CodestepperLister($conn))->list(Router::where('subscriberId', 'eq', $id));
         if ($allCodeSteppers->getCount()) {
-          header("Location: /edit/" + $allCodeSteppers->getEntities()[0]->getSlug());
+          header("Location: /edit/" . $allCodeSteppers->getEntities()[0]->getSlug());
         } else {
           $codeStepperId = CodeStepper::createSchemaForSubscriber($conn, $id);
           header("Location: /edit/$codeStepperId");
@@ -105,10 +105,10 @@ class PublicSite
 
       if (isset($_COOKIE["guestId"])) {
 
-        $allCodeSteppers = (new CodestepperLister($conn))->list(Router::where('subscriberId', 'eq', $_COOKIE["guestId"]));
+        $allCodeSteppers = (new CodestepperLister($conn))->list(Router::where('guestId', 'eq', $_COOKIE["guestId"]));
 
         if ($allCodeSteppers->getCount()) {
-          header("Location: /edit/" + $allCodeSteppers->getEntities()[0]->getSlug());
+          header("Location: /edit/" . $allCodeSteppers->getEntities()[0]->getSlug());
         } else {
           $codeStepperId = CodeStepper::createSchemaForGuest($conn, $_COOKIE["guestId"]);
           header("Location: /edit/$codeStepperId");
@@ -121,24 +121,44 @@ class PublicSite
         header("Location: /edit/$codeStepperId");
       }
 
-      return $id;
     });
 
     $r->get('/edit/{codeStepperSlug}', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
-      $id = $request->vars["subscriber"] ? $request->vars["subscriber"]->getId() : ($_COOKIE["guestId"] ?? "");
 
-      $codeSteppersBySlug = (new CodestepperLister($conn))->list(new Query(
-        15,
-        0,
-        new Filter(
-          "and",
-          new Clause("eq", "subscriberId", $id),
-          new Clause("eq", "slug", $request->vars['codeStepperSlug'] ?? ''),
+      $q = null;
+      $subscriberId = null;
+      $guestId = null;
+      if (isset($_COOKIE["guestId"])) {
+        $guestId = $_COOKIE["guestId"];
+        $q = new Query(
+          15,
+          0,
+          new Filter(
+            "and",
+            new Clause("eq", "guestId", $_COOKIE["guestId"]),
+            new Clause("eq", "slug", $request->vars['codeStepperSlug'] ?? ''),
 
-        ),
-        new OrderBy('createdAt', "desc"),
-        []
-      ));
+          ),
+          new OrderBy('createdAt', "desc"),
+          []
+        );
+      } else {
+        $subscriberId = $request->vars["subscriber"] ? $request->vars["subscriber"]->getId() : "";
+        $q = new Query(
+          15,
+          0,
+          new Filter(
+            "and",
+            new Clause("eq", "subscriberId", $subscriberId),
+            new Clause("eq", "slug", $request->vars['codeStepperSlug'] ?? ''),
+
+          ),
+          new OrderBy('createdAt', "desc"),
+          []
+        );
+      }
+
+      $codeSteppersBySlug = (new CodestepperLister($conn))->list($q);
 
       if (!$codeSteppersBySlug->getCount()) {
         header("Location: /edit");
@@ -146,7 +166,13 @@ class PublicSite
       }
 
 
-      $allCodeSteppers = (new CodestepperLister($conn))->list(Router::where('subscriberId', 'eq', $id));
+      $allCodeSteppers = null;
+      if ($subscriberId) {
+        $allCodeSteppers =  (new CodestepperLister($conn))->list(Router::where('subscriberId', 'eq', $subscriberId));
+      } else {
+        $allCodeSteppers = (new CodestepperLister($conn))->list(Router::where('guestId', 'eq', $guestId));
+      }
+
 
       header('Content-Type: text/html; charset=UTF-8');
       echo $twig->render('wrapper.twig', [

@@ -2,6 +2,7 @@
 
 namespace CodeSteppers;
 
+use CodeSteppers\Generated\Codestepper\Patch\PatchedCodestepper;
 use CodeSteppers\Generated\Codestepper\Save\NewCodestepper;
 use CodeSteppers\Generated\Codestepper\Update\UpdatedCodestepper;
 use Exception;
@@ -10,6 +11,7 @@ use mysqli;
 use Twig\Environment;
 use CodeSteppers\Generated\Repository\Codestepper\SqlSaver as CodestepperSaver;
 use CodeSteppers\Generated\Repository\Codestepper\SqlUpdater as CodestepperUpdater;
+use CodeSteppers\Generated\Repository\Codestepper\SqlPatcher as CodestepperPatcher;
 use CodeSteppers\Generated\Repository\Codestepper\SqlLister as CodestepperLister;
 use CodeSteppers\Generated\Repository\Codestepper\SqlDeleter as CodestepperDeleter;
 
@@ -18,22 +20,28 @@ class CodeStepper
   public static function getRoutes(Pipeline $r, mysqli $conn, Environment $twig)
   {
 
+    $initSubscriberSession = PublicSite::initSubscriberSession($conn);
 
     /*
     * Schema routes 
     */
 
     // Create CodeStepper
-    $r->post("/schema", function (Request $request) use ($conn, $twig) {
+    $r->post("/schema", $initSubscriberSession, function (Request $request) use ($conn, $twig) {
 
-      $id = $request->vars["subscriber"] ? $request->vars["subscriber"]->getId() : "";
+      $codeStepperId = "";
+      if ($request->vars["subscriber"]) {
+        $id =  $request->vars["subscriber"]->getId();
+        $codeStepperId = self::createSchemaForSubscriber($conn, $id);
+      } else {
+        $codeStepperId = CodeStepper::createSchemaForGuest($conn, $_COOKIE["guestId"]);
+      }
 
-      $codeStepperId = self::createSchemaForSubscriber($conn, $id);
-      header("Location: /edit/" . $codeStepperId);
+      header("Location: /edit/$codeStepperId");
     });
 
     // Delete CodeStepper
-    $r->post("/codestepper-delete/{slug}", function (Request $request) use ($conn, $twig) {
+    $r->post("/codestepper-delete/{slug}", $initSubscriberSession, function (Request $request) use ($conn, $twig) {
       header('Content-Type: application/json');
 
       $root = __DIR__ . "/public/codestepper-files/" . $request->vars['slug'];
@@ -45,10 +53,19 @@ class CodeStepper
         (new CodestepperDeleter($conn))->delete($id);
       }
 
-      $codeSteppers = (new CodestepperLister($conn))->list(Router::where('subscriberId', 'eq', 1));
+      $subscriberId = "";
+      $guestId = null;
+      $codeSteppers = [];
+      if ($request->vars["subscriber"]) {
+        $subscriberId = $request->vars["subscriber"]->getId();
+        $codeSteppers = (new CodestepperLister($conn))->list(Router::where('subscriberId', 'eq', $subscriberId))->getEntities();
+      } else {
+        $guestId = $_COOKIE["guestId"];
+        $codeSteppers = (new CodestepperLister($conn))->list(Router::where('guestId', 'eq', $guestId))->getEntities();
+      }
 
-      if ($codeSteppers->getCount()) {
-        $slug = $codeSteppers->getEntities()[count($codeSteppers->getEntities()) - 1]->getSlug();
+      if (count($codeSteppers)) {
+        $slug = $codeSteppers[0]->getSlug();
         header("Location: /edit/$slug");
         return;
       }
@@ -73,9 +90,9 @@ class CodeStepper
       if ($request->body["title"] !== $schema["title"]) {
         $codeSteppers = (new CodestepperLister($conn))->list(Router::where('slug', 'eq', $request->vars['slug']));
         if ($codeSteppers->getCount()) {
-          (new CodestepperUpdater($conn))->update(
+          (new CodestepperPatcher($conn))->patch(
             $codeSteppers->getEntities()[0]->getId(),
-            new UpdatedCodestepper($request->body["title"])
+            new PatchedCodestepper(null, null, $request->body["title"])
           );
         }
       }

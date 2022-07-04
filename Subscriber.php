@@ -2,6 +2,7 @@
 
 namespace CodeSteppers;
 
+use CodeSteppers\Generated\Listing\Query;
 use mysqli;
 use Twig\Environment;
 use CodeSteppers\Generated\Repository\Subscriber\SqlLister as SubscriberLister;
@@ -60,7 +61,7 @@ class Subscriber
       }
 
       $token = uniqid();
-      (new SubscriberSaver($conn))->Save(new NewSubscriber(
+      $newSubscriber = (new SubscriberSaver($conn))->Save(new NewSubscriber(
         $request->body['email'],
         password_hash($request->body['password'], PASSWORD_DEFAULT),
         0,
@@ -68,6 +69,14 @@ class Subscriber
         time(),
         0
       ));
+
+      if (isset($_COOKIE["guestId"])) {
+        $stmt = $conn->prepare("UPDATE `codesteppers` SET `subscriberId` = ? WHERE `codesteppers`.`guestId` = ?");
+        $subscriberId = $newSubscriber->getId();
+        $guestId = $_COOKIE["guestId"];
+        $stmt->bind_param("is", $subscriberId, $guestId);
+        $stmt->execute();
+      }
 
       $body = $twig->render('verification-email.twig', [
         'email' => $request->body['email'],
@@ -304,7 +313,13 @@ class Subscriber
       $params = [
         'loginSuccess=1',
       ];
-      header('Location: ' .  $requestUri . Router::mergeQueries($_SERVER['HTTP_REFERER'], $params));
+
+
+      if (isset($_COOKIE["guestId"])) {
+        setcookie("guestId", time() - 60 * 60 * 24);
+      }
+
+      header('Location: /edit' . Router::mergeQueries($_SERVER['HTTP_REFERER'], $params));
     });
   }
 }
