@@ -25,17 +25,18 @@ class SqlPatcher implements Patcher
           
           $stmt = $this->connection->prepare(
               'UPDATE `codesteppers` SET 
-                `slug` = ?, `title` = ?
+                `subscriberId` = ?, `guestId` = ?, `title` = ?
                 WHERE `id` = ?;'
           );
           
           call_user_func(function (...$params) use ($stmt) {
                 $stmt->bind_param(
-                    "sss",
+                    "isss",
                     ...$params
                 );
             },
-                $merged->getSlug(),
+                $merged->getSubscriberId(),
+        $merged->getGuestId(),
         $merged->getTitle(), $id);
           
           
@@ -45,7 +46,7 @@ class SqlPatcher implements Patcher
               throw new OperationError($stmt->error);
           }
           
-          return new Codestepper($id, $merged->getSlug(),$byId->getSubscriberId(),$merged->getTitle(),$byId->getCreatedAt());
+          return new Codestepper($id, $byId->getSlug(),$merged->getSubscriberId(),$merged->getGuestId(),$merged->getTitle(),$byId->getCreatedAt());
       
       } catch (\Error $exception) {
             if ($_SERVER['DEPLOYMENT_ENV'] === 'dev') {
@@ -65,7 +66,7 @@ class SqlPatcher implements Patcher
     private function merge(Codestepper $prev, PatchedCodestepper $patched): PatchedCodestepper
     {
         return new PatchedCodestepper(
-            $patched->getSlug() !== null ? $patched->getSlug() : $prev->getSlug(), $patched->getTitle() !== null ? $patched->getTitle() : $prev->getTitle()
+            $patched->getSubscriberId() !== null ? $patched->getSubscriberId() : $prev->getSubscriberId(), $patched->getGuestId() !== null ? $patched->getGuestId() : $prev->getGuestId(), $patched->getTitle() !== null ? $patched->getTitle() : $prev->getTitle()
         );
     }
 }

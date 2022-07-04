@@ -112,7 +112,7 @@ class SqlLister implements Lister
     
             return new CountedCodesteppers(
                 array_map(function ($array) {
-                    return new Codestepper((int)$array['id'], (string)$array['slug'], (int)$array['subscriberId'], (string)$array['title'], (int)$array['createdAt']);
+                    return new Codestepper((int)$array['id'], (string)$array['slug'], (int)$array['subscriberId'], (string)$array['guestId'], (string)$array['title'], (int)$array['createdAt']);
                 }, $results),
                 $count
             );

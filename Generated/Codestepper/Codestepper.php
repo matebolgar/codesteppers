@@ -9,16 +9,18 @@ class Codestepper implements JsonSerializable
     private $id;
 private $slug;
 private $subscriberId;
+private $guestId;
 private $title;
 private $createdAt;
 
 
     
-public function __construct($id, $slug, $subscriberId, $title, $createdAt)
+public function __construct($id, $slug, $subscriberId, $guestId, $title, $createdAt)
 {
         $this->id = $id;
 $this->slug = $slug;
 $this->subscriberId = $subscriberId;
+$this->guestId = $guestId;
 $this->title = $title;
 $this->createdAt = $createdAt;
 
@@ -36,6 +38,10 @@ $this->createdAt = $createdAt;
     {
         return $this->subscriberId;
     }
+    public function getGuestId(): ?string
+    {
+        return $this->guestId;
+    }
     public function getTitle(): ?string
     {
         return $this->title;
@@ -52,6 +58,7 @@ $this->createdAt = $createdAt;
             'id' => $this->id,
  'slug' => $this->slug,
  'subscriberId' => $this->subscriberId,
+ 'guestId' => $this->guestId,
  'title' => $this->title,
  'createdAt' => $this->createdAt,
 

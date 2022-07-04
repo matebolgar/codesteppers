@@ -2,114 +2,59 @@
 
 namespace CodeSteppers;
 
+use CodeSteppers\Generated\Codestepper\Save\NewCodestepper;
+use CodeSteppers\Generated\Codestepper\Update\UpdatedCodestepper;
 use Exception;
 use CodeSteppers\Generated\Request;
 use mysqli;
 use Twig\Environment;
+use CodeSteppers\Generated\Repository\Codestepper\SqlSaver as CodestepperSaver;
+use CodeSteppers\Generated\Repository\Codestepper\SqlUpdater as CodestepperUpdater;
+use CodeSteppers\Generated\Repository\Codestepper\SqlLister as CodestepperLister;
+use CodeSteppers\Generated\Repository\Codestepper\SqlDeleter as CodestepperDeleter;
 
 class CodeStepper
 {
   public static function getRoutes(Pipeline $r, mysqli $conn, Environment $twig)
   {
 
-    /*
-         * Admin routes 
-        */
-
-    $r->get(
-      '/admin/codesteppers',
-      [Auth::class, 'validate'],
-      function (Request $request) use ($conn, $twig) {
-        $path = __DIR__ . "/public/codestepper-files/";
-        $dir = array_filter(scandir($path), fn ($item) => $item !== "." && $item !== "..");
-        $entities = array_map(fn ($item) => ["id" => $item], $dir);
-
-
-        $rendered = "";
-        foreach (array_slice($entities, $_GET["offset"] ?? 0, $_GET["limit"] ?? 10) as $entity) {
-          if ($entity["id"] === ".DS_Store") {
-            continue;
-          }
-          $rendered .= $twig->render('codestepper-editor-admin.twig', [
-            'isDev' => true,
-            'init' => isset($_GET['ep']) ? $_GET['ep'] : -1,
-            'url' => Router::siteUrl() . parse_url(Router::siteUrl() . $_SERVER['REQUEST_URI'])['path'],
-            'version' => uniqid(),
-            'userIdentifier' => $entity["id"],
-          ]);
-        }
-
-
-
-
-        header("Content-Type: text/html");
-        $twig->display('dashboard.twig', [
-          'entities' => $entities,
-          'mainLabel' => 'CodeSteppers',
-          'innerTemplate' => $rendered,
-          'activePath' => '/admin/codesteppers',
-          'path' => $request->path,
-          'query' => $request->query,
-          'pagination' => Router::getPagination($request, count($entities)),
-          'actions' => Router::getActions('codesteppers', ['read']),
-          'columns' => [
-            ['label' => '#', 'key' => 'id'],
-          ],
-          'styles' => [
-            ['path' => 'css/promo.css'],
-            ['path' => 'css/episode-single.css'],
-            ...Embeddables::getCodestepperEditorStyles(),
-          ],
-          'scripts' => [
-            ...Embeddables::getCodestepperEditorScripts(),
-          ],
-        ]);
-      }
-    );
-
-    $r->get(
-      '/admin/codesteppers/megtekintes/{id}',
-      [Auth::class, 'validate'],
-      function (Request $request) use ($conn, $twig) {
-        header("Content-Type: text/html");
-        echo $twig->render('wrapper.twig', [
-          'subscriberLabel' =>  getNick($request->vars),
-          'title' => "CodeStepper szerkesztő",
-          'description' => "Interaktív feladatsorok és megoldások létrehozására!",
-          'metaDescription' => "Interaktív feladatsorok és megoldások létrehozására!",
-          'content' => $twig->render('codestepper-editor.twig', [
-            'isDev' => isset($_GET['dev']),
-            'init' => isset($_GET['ep']) ? $_GET['ep'] : -1,
-            'url' => Router::siteUrl() . parse_url(Router::siteUrl() . $_SERVER['REQUEST_URI'])['path'],
-            'version' => uniqid(),
-            'userIdentifier' => $request->vars["id"],
-          ]),
-          'styles' => [
-            ['path' => 'css/promo.css'],
-            ['path' => 'css/episode-single.css'],
-            ...Embeddables::getCodestepperEditorStyles(),
-          ],
-          'scripts' => [
-            ...Embeddables::getCodestepperEditorScripts(),
-          ],
-        ]);
-      }
-    );
-
-    $r->post(
-      '/admin/delete-codestepper/{id}',
-      [Auth::class, 'validate'],
-      function (Request $request) use ($conn, $twig) {
-        $path = __DIR__ . "/public/codestepper-files/" . $request->vars['id'];
-        self::deleteDir($path);
-        header("Location:" . $_SERVER["HTTP_REFERER"]);
-      }
-    );
-
 
     /*
-         * Schema routes 
-        */
+    * Schema routes 
+    */
+
+    // Create CodeStepper
+    $r->post("/schema", function (Request $request) use ($conn, $twig) {
+
+      $id = $request->vars["subscriber"] ? $request->vars["subscriber"]->getId() : "";
+
+      $codeStepperId = self::createSchemaForSubscriber($conn, $id);
+      header("Location: /edit/" . $codeStepperId);
+    });
+
+    // Delete CodeStepper
+    $r->post("/codestepper-delete/{slug}", function (Request $request) use ($conn, $twig) {
+      header('Content-Type: application/json');
+
+      $root = __DIR__ . "/public/codestepper-files/" . $request->vars['slug'];
+      self::deleteDir($root);
+
+      $codeSteppers = (new CodestepperLister($conn))->list(Router::where('slug', 'eq', $request->vars['slug']));
+      if ($codeSteppers->getCount()) {
+        $id = $codeSteppers->getEntities()[0]->getId();
+        (new CodestepperDeleter($conn))->delete($id);
+      }
+
+      $codeSteppers = (new CodestepperLister($conn))->list(Router::where('subscriberId', 'eq', 1));
+
+      if ($codeSteppers->getCount()) {
+        $slug = $codeSteppers->getEntities()[count($codeSteppers->getEntities()) - 1]->getSlug();
+        header("Location: /edit/$slug");
+        return;
+      }
+
+      header("Location: /");
+    });
 
     // update project
     $r->put("/schema/{slug}", function (Request $request) use ($conn, $twig) {
@@ -124,6 +69,16 @@ class CodeStepper
 
       $primary = $isHexColor($request->body["primaryColor"]) ? $request->body["primaryColor"] : $schema["primaryColor"];
       $secondary = $isHexColor($request->body["secondaryColor"]) ? $request->body["secondaryColor"] : $schema["secondaryColor"];
+
+      if ($request->body["title"] !== $schema["title"]) {
+        $codeSteppers = (new CodestepperLister($conn))->list(Router::where('slug', 'eq', $request->vars['slug']));
+        if ($codeSteppers->getCount()) {
+          (new CodestepperUpdater($conn))->update(
+            $codeSteppers->getEntities()[0]->getId(),
+            new UpdatedCodestepper($request->body["title"])
+          );
+        }
+      }
 
       $schema["title"] = $request->body["title"] ?? $schema["title"];
       $schema["logoUrl"] = $request->body["logoUrl"] ?? $schema["logoUrl"];
@@ -238,7 +193,12 @@ class CodeStepper
       }
 
       $newModule = self::getInitialModuleContent($request->body['type']);
-      @file_put_contents(
+
+      if (!is_dir($root . "/" . $request->vars['partSlug'])) {
+        mkdir($root . "/" . $request->vars['partSlug']);
+      }
+
+      file_put_contents(
         $root . "/" . $request->vars['partSlug'] . "/" . $newModule['id'] . ".json",
         json_encode($newModule, JSON_UNESCAPED_UNICODE)
       );
@@ -247,7 +207,7 @@ class CodeStepper
       $schema["parts"][$partIndex]["modulePaths"] = array_merge($prev, [$newModule['id'] . ".json"]);
 
       $res = json_encode($schema, JSON_UNESCAPED_UNICODE);
-      @file_put_contents($schemaPath, $res);
+      file_put_contents($schemaPath, $res);
       echo $res;
     });
 
@@ -365,22 +325,115 @@ class CodeStepper
       @file_put_contents($path, $res);
       echo $res;
     });
+
+    /*
+         * Admin routes 
+        */
+
+    $r->get(
+      '/admin/codesteppers',
+      [Auth::class, 'validate'],
+      function (Request $request) use ($conn, $twig) {
+        $path = __DIR__ . "/public/codestepper-files/";
+        $dir = array_filter(scandir($path), fn ($item) => $item !== "." && $item !== "..");
+        $entities = array_map(fn ($item) => ["id" => $item], $dir);
+
+
+        $rendered = "";
+        foreach (array_slice($entities, $_GET["offset"] ?? 0, $_GET["limit"] ?? 10) as $entity) {
+          if ($entity["id"] === ".DS_Store") {
+            continue;
+          }
+          $rendered .= $twig->render('codestepper-editor-admin.twig', [
+            'isDev' => true,
+            'init' => isset($_GET['ep']) ? $_GET['ep'] : -1,
+            'url' => Router::siteUrl() . parse_url(Router::siteUrl() . $_SERVER['REQUEST_URI'])['path'],
+            'version' => uniqid(),
+            'userIdentifier' => $entity["id"],
+          ]);
+        }
+
+
+
+
+        header("Content-Type: text/html");
+        $twig->display('dashboard.twig', [
+          'entities' => $entities,
+          'mainLabel' => 'CodeSteppers',
+          'innerTemplate' => $rendered,
+          'activePath' => '/admin/codesteppers',
+          'path' => $request->path,
+          'query' => $request->query,
+          'pagination' => Router::getPagination($request, count($entities)),
+          'actions' => Router::getActions('codesteppers', ['read']),
+          'columns' => [
+            ['label' => '#', 'key' => 'id'],
+          ],
+          'styles' => [
+            ['path' => 'css/promo.css'],
+            ['path' => 'css/episode-single.css'],
+            ...Embeddables::getCodestepperEditorStyles(),
+          ],
+          'scripts' => [
+            ...Embeddables::getCodestepperEditorScripts(),
+          ],
+        ]);
+      }
+    );
+
+    $r->get(
+      '/admin/codesteppers/megtekintes/{id}',
+      [Auth::class, 'validate'],
+      function (Request $request) use ($conn, $twig) {
+        header("Content-Type: text/html");
+        echo $twig->render('wrapper.twig', [
+          'subscriberLabel' =>  getNick($request->vars),
+          'title' => "CodeStepper szerkesztő",
+          'description' => "Interaktív feladatsorok és megoldások létrehozására!",
+          'metaDescription' => "Interaktív feladatsorok és megoldások létrehozására!",
+          'content' => $twig->render('codestepper-editor.twig', [
+            'isDev' => isset($_GET['dev']),
+            'init' => isset($_GET['ep']) ? $_GET['ep'] : -1,
+            'url' => Router::siteUrl() . parse_url(Router::siteUrl() . $_SERVER['REQUEST_URI'])['path'],
+            'version' => uniqid(),
+            'userIdentifier' => $request->vars["id"],
+          ]),
+          'styles' => [
+            ['path' => 'css/promo.css'],
+            ['path' => 'css/episode-single.css'],
+            ...Embeddables::getCodestepperEditorStyles(),
+          ],
+          'scripts' => [
+            ...Embeddables::getCodestepperEditorScripts(),
+          ],
+        ]);
+      }
+    );
+
+    $r->post(
+      '/admin/delete-codestepper/{id}',
+      [Auth::class, 'validate'],
+      function (Request $request) use ($conn, $twig) {
+        $path = __DIR__ . "/public/codestepper-files/" . $request->vars['id'];
+        self::deleteDir($path);
+        header("Location:" . $_SERVER["HTTP_REFERER"]);
+      }
+    );
   }
   public static function getInitialProject($projectId, $partId)
   {
 
     return [
       "id" => $projectId,
-      "slug" => "Új projekt",
-      "title" => "OKKKKK",
+      "slug" => $projectId,
+      "title" => "",
       "logoUrl" => "",
-      "primaryColor" => "#827717",
-      "secondaryColor" => "#172282",
+      "primaryColor" => "#008080",
       "isDrawerOpenByDefault" => false,
       "parts" => [
         [
           "slug" => $partId,
-          "title" => "Feladat címe",
+          "title" => "First part",
           "layout" => "cr-4",
           "modulePaths" => [],
         ],
@@ -388,8 +441,39 @@ class CodeStepper
     ];
   }
 
+  public static function createSchemaForSubscriber($conn, $subscriberId)
+  {
+    $codeStepperId = uniqid();
+    $partId = uniqid();
 
+    $root = __DIR__ . "/public/codestepper-files/" . $codeStepperId;
+    $schemaPath = $root . "/schema.json";
 
+    mkdir($root);
+
+    $init = self::getInitialProject($codeStepperId, $partId);
+    file_put_contents($schemaPath, json_encode($init, JSON_UNESCAPED_UNICODE));
+
+    (new CodestepperSaver($conn))->Save(new NewCodestepper($codeStepperId, $subscriberId, null, "New CodeStepper", time()));
+    return $codeStepperId;
+  }
+
+  public static function createSchemaForGuest($conn, $guestId)
+  {
+    $codeStepperId = uniqid();
+    $partId = uniqid();
+
+    $root = __DIR__ . "/public/codestepper-files/" . $codeStepperId;
+    $schemaPath = $root . "/schema.json";
+
+    mkdir($root);
+
+    $init = self::getInitialProject($codeStepperId, $partId);
+    file_put_contents($schemaPath, json_encode($init, JSON_UNESCAPED_UNICODE));
+
+    (new CodestepperSaver($conn))->Save(new NewCodestepper($codeStepperId, null, $guestId, "New CodeStepper", time()));
+    return $codeStepperId;
+  }
 
   public static function getInitialModuleContent($type)
   {

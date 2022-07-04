@@ -13,7 +13,21 @@
     <b style="letter-spacing: -0.04em">Welcome to CodeSteppers</span>
   </h1>
 
-  <div class="m-2">
+  <h1 class="p-3 lead text-center p-2 display-5">
+    <b style="letter-spacing: -0.04em">Intro</span>
+  </h1>
+
+  <h1 class="p-3 lead text-center p-2 display-5">
+    <b style="letter-spacing: -0.04em">
+      <a href="/edit">
+        <button class="btn btn-primary">
+          Try it now
+        </button>
+      </a>
+    </span>
+  </h1>
+
+  {# <div class="m-2">
     {% for row in codeSteppers %}
       <div class="row m-0">
         {% for codeStepper in row %}
@@ -31,8 +45,13 @@
         {% endfor %}
       </div>
     {% endfor %}
-  </div>
 
+    <form action="/schema" method="POST">
+      <button type="submit" class="btn btn-success">
+        Add new
+      </button>
+    </form>
+  </div> #}
 
   {# <div class="content-body" style="min-height: 780px; background-color: #fefefe">
     <div class="code-stepper-editor" data-schema-url="/public/codestepper-files/javascript-gyakorlo-feladatsor">

@@ -8,15 +8,17 @@ class NewCodestepper implements JsonSerializable
 {
     private $slug;
 private $subscriberId;
+private $guestId;
 private $title;
 private $createdAt;
 
 
     
-public function __construct($slug, $subscriberId, $title, $createdAt)
+public function __construct($slug, $subscriberId, $guestId, $title, $createdAt)
 {
         $this->slug = $slug;
 $this->subscriberId = $subscriberId;
+$this->guestId = $guestId;
 $this->title = $title;
 $this->createdAt = $createdAt;
 
@@ -29,6 +31,10 @@ $this->createdAt = $createdAt;
     public function getSubscriberId(): ?int
     {
         return $this->subscriberId;
+    }
+    public function getGuestId(): ?string
+    {
+        return $this->guestId;
     }
     public function getTitle(): ?string
     {
@@ -45,6 +51,7 @@ $this->createdAt = $createdAt;
         return [
             'slug' => $this->slug,
  'subscriberId' => $this->subscriberId,
+ 'guestId' => $this->guestId,
  'title' => $this->title,
  'createdAt' => $this->createdAt,
 

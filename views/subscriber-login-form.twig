@@ -1,0 +1,69 @@
+<div class="_1PqEM">
+	<h2 class="sc-bdVaJa iPHfVO m-auto pb-2" format="dark">Bejelentkezés</h2>
+	<p class="sc-bdVaJa gqURud" format="dark">Nincs felhasználói fiókod?
+		<a href="{{registrationPath}}" class="_2uWfz _16h3z CtrL7">Csatlakozz</a>
+	</p>
+	{% if error == 'invalidCredentials' %}
+		<div class="alert alert-danger p-1 pe-2 ps-2 w-100">
+			<p style="font-size:14px">
+				Helytelen email vagy jelszó.
+			</p>
+		</div>
+	{% endif %}
+	{% if error == 'notVerified' %}
+		<div class="alert alert-danger p-1 pe-2 ps-2 w-100">
+			<p style="font-size:14px">
+				Kérjük erősítsd meg az email címed!
+			</p>
+		</div>
+	{% endif %}
+	{% if isPasswordModificationSuccess %}
+		<div class="alert alert-success p-1 pe-2 ps-2 w-100">
+			<p style="font-size:14px">
+				Jelszó módosítása sikeres! <i class="fa fa-check-circle"></i>
+			</p>
+		</div>
+	{% endif %}
+</div>
+<form class="_2bCMA p-3" method="post" action="/api/subscriber-login">
+	<div class="_30AVd ">
+		<div class="sc-gzVnrw geGmQK">
+			<div class="sc-dnqmqq djVjby">
+				<div class="sc-iwsKbI jFkMBx">
+					<div class="I9NYm _3z-_p db1GS">
+						<label class="_3Xmck _1Bymy" for="login_email">Email</label>
+						<input type="email" name="email" autocomplete="email" value="{{email}}" required="" maxlength="128" class="_2lU9f db1GS _1Bymy" id="login_email">
+					</div>
+				</div>
+				<div class=""><div class="sc-EHOje WoJQA" data-animation-wrapper="true" style="max-height: 0rem;">
+						<span class="_18vKK EDGQF sc-bdVaJa bhhGJv" format="dark" role="alert"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="_30AVd ">
+		<div class="sc-gzVnrw geGmQK">
+			<div class="sc-dnqmqq djVjby">
+				<div class="sc-iwsKbI jFkMBx">
+					<div class="I9NYm _3z-_p db1GS">
+						<label class="_3Xmck _1h-CP _1Bymy" for="login_password">Jelszó</label><input type="password" name="password" autocomplete="current-password" required="" class="_2lU9f db1GS _1h-CP _1Bymy" id="login_password">
+					</div>
+				</div>
+				<div class=""><div class="sc-EHOje WoJQA" data-animation-wrapper="true" style="max-height: 0rem;">
+						<span class="_18vKK EDGQF sc-bdVaJa bhhGJv" format="dark" role="alert"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<p class="sc-bdVaJa eUCqUO" format="alternative">
+		<a href="/elfelejtett-jelszo" class="_2uWfz CtrL7 sfhUC ignore_blur_on_click">Elfelejtetted a jelszavadat?</a>
+	</p>
+	<div>
+		<button class="_3jJ8O sc-htpNat fMQhWV" format="primary" id="login_signup_button" type="submit">
+			<span class="sc-bxivhb jrbrfM ms-3">Tovább</span>
+			<i class="fa fa-arrow-circle-right ms-2"></i>
+		</button>
+	</div>
+</form>

@@ -22,24 +22,25 @@ class SqlSaver implements Saver
         try {
             $statement = $this->connection->prepare(
                 "INSERT INTO `codesteppers` (
-                `id`, `slug`, `subscriberId`, `title`, `createdAt`
+                `id`, `slug`, `subscriberId`, `guestId`, `title`, `createdAt`
                 ) 
-                VALUES (NULL, ?,?,?,?);"
+                VALUES (NULL, ?,?,?,?,?);"
             );
     
             $slug = $new->getSlug();
         $subscriberId = $new->getSubscriberId();
+        $guestId = $new->getGuestId();
         $title = $new->getTitle();
         $createdAt = $new->getCreatedAt();
         
     
             $statement->bind_param(
-                "sisi",
-                 $slug, $subscriberId, $title, $createdAt        
+                "sissi",
+                 $slug, $subscriberId, $guestId, $title, $createdAt        
              );
             $statement->execute();
     
-            return new Codestepper((string)$statement->insert_id, $new->getSlug(),$new->getSubscriberId(),$new->getTitle(),$new->getCreatedAt());
+            return new Codestepper((string)$statement->insert_id, $new->getSlug(),$new->getSubscriberId(),$new->getGuestId(),$new->getTitle(),$new->getCreatedAt());
         } catch (\Error $exception) {
             if ($_SERVER['DEPLOYMENT_ENV'] === 'dev') {
                 var_dump($exception);

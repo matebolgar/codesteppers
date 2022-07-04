@@ -2,6 +2,10 @@
 
 namespace CodeSteppers;
 
+use CodeSteppers\Generated\Listing\Clause;
+use CodeSteppers\Generated\Listing\Filter;
+use CodeSteppers\Generated\Listing\OrderBy;
+use CodeSteppers\Generated\Listing\Query;
 use CodeSteppers\Generated\Request;
 use mysqli;
 use Twig\Environment;
@@ -15,21 +19,21 @@ class PublicSite
   public static function initSubscriberSession($conn)
   {
     return function (Request $request) use ($conn) {
-      // if (!isset($_COOKIE[session_name()])) {
-      //   return $request;
-      // }
+      $request->vars['subscriber'] = null;
+      if (!isset($_COOKIE[session_name()])) {
+        return $request;
+      }
 
-      // if (!isset($_SESSION)) {
-      //   session_start();
-      // }
+      if (!isset($_SESSION)) {
+        session_start();
+      }
 
-      // $subscriber = null;
-      // if (!isset($_SESSION['subscriberId'])) {
-      //   return $request;
-      // }
+      $subscriber = null;
+      if (!isset($_SESSION['subscriberId'])) {
+        return $request;
+      }
 
-      // $byId = (new SubscriberLister($conn))->list(Router::where('id', 'eq', $_SESSION['subscriberId']));
-      $byId = (new SubscriberLister($conn))->list(Router::where('id', 'eq', 1));
+      $byId = (new SubscriberLister($conn))->list(Router::where('id', 'eq', $_SESSION['subscriberId']));
       if (!$byId->getCount()) {
         return $request;
       }
@@ -43,7 +47,7 @@ class PublicSite
     };
   }
 
-  private static function organizationStructuredData()
+  public static function organizationStructuredData()
   {
     return json_encode([
       "@context" => "https://schema.org",
@@ -63,47 +67,10 @@ class PublicSite
     $r->get('/', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
 
 
-
-      $codeSteppers = (new CodestepperLister($conn))->list(Router::where('subscriberId', 'eq', 1));
-
       header('Content-Type: text/html; charset=UTF-8');
       echo $twig->render('wrapper.twig', [
         'content' => $twig->render('home.twig', [
-          'codeSteppers' => alignToRows($codeSteppers->getEntities(), 4),
-        ]),
-        'metaTitle' => 'CodeSteppers - Online interactive tool for schools and teachers',
-        'description' => 'CodeSteppers - Online interactive tool for schools and teachers',
-        'subscriberLabel' =>  getNick($request->vars),
-        'structuredData' => self::organizationStructuredData(),
-        'scripts' => [
-          ...getCodestepperEditorScripts(),
-          ...getCodestepperScripts(),
-        ],
-        'styles' => [
-          // ...getCodestepperEditorStyles(),
-          // ...getCodestepperStyles(),
-        ],
-      ]);
-    });
-
-    $r->get('/edit/{codeStepperSlug}', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
-
-      $codeSteppers = (new CodestepperLister($conn))->list(Router::where('slug', 'eq', $request->vars['codeStepperSlug']));
-
-      if(!$codeSteppers->getCount()) {
-        return;
-      }
-
-      $allCodeSteppers = (new CodestepperLister($conn))->list(Router::where('subscriberId', 'eq', 1));
-      // var_dump($codeSteppers);
-      // exit;
-
-      header('Content-Type: text/html; charset=UTF-8');
-      echo $twig->render('wrapper.twig', [
-        'content' => $twig->render('edit.twig', [
-          'codeStepper' =>  $codeSteppers->getEntities()[0],
-          'codeSteppers' => $allCodeSteppers->getEntities(),
-          'activeCodeStepperSlug' =>  $request->vars['codeStepperSlug'],
+          'codeSteppers' => [],
         ]),
         'metaTitle' => 'CodeSteppers - Online interactive tool for schools and teachers',
         'description' => 'CodeSteppers - Online interactive tool for schools and teachers',
@@ -120,10 +87,97 @@ class PublicSite
       ]);
     });
 
+    $r->get('/edit', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
 
-    $r->get('/test', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
+
+      if ($request->vars["subscriber"]) {
+        $id = $request->vars["subscriber"]->getId();
+        $allCodeSteppers = (new CodestepperLister($conn))->list(Router::where('subscriberId', 'eq', $id));
+        if ($allCodeSteppers->getCount()) {
+          header("Location: /edit/" + $allCodeSteppers->getEntities()[0]->getSlug());
+        } else {
+          $codeStepperId = CodeStepper::createSchemaForSubscriber($conn, $id);
+          header("Location: /edit/$codeStepperId");
+        }
+        return;
+      }
+
+
+      if (isset($_COOKIE["guestId"])) {
+
+        $allCodeSteppers = (new CodestepperLister($conn))->list(Router::where('subscriberId', 'eq', $_COOKIE["guestId"]));
+
+        if ($allCodeSteppers->getCount()) {
+          header("Location: /edit/" + $allCodeSteppers->getEntities()[0]->getSlug());
+        } else {
+          $codeStepperId = CodeStepper::createSchemaForGuest($conn, $_COOKIE["guestId"]);
+          header("Location: /edit/$codeStepperId");
+        }
+      } else {
+        $id = "guest-" . uniqid();
+        setcookie("guestId", $id, time() + 60 * 60 * 24);
+        $codeStepperId = CodeStepper::createSchemaForGuest($conn, $id);
+
+        header("Location: /edit/$codeStepperId");
+      }
+
+      return $id;
+    });
+
+    $r->get('/edit/{codeStepperSlug}', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
+      $id = $request->vars["subscriber"] ? $request->vars["subscriber"]->getId() : ($_COOKIE["guestId"] ?? "");
+
+      $codeSteppersBySlug = (new CodestepperLister($conn))->list(new Query(
+        15,
+        0,
+        new Filter(
+          "and",
+          new Clause("eq", "subscriberId", $id),
+          new Clause("eq", "slug", $request->vars['codeStepperSlug'] ?? ''),
+
+        ),
+        new OrderBy('createdAt', "desc"),
+        []
+      ));
+
+      if (!$codeSteppersBySlug->getCount()) {
+        header("Location: /edit");
+        return;
+      }
+
+
+      $allCodeSteppers = (new CodestepperLister($conn))->list(Router::where('subscriberId', 'eq', $id));
+
       header('Content-Type: text/html; charset=UTF-8');
-      echo $twig->render('test.html');
+      echo $twig->render('wrapper.twig', [
+        'content' => $twig->render('edit.twig', [
+          'codeStepper' =>  $codeSteppersBySlug->getCount() ? $codeSteppersBySlug->getEntities()[0] : '',
+          'codeSteppers' => $allCodeSteppers->getEntities(),
+          'codeStepperScripts' => json_encode(getCodestepperScripts()),
+          'codeStepperStyles' => json_encode(getCodestepperStyles()),
+          'siteUrl' => Router::siteUrl(),
+          'activeCodeStepperSlug' =>  $request->vars['codeStepperSlug'] ?? '',
+        ]),
+        'metaTitle' => 'CodeSteppers - Online interactive tool for schools and teachers',
+        'description' => 'CodeSteppers - Online interactive tool for schools and teachers',
+        'subscriberLabel' =>  getNick($request->vars),
+        'structuredData' => self::organizationStructuredData(),
+        'scripts' => [
+          [
+            "path" => "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js",
+            "isCdn" => true,
+          ],
+          ...getCodestepperEditorScripts(),
+          ...getCodestepperScripts(),
+          ["path" => "js/bootstrap.min.js"],
+          ["path" => "js/modal.js"],
+        ],
+        'styles' => [
+          ["path" => "css/dracula.css"],
+          ...getCodestepperEditorStyles(),
+          ...getCodestepperStyles(),
+        ],
+      ]);
     });
   }
 }
@@ -165,18 +219,19 @@ function getFileExtension($fileName)
   return $info['extension'] ?? '';
 }
 
-// function enqueueEmail($recipientEmail, $subject, $body, $conn)
-// {
-//     (new MessageSaver($conn))->Save(new NewMessage(
-//         $recipientEmail,
-//         $subject,
-//         $body,
-//         "notSent",
-//         0,
-//         null,
-//         time()
-//     ));
-// }
+function enqueueEmail($recipientEmail, $subject, $body, $conn)
+{
+  var_dump($recipientEmail, $subject, $body);
+  // (new MessageSaver($conn))->Save(new NewMessage(
+  //     $recipientEmail,
+  //     $subject,
+  //     $body,
+  //     "notSent",
+  //     0,
+  //     null,
+  //     time()
+  // ));
+}
 
 
 function getNick($vars)

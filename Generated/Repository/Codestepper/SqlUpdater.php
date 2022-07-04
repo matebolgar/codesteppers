@@ -24,20 +24,21 @@ class SqlUpdater implements Updater
           
           $stmt = $this->connection->prepare(
               'UPDATE `codesteppers` SET 
-                `slug` = ?, `title` = ?
+                `subscriberId` = ?, `guestId` = ?, `title` = ?
                 WHERE `id` = ?;'
           );
           
-          $slug= $entity->getSlug();
+          $subscriberId= $entity->getSubscriberId();
+        $guestId= $entity->getGuestId();
         $title= $entity->getTitle();
          
           $stmt->bind_param(
-              "sss",
-               $slug, $title, $id        
+              "isss",
+               $subscriberId, $guestId, $title, $id        
           );
           $stmt->execute();
           
-          return new Codestepper($id, $entity->getSlug(),$byId->getSubscriberId(),$entity->getTitle(),$byId->getCreatedAt());
+          return new Codestepper($id, $byId->getSlug(),$entity->getSubscriberId(),$entity->getGuestId(),$entity->getTitle(),$byId->getCreatedAt());
       
       } catch (\Error $exception) {
           if ($_SERVER['DEPLOYMENT_ENV'] === 'dev') {

@@ -1,0 +1,35 @@
+<div class="mb-3 content-body">
+	<div class="card">
+		{% if isLoggedIn %}
+			<div class="card-body w-100 p-0" id="hero-spot2">
+				<div class="card-title">
+					<h2 class="mb-4 mt-5 text-success display-5 text-center">
+						Bejelentkezve
+						<i class="fa fa-check-circle"></i>
+					</h2>
+				</div>
+			</div>
+
+      {{courses | raw}}
+			
+			{% include 'home-links.twig' %}
+
+		{% else %}
+			<div class="row m-0">
+				<div class="col-md-8 m-auto text-center">
+					<div class="card-body w-100 p-0" id="hero-spot2">
+						<h1 class="lead text-center p-2 display-5" style="letter-spacing: -0.04em">
+							<span>Jelentkezz be a Kódbázis felületére!</span>
+						</h1>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="p-3">
+						{% include 'subscriber-login-form.twig' with {'loginError': loginError, 'email': email, registrationPath: '/feliratkozas', 'isPasswordModificationSuccess': isPasswordModificationSuccess}  %}
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+
+</div></div>

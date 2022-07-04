@@ -6,21 +6,27 @@ use JsonSerializable;
 
 class PatchedCodestepper implements JsonSerializable
 {
-    private $slug;
+    private $subscriberId;
+private $guestId;
 private $title;
 
 
     
-public function __construct($slug, $title)
+public function __construct($subscriberId, $guestId, $title)
 {
-        $this->slug = $slug;
+        $this->subscriberId = $subscriberId;
+$this->guestId = $guestId;
 $this->title = $title;
 
 }
     
-    public function getSlug(): ?string
+    public function getSubscriberId(): ?int
     {
-        return $this->slug;
+        return $this->subscriberId;
+    }
+    public function getGuestId(): ?string
+    {
+        return $this->guestId;
     }
     public function getTitle(): ?string
     {
@@ -31,7 +37,8 @@ $this->title = $title;
     public function jsonSerialize()
     {
         return [
-            'slug' => $this->slug,
+            'subscriberId' => $this->subscriberId,
+ 'guestId' => $this->guestId,
  'title' => $this->title,
 
         ];

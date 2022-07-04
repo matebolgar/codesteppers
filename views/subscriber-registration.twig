@@ -1,0 +1,58 @@
+<div class="my-2 content-body">
+	<div class="card">
+		{% if isLoggedIn %}
+			<div class="card-body w-100 p-0" id="hero-spot2">
+				<div class="card-title">
+					{% if registrationSuccessful is defined and registrationSuccessful %}
+						<h1 class="mb-4 mt-5 text-success">
+							Regisztráció sikeres <i class="fa fa-check-circle"></i>
+						</h1>
+					{% endif %}
+				</div>
+
+			</div>
+			<div class="row">
+				<div class="row m-auto mb-4">
+					{% for item in courses %}
+						<div class="col-md-6">
+							<a href="{{item.course.slug}}">
+								<div class="card p-2 m-2 bg-muted" style="background-color: azure">
+									<img src="/public/files/md-{{item.course.imgUrl}}" class="w-100"/>
+									<button class="btn mt-2" format="primary" id="login_signup_button">
+										<span class="sc-bxivhb jrbrfM">
+											Tovább
+											<i class="fa fa-arrow-circle-right"></i>
+										</span>
+									</button>
+								</div>
+							</a>
+						</div>
+					{% endfor %}
+				</div>
+				{% include 'home-links.twig' %}
+			</div>
+		{% else %}
+			<div class="row m-0">
+				<div class="col-md-8 m-auto text-center">
+					<div class="card-body w-100 p-0" id="hero-spot2">
+						<h1 class="lead text-center p-2 display-5" style="letter-spacing: -0.04em">
+							<span>Légy tagja a Kódbázis közösségének!</span>
+						</h1>
+					</div>
+				</div>
+
+				<div class="col-md-4">
+					<div class="p-3">
+						{% include 'subscriber-registration-form.twig' with {
+									'registrationSuccessful': registrationSuccessful, 
+									'error': error, 
+									'loginPath': '/bejelentkezes', 
+									'registrationEmailSent' : registrationEmailSent,
+								}  %}
+					</div>
+				</div>
+			</div>
+		{% endif %}
+
+	</div>
+</div>

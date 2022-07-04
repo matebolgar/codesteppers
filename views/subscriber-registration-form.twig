@@ -1,0 +1,96 @@
+<h2 class="sc-bdVaJa iPHfVO m-auto pb-2 text-center" format="dark">Csatlakozz</h2>
+<p class="sc-bdVaJa gqURud text-center" format="dark">Van már felhasználói fiókod?
+	<a href="{{loginPath}}" class="_2uWfz _16h3z CtrL7">Jelentkezz be</a>
+</p>
+{% if registrationEmailSent %}
+	<div id="registrationEmailSent-alert" class="alert alert-success p-2 m-2">
+		<h2>
+			<span>Sikeres!
+				<i class="fa fa-check-circle"></i>
+			</span>
+		</h2>
+		<p style="font-size:14px">
+			A megadott email címre pár percen belül kiküldünk egy visszaigazoló üzenetet.
+			<br>
+			Kérjük kattints az üzenetben lévő megerősítés gombra!
+		</p>
+	</div>
+	<script>
+		const el = document.getElementById('registrationEmailSent-alert');
+let isLight = false
+setInterval(() => {
+el.style.background = isLight ? '#D4EDDA' : '#7ABE89';
+isLight = ! isLight
+}, 950);
+	</script>
+{% endif %}
+{% if registrationSuccessful is defined and registrationSuccessful %}
+	<div class="alert alert-success p-2 m-2">
+		<p style="font-size:14px">
+			Regisztráció sikeres!
+		</p>
+	</div>
+{% endif %}
+{% if error == 'emailTaken' %}
+	<div class="alert alert-danger p-2 m-2">
+		<p style="font-size:14px">
+			Ezzel az email címmel már létezik felhasználói fiók.
+		</p>
+	</div>
+{% endif %}
+{% if error == 'invalidEmail' %}
+	<div class="alert alert-danger p-2 m-2">
+		<p style="font-size:14px">
+			Hibás email cím.
+		</p>
+	</div>
+{% endif %}
+<form class="_2bCMA p-3" method="post" action="/api/request-membership">
+
+	<div class="sc-gzVnrw geGmQK">
+		<div class="sc-dnqmqq djVjby">
+			<div class="sc-iwsKbI jFkMBx">
+				<div class="I9NYm _3z-_p db1GS">
+					<label class="_3Xmck _1Bymy" for="login_email">Email</label>
+					<input type="email" name="email" value="{{email}}" required="" maxlength="128" class="_2lU9f db1GS _1Bymy" id="login_email">
+				</div>
+			</div>
+			<div class="">
+				<div class="sc-EHOje WoJQA" data-animation-wrapper="true" style="max-height: 0rem;">
+					<span class="_18vKK EDGQF sc-bdVaJa bhhGJv" format="dark" role="alert"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="sc-gzVnrw geGmQK">
+		<div class="sc-dnqmqq djVjby">
+			<div class="sc-iwsKbI jFkMBx">
+				<div class="I9NYm _3z-_p db1GS">
+					<label class="_3Xmck _1h-CP _1Bymy" for="login_password">Jelszó</label><input type="password" name="password" required="" class="_2lU9f db1GS _1h-CP _1Bymy" id="login_password">
+				</div>
+			</div>
+			<div class="">
+				<div class="sc-EHOje WoJQA" data-animation-wrapper="true" style="max-height: 0rem;">
+					<span class="_18vKK EDGQF sc-bdVaJa bhhGJv" format="dark" role="alert"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-check mb-2 text-sm p-1" style="font-size: 14px">
+		<label class="form-check-label">
+			<input class="me-1" required type="checkbox" name="privacy1" value="1"/>
+			Elolvastam az
+			<a href="/adatvedelmi-szabalyzat" target="_blank">adatvédelmi szabályzatot</a>
+			és hozzájárulok, hogy a kodbazis.hu adataimat kezelje.
+		</label>
+	</div>
+	<div>
+		<button class="_3jJ8O sc-htpNat fMQhWV" format="primary" id="login_signup_button" type="submit">
+			<span class="sc-bxivhb jrbrfM ms-3">Tovább</span>
+			<i class="fa fa-arrow-circle-right ms-2"></i>
+		</button>
+	</div>
+</form>

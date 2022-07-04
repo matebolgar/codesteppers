@@ -42,6 +42,7 @@ class Router
         }
 
         $routes = [
+            Subscriber::class,
             CodeStepper::class,
             PublicSite::class,
         ];
@@ -164,13 +165,13 @@ class Router
         return new Query($query['limit'] ?? 15, $query['from'] ?? 0, $filter, $orderBy, $columns);
     }
 
-    public static function where($key, $operator, $value): Query
+    public static function where($key, $operator, $value, $orderBy = "desc"): Query
     {
         return new Query(
             15,
             0,
             new Clause($operator ?? 'eq', $key ?? 1, $value ?? 1),
-            new OrderBy('createdAt', 'desc'),
+            new OrderBy('createdAt', $orderBy),
             []
         );
     }

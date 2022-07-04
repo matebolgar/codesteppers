@@ -65,7 +65,7 @@
         }
 
         try {
-          $toSave = new NewCodestepper((string)($entity['slug'] ?? ''), (int)($entity['subscriberId'] ?? 0), (string)($entity['title'] ?? ''), (int)($entity['createdAt'] ?? 0));
+          $toSave = new NewCodestepper((string)($entity['slug'] ?? ''), (int)($entity['subscriberId'] ?? 0), (string)($entity['guestId'] ?? ''), (string)($entity['title'] ?? ''), (int)($entity['createdAt'] ?? 0));
               return $this->saver->Save($toSave);
         } catch (Exception $err) {
                 $this->operationError->addField(Error::getOperationError());
@@ -85,6 +85,7 @@
         $validators = [
             'slug' => [$this, 'isString'],
             'subscriberId' => [$this, 'isInt'],
+            'guestId' => [$this, 'isString'],
             'title' => [$this, 'isString'],
             'createdAt' => [$this, 'isInt']
 

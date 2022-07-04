@@ -36,7 +36,7 @@
         public function update(array $entity, string $id): Codestepper
         {    
             try {
-                $toUpdate = new UpdatedCodestepper($entity['slug'] ?? '', $entity['title'] ?? '');
+                $toUpdate = new UpdatedCodestepper($entity['subscriberId'] ?? 0, $entity['guestId'] ?? '', $entity['title'] ?? '');
                
                 return $this->updater->update($id, $toUpdate);
             } catch (Exception $err) {

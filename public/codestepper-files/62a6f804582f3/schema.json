@@ -1,9 +1,0 @@
-{
-  "slug": "62a6f804582f3",
-  "title": "Készítő Neve",
-  "primaryColor": "#ffeb3b",
-  "secondaryColor": "#3b4fff",
-  "isDrawerOpenByDefault": false,
-  "parts": [{ "slug": "62a6fb52d459d", "title": "Feladat címe", "layout": "n-12", "modulePaths": ["62a6fb52d4590.json"] }],
-  "createdAt": 1655110482
-}

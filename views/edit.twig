@@ -1,6 +1,6 @@
+<div id="modal-container" data-schema-url="/public/codestepper-files/{{codeStepper.slug}}" data-code-stepper-scripts="{{codeStepperScripts}}" data-code-stepper-styles="{{codeStepperStyles}}" data-site-url="{{siteUrl}}"></div>
 <main class="main-content">
   <h1 class="visually-hidden">Sidebars examples</h1>
-
   <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
       <svg class="bi me-2" width="40" height="32">
@@ -51,17 +51,34 @@
 
       <hr>
 
+      <li class="text-center">
+        {# /public/codestepper-files/{{codeStepper.slug}} #}
+        <form action="/schema" method="POST">
+          <button type="submit" class="btn btn-success w-100">
+            Add new
+            <i class="fa fa-plus"></i>
+          </button>
+        </form>
+      </li>
+
       {% for codeStepper in codeSteppers %}
-        <li>
-          <a href="/edit/{{codeStepper.slug}}" class="nav-link text-white {{codeStepper.slug == activeCodeStepperSlug ? 'active' : ''}}">
-            {{codeStepper.title}}
-          </a>
+        <li class="m-2">
+          <div class="row">
+            <a href="/edit/{{codeStepper.slug}}" class="nav-link text-white w-75 d-inline-block {{codeStepper.slug == activeCodeStepperSlug ? 'active' : ''}}">
+              {{codeStepper.title}}
+            </a>
+            <form action="/codestepper-delete/{{codeStepper.slug}}" method="POST" class="w-25 d-inline-block">
+              <button type="submit" class="btn btn-danger">
+                <i class="fa fa-trash"></i>
+              </button>
+            </form>
+          </div>
         </li>
       {% endfor %}
 
       <li class="text-center">
-        /public/codestepper-files/{{codeStepper.slug}}
-        <button class="btn btn-outline-danger">
+        {# /public/codestepper-files/{{codeStepper.slug}} #}
+        <button id="open-website-links-modal" class="btn btn-outline-danger">
           Add to website
         </button>
       </li>
@@ -91,11 +108,17 @@
     </div>
   </div>
 
-  {# <div class="b-example-divider"></div> #}
+  <div class="b-example-divider"></div>
 
-  <div class="content-body">
-    <div style="transform: scale(0.92); min-height: 700px" class="code-stepper-editor bg-white" data-schema-url="/public/codestepper-files/{{codeStepper.slug}}">
-      Betöltés...
+  {% if codeStepper.slug is not empty %}
+    <div class="content-body">
+      <div style="min-height: 700px" class="code-stepper-editor m-2" data-schema-url="/public/codestepper-files/{{codeStepper.slug}}" data-is-dev="1">
+        Betöltés...
+      </div>
     </div>
-  </div>
+  {% else %}
+    <div class="w-100 rounded border m-3" style="height: calc(100vh - 150px)">
+    </div>
+  {% endif %}
+
 </main>

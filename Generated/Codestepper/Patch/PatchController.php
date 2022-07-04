@@ -35,7 +35,7 @@
         public function patch(array $entity, string $id): Codestepper
         {
             try {
-                @$toPatch = new PatchedCodestepper($entity['slug'] ?? null, $entity['title'] ?? null);
+                @$toPatch = new PatchedCodestepper($entity['subscriberId'] ?? null, $entity['guestId'] ?? null, $entity['title'] ?? null);
                 return $this->patcher->patch($id, $toPatch);
             } catch (Exception $err) {
                 $this->operationError->addField(Error::getOperationError());
