@@ -157,7 +157,6 @@ body {
   margin: 0 auto;
   min-height: 100%;
   overflow-y: scroll;
-  background: transparent !important;
 }
 
 .kodseged-inline {
@@ -181,11 +180,6 @@ body {
 @media screen and (max-width: 1300px) {
   .wrapper {
     width: 90%;
-  }
-
-  .content-body {
-    width: 100%;
-    margin: auto;
   }
 }
 
@@ -516,6 +510,13 @@ footer .right {
   -moz-osx-font-smoothing: grayscale;
 }
 
+#main-navbar-toggler {
+     background-image: linear-gradient(to right, rgb(255 199 63) 0%, rgb(253 52 89) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: rgb(0 0 0 / 0%);
+    color: rgb(0 0 0 / 0%);
+}
+
 @media screen and (max-width: 670px) {
   .main-brand {
     font-size: 0.5em;
@@ -645,7 +646,6 @@ b {
 body {
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
-  color: rgba(0, 0, 0, 0.87);
   margin: 0;
   font-size: 0.9rem !important;
   line-height: 1.4 !important;

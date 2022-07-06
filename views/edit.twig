@@ -48,13 +48,13 @@
   <div class="b-example-divider"></div>
 
   {% if codeStepper.slug is not empty %}
-    <div class="content-body">
-      <div style="min-height: 700px" class="code-stepper-editor m-2" data-schema-url="/public/codestepper-files/{{codeStepper.slug}}" data-is-dev="1">
-        Betöltés...
-      </div>
+
+    <div style="min-height: 700px" class="code-stepper-editor" data-schema-url="/public/codestepper-files/{{codeStepper.slug}}" data-is-dev="1">
+      Betöltés...
     </div>
+
   {% else %}
     <div class="w-100 rounded border m-3" style="height: calc(100vh - 150px)"></div>
   {% endif %}
-<div id="modal123-container" data-code-stepper-scripts="{{codeStepperScripts}}" data-code-stepper-styles="{{codeStepperStyles}}" data-site-url="{{siteUrl}}"></div>
+  <div id="modal123-container" data-code-stepper-scripts="{{codeStepperScripts}}" data-code-stepper-styles="{{codeStepperStyles}}" data-site-url="{{siteUrl}}"></div>
 </main>
