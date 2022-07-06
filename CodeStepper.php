@@ -286,6 +286,7 @@ class CodeStepper
       $code = json_decode($content, true);
       $stepIndex = (int)$request->vars['index'];
 
+      // Add CodeSurfer step
       $newStep = [
         "fileName" => $code["steps"][$stepIndex]["fileName"] ?? "",
         "showNumbers" => true,
@@ -300,7 +301,45 @@ class CodeStepper
 
       $res = json_encode($code, JSON_UNESCAPED_UNICODE);
       @file_put_contents($path, $res);
-      echo $res;
+
+      // Modify HTMLArray start and end values
+      $htmlArray = [];
+      if (isset($request->body["htmlArrayModuleId"])) {
+        $htmlArrayPath = __DIR__ . "/public/codestepper-files/" . $request->vars['slug'] . "/" . $request->vars["partSlug"] . "/" . $request->body["htmlArrayModuleId"] . ".json";
+        $content = file_get_contents($htmlArrayPath);
+        $htmlArray = json_decode($content, true);
+
+
+        $htmlArray["items"] = array_map(function ($item) use ($stepIndex) {
+          // Ha start end között van az új index -> Csak endet kell növelni
+          if ($stepIndex >= $item["start"] && $stepIndex < $item["end"]) {
+            $item["end"] += 1;
+            return $item;
+          }
+
+          if ($stepIndex === $item["start"] && $stepIndex === $item["end"]) {
+            $item["end"] += 1;
+            return $item;
+          }
+
+          if ($stepIndex < $item["start"] && $stepIndex < $item["end"]) {
+            $item["end"] += 1;
+            $item["start"] += 1;
+            return $item;
+          }
+
+          return $item;
+        }, $htmlArray["items"]);
+
+
+        $refreshedHtmlArray = json_encode($htmlArray, JSON_UNESCAPED_UNICODE);
+        @file_put_contents($htmlArrayPath, $refreshedHtmlArray);
+      }
+
+      echo json_encode([
+        'codeSurfer' => $code,
+        'htmlArray' => $htmlArray,
+      ], JSON_UNESCAPED_UNICODE);
     });
 
     // update codesurfer step
@@ -340,7 +379,46 @@ class CodeStepper
 
       $res = json_encode($code, JSON_UNESCAPED_UNICODE);
       @file_put_contents($path, $res);
-      echo $res;
+
+      // Modify HTMLArray start and end values
+      $htmlArray = [];
+      if (isset($request->body["htmlArrayModuleId"])) {
+        $htmlArrayPath = __DIR__ . "/public/codestepper-files/" . $request->vars['slug'] . "/" . $request->vars["partSlug"] . "/" . $request->body["htmlArrayModuleId"] . ".json";
+        $content = file_get_contents($htmlArrayPath);
+        $htmlArray = json_decode($content, true);
+
+
+        $htmlArray["items"] = array_map(function ($item) use ($stepIndex) {
+          // Ha start end között van az új index -> Csak endet kell növelni
+          if ($stepIndex >= $item["start"] && $stepIndex <= $item["end"]) {
+            $item["end"] -= 1;
+            return $item;
+          }
+
+          if ($stepIndex === $item["start"] && $stepIndex === $item["end"]) {
+            $item["end"] -= 1;
+            return $item;
+          }
+
+          if ($stepIndex < $item["start"] && $stepIndex < $item["end"]) {
+            $item["end"] -= 1;
+            $item["start"] -= 1;
+            return $item;
+          }
+
+          return $item;
+        }, $htmlArray["items"]);
+
+
+        $refreshedHtmlArray = json_encode($htmlArray, JSON_UNESCAPED_UNICODE);
+        @file_put_contents($htmlArrayPath, $refreshedHtmlArray);
+      }
+
+
+      echo json_encode([
+        'codeSurfer' => $code,
+        'htmlArray' => $htmlArray,
+      ], JSON_UNESCAPED_UNICODE);
     });
 
     /*
