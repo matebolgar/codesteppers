@@ -158,7 +158,7 @@ class Subscriber
         header('Location: /elfelejtett-jelszo?isError=1');
         return;
       }
-      header('Location: /elfelejtett-jelszo?emailSent=1');
+      // header('Location: /elfelejtett-jelszo?emailSent=1');
 
       $subscriber = $byEmail->getEntities()[0];
       $token = uniqid();
@@ -268,7 +268,7 @@ class Subscriber
       session_destroy();
 
       $requestUri = parse_url($_SERVER['HTTP_REFERER'])['path'];
-      header('Location: ' . $requestUri);
+      header('Location: /');
     });
 
     $r->post('/api/subscriber-login', function (Request $request) use ($conn, $twig) {
@@ -316,7 +316,8 @@ class Subscriber
 
 
       if (isset($_COOKIE["guestId"])) {
-        setcookie("guestId", time() - 60 * 60 * 24);
+        $cookieParams = session_get_cookie_params();
+        setcookie("guestId", '', 0, $cookieParams['path'], $cookieParams['domain'], $cookieParams['secure'], isset($cookieParams['httponly']));
       }
 
       header('Location: /edit' . Router::mergeQueries($_SERVER['HTTP_REFERER'], $params));

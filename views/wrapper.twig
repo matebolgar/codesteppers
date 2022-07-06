@@ -40,7 +40,7 @@
       <meta name="robots" content="noindex"/>
     {% endif %}
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-188538631-1"></script>
+    {# <script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-188538631-1"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
@@ -49,15 +49,11 @@
       gtag('js', new Date());
 
       gtag('config', 'UA-188538631-1');
-    </script>
+    </script> #}
   </head>
   <body class="home">
 
-    {% if isNavbarDisabled is not defined %}
-      {% include 'navbar.twig' with {
-        'subscriberLabel' : subscriberLabel is defined? subscriberLabel : ''
-      } %}
-    {% endif %}
+    {{ navbar | raw }}
 
     {{ content | raw }}
 

@@ -1,21 +1,17 @@
 (() => {
-  document.getElementById("open-website-links-modal").addEventListener("click", () => {
-
-
-    const container = document.getElementById("modal-container");
-    const schemaUrl = container.dataset.schemaUrl;
+  const asda = (e) => {
+    const container = document.getElementById("modal123-container");
+    const schemaUrl = e.target.dataset.schemaUrl;
     const codeStepperScripts = JSON.parse(container.dataset.codeStepperScripts);
     const codeStepperStyles = JSON.parse(container.dataset.codeStepperStyles);
     const siteUrl = container.dataset.siteUrl;
 
-    container.innerHTML = modalHTML(htmlEncode(content(schemaUrl, siteUrl, codeStepperScripts, codeStepperStyles)));
+    const encoded = content(schemaUrl, siteUrl, codeStepperScripts, codeStepperStyles);
+    const highlighted = hljs.highlight(encoded, { language: 'html' }).value
+    container.innerHTML = modalHTML(highlighted);
 
     const modal = new bootstrap.Modal(document.getElementById("websiteLinksModal"), {});
     modal.show();
-
-    setTimeout(() => {
-      hljs.highlightAll();
-    })
 
 
     Array.from(document.getElementsByClassName("close-website-links-modal")).forEach(el => {
@@ -24,11 +20,11 @@
         container.innerHTML = "";
       })
     });
+  };
 
-
-
+  Array.from(document.getElementsByClassName("open-website-links-modal")).forEach(el => {
+    el.addEventListener("click", asda)
   });
-
 
   const modalHTML = (content) => `
     <div class="modal fade" id="websiteLinksModal" tabindex="-1" style="z-index:9999">

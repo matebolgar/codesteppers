@@ -1,61 +1,53 @@
-<nav id="main-nav" class="navbar m-auto p-0 pt-1 pb-1 nav-colored navbar-visible w-100">
-	<div class="row w-100 m-auto pt-1">
-		<div class="col-4 m-auto text-center p-0">
-			{# <button id="main-navbar-toggler" class="navbar-toggler" type="button">
-				<svg style="fill:#FFFFFF;width:24px;height:24px" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-					<path d="M0 0h24v24H0z" fill="none"></path>
-					<path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
-				</svg>
-			</button> #}
-		</div>
-		<div class="col-4 m-auto text-center main-brand" style="line-height: 0.8;">
-			<a
-				href="/" class="m-auto">
-				<span style="font-family: 'Din'; color:white; font-size: 4em">Code</span>
-				<span class="main-brand-right-text" style="font-family: 'Work Sans'; color:white; font-size: 3.9em; font-weight:100; position: relative; left: -2px">Steppers</span>
-				<p class="text-center text-white d-none d-sm-block" style="font-size: 0.8em;">
-					<b>Interactive tool for schools and teachers.</b>
-				</p>
-			</a>
-		</div>
-		<div class="col-4 m-auto text-center p-0" style="word-break: break-all; word-wrap:break-word;">
-			{% if subscriberLabel != '' %}
-				<button id="subscriber-navbar-toggler" class="btn btn-sm text-light" style="border: none">
-					{{subscriberLabel}}
-					▾
-				</button>
-			{% else %}
-				<a href="/bejelentkezes">
-					<button class="btn btn-sm btn-outline-primary fw-bold">
-						Login
-					</button>
-				</a>
-			{% endif %}
-		</div>
+<nav id="main-nav" class="navbar m-auto shadow nav-colored navbar-visible w-100" style='height: 60px'>
+  <div class="row w-100 m-auto">
+    <div class="col-4 m-auto text-center p-0">
+      <a href="/">
+        <button id="main-navbar-toggler" class="navbar-toggler text-white" type="button">
+          CodeSteppers - <span class="oswald-font">For online schools and teachers</span>
+        </button>
+      </a>
+    </div>
+    <div class="col-4 m-auto text-center main-brand" style="line-height: 0.8;"></div>
+    <div class="col-4 m-auto text-center p-0" style="word-break: break-all; word-wrap:break-word;">
 
-	</div>
-	<div class="row w-100">
-		<div class="col-lg-3 p-0" style="position: absolute;right: 0;">
+      {% if buttons is defined %}
+        {{buttons | raw}}
+      {% endif %}
+      {% if subscriberLabel != '' %}
+        <button id="subscriber-navbar-toggler" class="btn btn-sm text-light" style="border: none">
+          {{subscriberLabel}}
+          ▾
+        </button>
+      {% else %}
+        <a href="/bejelentkezes">
+          <button class="btn btn-sm btn-outline-primary fw-bold">
+            Login
+          </button>
+        </a>
+      {% endif %}
+    </div>
 
-			<div id="subscriber-navbar-items" class="d-none w-100 border-dark border-left border-right border-bottom bg-black">
-				<ul class="navbar-nav me-auto text-center">
-					<li class="navbar-item nav-item border-bottom border-dark">
-						<a class="nav-link text-light p-2 pe-3" href="#">
-							<form action="/api/subscriber-logout" method="post">
-								<button type="submit" class="btn btn-sm btn-outline-danger fw-bold">Logout</button>
-							</form>
-						</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-		<div class="col-lg-6"></div>
-		<div class="col-lg-3 p-0" style="position: absolute;left: 0;">
-			<div id="main-navbar-items" style="border: 1px solid black" class="d-none w-100 border-dark border-left border-right border-bottom">
-				<ul class="navbar-nav me-auto lead">
-					
-				</ul>
-			</div>
-		</div>
-	</div>
+  </div>
+  <div class="row w-100">
+    <div class="col-lg-3 p-0" style="position: absolute;right: 0;">
+
+      <div id="subscriber-navbar-items" class="d-none w-100 border-dark border-left border-right border-bottom bg-black">
+        <ul class="navbar-nav me-auto text-center">
+          <li class="navbar-item nav-item border-bottom border-dark">
+            <a class="nav-link text-light p-2 pe-3" href="#">
+              <form action="/api/subscriber-logout" method="post">
+                <button type="submit" class="btn btn-sm btn-outline-danger fw-bold">Logout</button>
+              </form>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-6"></div>
+    <div class="col-lg-3 p-0" style="position: absolute;left: 0;">
+      <div id="main-navbar-items" style="border: 1px solid black" class="d-none w-100 border-dark border-left border-right border-bottom">
+        <ul class="navbar-nav me-auto lead"></ul>
+      </div>
+    </div>
+  </div>
 </nav>

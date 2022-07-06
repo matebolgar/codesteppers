@@ -69,6 +69,9 @@ class PublicSite
 
       header('Content-Type: text/html; charset=UTF-8');
       echo $twig->render('wrapper.twig', [
+        'navbar' => $twig->render("navbar.twig", [
+          'subscriberLabel' => getNick($request->vars) ?? "",
+        ]),
         'content' => $twig->render('home.twig', [
           'codeSteppers' => [],
         ]),
@@ -115,7 +118,8 @@ class PublicSite
         }
       } else {
         $id = "guest-" . uniqid();
-        setcookie("guestId", $id, time() + 60 * 60 * 24);
+        $cookieParams = session_get_cookie_params();
+        setcookie("guestId", $id, time() + 60 * 60 * 24, $cookieParams['path'], $cookieParams['domain'], $cookieParams['secure'], isset($cookieParams['httponly']));
         $codeStepperId = CodeStepper::createSchemaForGuest($conn, $id);
 
         header("Location: /edit/$codeStepperId");
@@ -128,6 +132,7 @@ class PublicSite
       $q = null;
       $subscriberId = null;
       $guestId = null;
+
       if (isset($_COOKIE["guestId"])) {
         $guestId = $_COOKIE["guestId"];
         $q = new Query(
@@ -173,9 +178,14 @@ class PublicSite
         $allCodeSteppers = (new CodestepperLister($conn))->list(Router::where('guestId', 'eq', $guestId));
       }
 
-
       header('Content-Type: text/html; charset=UTF-8');
       echo $twig->render('wrapper.twig', [
+        'navbar' => $twig->render("navbar.twig", [
+          "buttons" => $twig->render("buttons.twig", [
+            'codeStepper' => $codeSteppersBySlug->getCount() ? $codeSteppersBySlug->getEntities()[0] : '',
+          ]),
+          'subscriberLabel' => getNick($request->vars) ?? "",
+        ]),
         'content' => $twig->render('edit.twig', [
           'codeStepper' =>  $codeSteppersBySlug->getCount() ? $codeSteppersBySlug->getEntities()[0] : '',
           'codeSteppers' => $allCodeSteppers->getEntities(),
@@ -186,7 +196,6 @@ class PublicSite
         ]),
         'metaTitle' => 'CodeSteppers - Online interactive tool for schools and teachers',
         'description' => 'CodeSteppers - Online interactive tool for schools and teachers',
-        'subscriberLabel' =>  getNick($request->vars),
         'structuredData' => self::organizationStructuredData(),
         'scripts' => [
           [

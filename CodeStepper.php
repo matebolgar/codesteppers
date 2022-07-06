@@ -507,9 +507,9 @@ class CodeStepper
         "styleUrls" => [],
         "items" => [
           [
-            "start" => 21,
-            "end" => 24,
-            "content" => "/*\n* Második slide\n*/\n\nconsole.log(\"teszt\");"
+            "start" => 0,
+            "end" => 0,
+            "content" => ""
           ]
         ]
       ],
