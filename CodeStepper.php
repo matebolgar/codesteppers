@@ -100,6 +100,7 @@ class CodeStepper
       $schema["title"] = $request->body["title"] ?? $schema["title"];
       $schema["logoUrl"] = $request->body["logoUrl"] ?? $schema["logoUrl"];
       $schema["colorMode"] = $request->body["colorMode"] ?? $schema["colorMode"];
+      $schema["secondaryColorMode"] = $request->body["secondaryColorMode"] ?? $schema["secondaryColorMode"];
       $schema["primaryColor"] = $primary;
       $schema["secondaryColor"] = $secondary;
       $schema["isDrawerOpenByDefault"] = $request->body["isDrawerOpenByDefault"] ?? $schema["isDrawerOpenByDefault"];
@@ -525,7 +526,8 @@ class CodeStepper
       "title" => "",
       "logoUrl" => "",
       "primaryColor" => "#008080",
-      "colorMode" => "light",
+      "colorMode" => "dark",
+      "secondaryColorMode" => "auto",
       "isDrawerOpenByDefault" => false,
       "parts" => [
         [

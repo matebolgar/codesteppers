@@ -49,8 +49,10 @@
 
   {% if codeStepper.slug is not empty %}
 
-    <div style="min-height: 700px" class="code-stepper-editor" data-schema-url="/public/codestepper-files/{{codeStepper.slug}}" data-is-dev="1">
-      Betöltés...
+    <div class="content-body">
+      <div style="min-height: 700px" class="code-stepper-editor" data-schema-url="/public/codestepper-files/{{codeStepper.slug}}" data-is-dev="1">
+        Betöltés...
+      </div>
     </div>
 
   {% else %}
