@@ -511,10 +511,10 @@ footer .right {
 }
 
 #main-navbar-toggler {
-     background-image: linear-gradient(to right, rgb(255 199 63) 0%, rgb(253 52 89) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: rgb(0 0 0 / 0%);
-    color: rgb(0 0 0 / 0%);
+  background-image: linear-gradient(to right, rgb(255 199 63) 0%, rgb(253 52 89) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: rgb(0 0 0 / 0%);
+  color: rgb(0 0 0 / 0%);
 }
 
 @media screen and (max-width: 670px) {
@@ -543,6 +543,13 @@ p {
   background-size: cover;
   border-bottom: none;
   margin: 0 !important;
+
+  min-height: 56px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  align-content: center;
 }
 
 .spacer {
@@ -643,6 +650,8 @@ b {
   font-family: "Apercu Bold", "Helvetica", "Arial", sans-serif !important;
   font-weight: normal !important;
 }
+
+/* Mui reset */
 body {
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
@@ -650,8 +659,8 @@ body {
   font-size: 0.9rem !important;
   line-height: 1.4 !important;
   font-family: "Apercu Medium", "Helvetica", "Arial", sans-serif !important;
-  font-weight: 500;
-  letter-spacing: -.04em !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.04em !important;
 }
 
 .fw-bold {
@@ -659,7 +668,12 @@ body {
   font-weight: normal !important;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   letter-spacing: -0.04em;
   font-weight: 500;
 }
