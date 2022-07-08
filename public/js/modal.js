@@ -31,8 +31,8 @@
       <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" style="z-index:9999">
         <div class="modal-content">
           <div class="modal-header">
-            <h2 class="modal-title display-6">
-              Paste this code to your website
+            <h2 class="modal-title display-6 text-dark">
+              Paste this code to your website:
             </h2>
             <button type="button" class="btn-close close-website-links-modal" ></button>
           </div>

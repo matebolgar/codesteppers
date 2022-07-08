@@ -290,12 +290,14 @@ class CodeStepper
 
       // Add CodeSurfer step
       $newStep = [
-        "fileName" => $code["steps"][$stepIndex]["fileName"] ?? "",
+        "fileName" => "",
+        "language" => $code["steps"][$stepIndex]["language"] ?? "",
         "showNumbers" => true,
         "title" => "",
         "focus" => "",
         "label" => "",
-        "content" => "/*\n*\n*  Új slide\n*\n*\n*\n*\n*\n*\n*/",
+        "content" => "",
+        "jumpFromPrev" => false,
       ];
 
       $newSteps = array_merge(array_slice($code["steps"], 0, $stepIndex + 1), [$newStep], array_slice($code["steps"], $stepIndex + 1));
@@ -355,11 +357,12 @@ class CodeStepper
 
       $newStep = [
         "fileName" => $request->body["fileName"] ?? $code[$stepIndex]["fileName"],
-        "showNumbers" => true,
+        "language" => $request->body["language"] ?? $code[$stepIndex]["language"],
         "title" => $request->body["title"] ?? $code[$stepIndex]['title'],
         "focus" => $request->body["focus"] ?? $code[$stepIndex]['focus'],
         "label" => $request->body["label"] ?? $code[$stepIndex]['label'],
         "content" => $request->body["content"] ?? $code[$stepIndex]['content'],
+        "jumpFromPrev" => $request->body["jumpFromPrev"] ?? $code[$stepIndex]['jumpFromPrev'],
       ];
 
       $code["steps"][$stepIndex] = $newStep;
@@ -532,7 +535,7 @@ class CodeStepper
       "parts" => [
         [
           "slug" => $partId,
-          "title" => "First part",
+          "title" => "First page",
           "layout" => "cr-4",
           "modulePaths" => [],
         ],
@@ -580,7 +583,7 @@ class CodeStepper
       'html' => [
         "id" => uniqid(),
         "type" => "html",
-        "content" => "<h1 class=\"text-center display-2\">\n    HTML tartalom\n</h1>",
+        "content" => "<h1 class=\"text-center display-2\">\n    HTML content\n</h1>",
       ],
       'htmlArray' => [
         "id" => uniqid(),
@@ -598,23 +601,18 @@ class CodeStepper
       "codeSurfer" => [
         "id" => uniqid(),
         "type" => "codeSurfer",
+        "theme" => "dark",
+        "showNumbers" => true,
+        "jumpFromPrev" => false,
         "steps" => [
           [
-            "fileName" => "app.js",
-            "title" => "Első slide címe",
+            "fileName" => "subtitle",
+            "language" => "javascript",
+            "title" => "Title",
             "focus" => "",
-            "label" => "Első slide",
-            "showNumbers" => true,
-            "content" => "/*\n* Első slide\n*/\n\nconsole.log(\"teszt\");",
+            "label" => "First slide",
+            "content" => "/*\n* First slide\n*/\n\nconsole.log(\"Hello!\");",
           ],
-          [
-            "fileName" => "app.js",
-            "title" => "Második slide címe",
-            "focus" => "",
-            "label" => "Második slide",
-            "showNumbers" => true,
-            "content" => "/*\n* Második slide\n*/\n\nconsole.log(\"második slide\");",
-          ]
         ]
       ],
       "app" => [
@@ -622,7 +620,7 @@ class CodeStepper
         "type" => "app",
         "scriptUrls" => [],
         "styleUrls" => [],
-        "content" => "<h1 class=\"text-center display-2\">\n    App modul HTML tartalom\n</h1>"
+        "content" => "<h1 class=\"text-center display-2\">\n    App module HTML content\n</h1>"
       ]
     ][$type];
   }
