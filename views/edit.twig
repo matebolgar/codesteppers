@@ -1,5 +1,4 @@
 <main class="main-content">
-  <h1 class="visually-hidden">Sidebars examples</h1>
   <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 208px;">
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="nav-item">
@@ -9,9 +8,9 @@
         </a>
       </li>
       <li>
-        <a href="#" class="nav-link text-white">
+        <a href="/upgrade-plan" class="nav-link text-white">
           <i class="fa fa-file mx-1"></i>
-          <span>Billing</span>
+         <span>Upgrade plan</span>
         </a>
       </li>
       <li>
@@ -27,7 +26,6 @@
       </div>
 
       <li class="text-center">
-        {# /public/codestepper-files/{{codeStepper.slug}} #}
         <form action="/schema" method="POST">
           <button type="submit" class="btn btn-success w-100">
             Add new
@@ -54,7 +52,7 @@
   {% if codeStepper.slug is not empty %}
 
     <div class="content-body">
-      <div style="min-height: 700px" class="code-stepper-editor" data-schema-url="/public/codestepper-files/{{codeStepper.slug}}" data-is-dev="1">
+      <div style="min-height: 700px" class="code-stepper-editor" data-schema-url="/public/codestepper-files/{{codeStepper.slug}}">
         Betöltés...
       </div>
     </div>

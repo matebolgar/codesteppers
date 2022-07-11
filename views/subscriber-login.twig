@@ -1,33 +1,53 @@
-<div class="mb-3 content-body">
-	<div class="card">
-		{% if isLoggedIn %}
-			<div class="card-body w-100 p-0" id="hero-spot2">
-				<div class="card-title">
-					<h2 class="mb-4 mt-5 text-success display-5 text-center">
-						Bejelentkezve
-						<i class="fa fa-check-circle"></i>
-					</h2>
-				</div>
-			</div>
+<main class="main-content">
+  <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 208px;">
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a href="/edit" class="nav-link text-white">
+          <i class="fa fa-edit mx-1"></i>
+          <span>Editor</span>
+        </a>
+      </li>
+      <li>
+        <a href="/upgrade-plan" class="nav-link text-white">
+          <i class="fa fa-file mx-1"></i>
+         <span>Upgrade plan</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link text-white">
+          <i class="fa fa-question mx-1"></i>
+          <span>Support</span>
+        </a>
+      </li>
+      <hr>
 
-      {{courses | raw}}
+    </ul>
+  </div>
 
-		{% else %}
-			<div class="row m-0">
-				<div class="col-md-8 m-auto text-center">
-					<div class="card-body w-100 p-0" id="hero-spot2">
-						<h1 class="lead text-center p-2 display-5" style="letter-spacing: -0.04em">
-							<span>Jelentkezz be a Kódbázis felületére!</span>
-						</h1>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="p-3">
-						{% include 'subscriber-login-form.twig' with {'loginError': loginError, 'email': email, registrationPath: '/feliratkozas', 'isPasswordModificationSuccess': isPasswordModificationSuccess}  %}
-					</div>
-				</div>
-			</div>
-		</div>
-	{% endif %}
+  <div class="b-example-divider"></div>
 
-</div></div>
+  <div class="mb-3 content-body">
+    <div class="card">
+      {% if isLoggedIn %}
+        <div class="card-body w-100 p-0" id="hero-spot2">
+          <div class="card-title">
+            <h2 class="mb-4 mt-5 text-success display-5 text-center">
+              Bejelentkezve
+              <i class="fa fa-check-circle"></i>
+            </h2>
+          </div>
+        </div>
+
+      {% else %}
+        <div class="row m-0">
+          <div class="col-md-12">
+            <div class="p-3">
+              {% include 'subscriber-login-form.twig' with {'loginError': loginError, 'email': email, registrationPath: '/feliratkozas', 'isPasswordModificationSuccess': isPasswordModificationSuccess}  %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+</main>

@@ -528,8 +528,9 @@ class CodeStepper
       "slug" => $projectId,
       "title" => "",
       "logoUrl" => "",
-      "primaryColor" => "#008080",
       "colorMode" => "dark",
+      "primaryColor" => "#FFC73F",
+      "secondaryColor" => "",
       "secondaryColorMode" => "auto",
       "isDrawerOpenByDefault" => false,
       "parts" => [

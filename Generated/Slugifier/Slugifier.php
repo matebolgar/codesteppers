@@ -4,7 +4,7 @@ namespace CodeSteppers\Generated\Slugifier;
 
 class Slugifier implements 
 
- \CodeSteppers\Generated\Subscriber\Save\Slugifier, \CodeSteppers\Generated\Codestepper\Save\Slugifier
+ \CodeSteppers\Generated\Subscriber\Save\Slugifier, \CodeSteppers\Generated\Codestepper\Save\Slugifier, \CodeSteppers\Generated\Order\Save\Slugifier
 {
     const CHAR_MAP = [
         // Latin

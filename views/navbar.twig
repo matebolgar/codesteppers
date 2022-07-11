@@ -3,7 +3,8 @@
     <div class="col-4 m-auto text-center p-0">
       <a href="/">
         <div id="main-navbar-toggler" class="navbar-toggler text-white" type="button">
-          CodeSteppers - <span class="oswald-font">For online schools and teachers</span>
+          CodeSteppers -
+          <span class="oswald-font">For online schools and teachers</span>
         </div>
       </a>
     </div>
@@ -19,11 +20,13 @@
           ▾
         </button>
       {% else %}
-        <a href="/bejelentkezes">
-          <button class="btn btn-sm btn-outline-primary fw-bold">
-            Login
-          </button>
-        </a>
+        {% if not isLoginButtonHidden %}
+          <a href="/login">
+            <button class="btn btn-sm btn-outline-primary fw-bold">
+              Login
+            </button>
+          </a>
+        {% endif %}
       {% endif %}
     </div>
 

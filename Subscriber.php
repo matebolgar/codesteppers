@@ -223,7 +223,7 @@ class Subscriber
         header('Location: ' .  $parsedUrl['path'] . Router::mergeQueries($_GET['referer'], $params));
         return;
       }
-      header('Location: /bejelentkezes?isPasswordModificationSuccess=1');
+      header('Location: /login?isPasswordModificationSuccess=1');
     });
 
     $r->get('/jelszo-modositasa-sikeres', function (Request $request) use ($conn, $twig) {
@@ -233,12 +233,15 @@ class Subscriber
       ]);
     });
 
-    $r->get('/bejelentkezes', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
+    $r->get('/login', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
       header('Content-Type: text/html; charset=UTF-8');
       echo $twig->render('wrapper.twig', [
+        'navbar' => $twig->render("navbar.twig", [
+          'subscriberLabel' => getNick($request->vars) ?? "",
+          'isLoginButtonHidden' => true
+        ]),
         'structuredData' => PublicSite::organizationStructuredData(),
         'subscriberLabel' =>  getNick($request->vars),
-        'noIndex' => true,
         'content' => $twig->render('subscriber-login.twig', [
           'subscriberLabel' =>  getNick($request->vars),
           'isLoggedIn' => isset($_SESSION['subscriberId']),
@@ -247,17 +250,8 @@ class Subscriber
           'isPasswordModificationSuccess' => isset($_GET['isPasswordModificationSuccess']),
           'email' => $_GET['email'] ?? '',
         ]),
-        'scripts' => [
-          ['path' => 'js/scroller.js'],
-          ['path' => 'js/jquery.js'],
-          ['path' => 'js/application.js'],
-        ],
-        'styles' => [
-          ['path' => 'css/login.css'],
-          ['path' => 'css/promo.css'],
-          ['path' => 'css/episode-single.css'],
-          ['path' => 'css/fonts/fontawesome/css/fontawesome-all.css'],
-        ],
+        'scripts' => [],
+        'styles' => [],
       ]);
     });
 

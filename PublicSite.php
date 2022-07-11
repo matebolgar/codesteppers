@@ -6,11 +6,16 @@ use CodeSteppers\Generated\Listing\Clause;
 use CodeSteppers\Generated\Listing\Filter;
 use CodeSteppers\Generated\Listing\OrderBy;
 use CodeSteppers\Generated\Listing\Query;
+use CodeSteppers\Generated\Order\Patch\PatchedOrder;
 use CodeSteppers\Generated\Request;
 use mysqli;
 use Twig\Environment;
 use CodeSteppers\Generated\Repository\Subscriber\SqlLister as SubscriberLister;
 use CodeSteppers\Generated\Repository\Codestepper\SqlLister as CodestepperLister;
+use CodeSteppers\Generated\Repository\Order\SqlSaver as OrderSaver;
+use CodeSteppers\Generated\Repository\Order\SqlLister as OrderLister;
+use CodeSteppers\Generated\Repository\Order\SqlPatcher as OrderPatcher;
+use CodeSteppers\Generated\Order\Save\NewOrder;
 
 
 class PublicSite
@@ -124,10 +129,82 @@ class PublicSite
 
         header("Location: /edit/$codeStepperId");
       }
+    });
 
+
+    $r->get("/status/{schemaId}", $initSubscriberSession, function (Request $request) use ($conn, $twig) {
+      @header("Access-Control-Allow-Origin: " . $_SERVER['HTTP_ORIGIN']);
+      header("Access-Control-Allow-Credentials: true");
+      header('Access-Control-Allow-Methods: GET');
+
+      $getStatus = fn ($code) => json_encode(["status" => $code]);
+      if ($request->query["is-embedded"] ?? "") {
+        echo $getStatus(2);
+        return;
+      }
+
+      $codeSteppers = (new CodestepperLister($conn))->list(new Query(
+        1,
+        0,
+        new Clause("eq", "slug", $request->vars['schemaId'] ?? ''),
+        new OrderBy('createdAt', "desc"),
+        []
+      ));
+
+      if (!$codeSteppers->getCount()) {
+        echo $getStatus(-1);
+        http_response_code(404);
+        return;
+      }
+
+
+
+
+
+
+      $item = $codeSteppers->getEntities()[0];
+      $isLoggedIn = isset($request->vars["subscriber"]) && $item->getSubscriberId() === $request->vars["subscriber"]->getId();
+
+      $orders = (new OrderLister($conn))->list(Router::where('subscriberId', 'eq', $item->getSubscriberId()));
+
+      $isPayed = false;
+      foreach ($orders->getEntities() as $order) {
+        // TODO validate if within a year
+        // TODO store view count, validate view count
+        if ($order->getStatus() === "SUCCESS") {
+          $isPayed = true;
+        }
+      }
+
+      // payed, logged in -> link to dashboard
+      if ($isPayed && $isLoggedIn) {
+        echo $getStatus(0);
+        return;
+      }
+
+      // not payed, logged in -> X link to paywall
+      if (!$isPayed && $isLoggedIn) {
+        echo $getStatus(1);
+        return;
+      }
+
+      // payed, not logged in -> no link
+      if ($isPayed && !$isLoggedIn) {
+        echo $getStatus(2);
+        return;
+      }
+
+      // not payed, not logged in -> link to landing page
+      if (!$isPayed && !$isLoggedIn) {
+        echo $getStatus(3);
+        return;
+      }
     });
 
     $r->get('/edit/{codeStepperSlug}', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
+
+      // var_dump($request->vars);
+      // exit;
 
       $q = null;
       $subscriberId = null;
@@ -214,19 +291,154 @@ class PublicSite
         ],
       ]);
     });
+
+    $r->get('/upgrade-plan', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
+      header('Content-Type: text/html; charset=UTF-8');
+      echo $twig->render('wrapper.twig', [
+        'navbar' => $twig->render("navbar.twig", [
+          'subscriberLabel' => getNick($request->vars) ?? "",
+        ]),
+        'structuredData' => PublicSite::organizationStructuredData(),
+        'subscriberLabel' =>  getNick($request->vars),
+        'content' => $twig->render('paywall.twig', [
+          'error' => $_GET['error'] ?? '',
+          'transactionSuccessful' => $_GET['transactionSuccessful'] ?? '',
+          'transactionId' => $_GET['transactionId'] ?? '',
+          'orderRef' => $_GET['orderRef'] ?? '',
+        ]),
+        'scripts' => [],
+        'styles' => [
+          ["path" => "css/plans.css"],
+          ['path' => 'css/promo.css'],
+          ['path' => 'css/login.css'],
+        ],
+      ]);
+    });
+
+    $r->post('/upgrade-plan/{type}', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
+
+      require_once 'simplepay/config.php';
+      require_once 'simplepay/SimplePayV21.php';
+
+      $trx = new \SimplePayStart;
+
+      $trx->addData('currency', 'USD');
+      $trx->addConfig($config);
+
+      $priceMap = [
+        'basic' => 5,
+        'pro' => 10,
+        'enterprise' => 25
+      ];
+
+
+
+      $trx->addItems(
+        [
+          'ref' => $request->vars["type"],
+          'title' => "Plan: " . strtoupper($request->vars["type"]),
+          'description' => "",
+          'amount' => '1',
+          'price' => $priceMap[$request->vars["type"]] * 12,
+          'tax' => '0',
+        ]
+      );
+
+      $orderRef = str_replace(array('.', ':', '/'), "", @$_SERVER['SERVER_ADDR']) . @date("U", time()) . rand(1000, 9999);
+      $trx->addData('orderRef', $orderRef);
+
+      $trx->addData('threeDSReqAuthMethod', '02');
+
+      $subscriber = $request->vars["subscriber"];
+
+      $trx->addData('customerEmail', $subscriber->getEmail());
+
+      $trx->addData('language', 'EN');
+
+      $timeoutInSec = 600;
+      $timeout = @date("c", time() + $timeoutInSec);
+      $trx->addData('timeout', $timeout);
+
+      $trx->addData('methods', array('CARD'));
+
+      $backUrl = Router::siteUrl() . '/api/back/' . $orderRef;
+      $trx->addData('url', $backUrl);
+
+      $trx->formDetails['element'] = 'button';
+
+      $trx->runStart();
+
+      $paymentUrl = $trx->getReturnData()['paymentUrl'] ?? '';
+
+
+      (new OrderSaver($conn))->Save(new NewOrder(
+        $subscriber->getId(),
+        $request->vars["type"],
+        $orderRef,
+        "STARTED",
+        time(),
+      ));
+
+      header("Location: " . $paymentUrl);
+    });
+
+    $r->get('/api/back/{orderRef}', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
+      require_once 'simplepay/config.php';
+      require_once 'simplepay/SimplePayV21.php';
+
+      $trx = new \SimplePayBack;
+      $trx->addConfig($config);
+
+      $result = [];
+      if (isset($_REQUEST['r']) && isset($_REQUEST['s'])) {
+        if ($trx->isBackSignatureCheck($_REQUEST['r'], $_REQUEST['s'])) {
+          $result = $trx->getRawNotification();
+        }
+      }
+
+      $orderRef = $request->vars['orderRef'];
+      $orders = (new OrderLister($conn))->list(Router::where('ref', 'eq', $orderRef));
+      $order = $orders->getEntities()[0];
+
+      $to = fn ($status) => (new OrderPatcher($conn))->patch($order->getId(), new PatchedOrder($status));
+      switch ($result['e']) {
+        case 'SUCCESS':
+          $to("SUCCESS");
+          header('Location: /upgrade-plan?transactionSuccessful=1&orderRef=' . $result['o'] . '&transactionId=' . $result['t']);
+          return;
+          break;
+        case 'FAIL':
+          $to("FAIL");
+          header('Location: /upgrade-plan?error=transactionFailed&transactionId=' . $result["t"]);
+          return;
+          break;
+        case 'CANCEL':
+          $to("CANCEL");
+          header('Location: /upgrade-plan?error=transactionCancelled');
+          return;
+          break;
+        case 'TIMEOUT':
+          $to("TIMEOUT");
+          header('Location: /upgrade-plan?error=transactionTimeout');
+          return;
+          break;
+      }
+    });
   }
 }
+
+
 
 
 function getCodestepperEditorScripts()
 {
   $codeAssistScripts = array_filter(scandir('../public/codestepper-editor/js'), filterExtension('js'));
-  return array_values(array_map(fn ($item) => ['path' => "/public/codestepper-editor/js/$item"], $codeAssistScripts));
+  return array_values(array_map(fn ($item) => ['path' => "codestepper-editor/js/$item"], $codeAssistScripts));
 }
 function getCodestepperEditorStyles()
 {
   $codeAssistStyles = array_filter(scandir('../public/codestepper-editor/css'), filterExtension('css'));
-  return array_values(array_map(fn ($item) => ['path' => "/public/codestepper-editor/css/$item"], $codeAssistStyles));
+  return array_values(array_map(fn ($item) => ['path' => "codestepper-editor/css/$item"], $codeAssistStyles));
 }
 
 function getCodestepperScripts()
