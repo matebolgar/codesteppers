@@ -10,7 +10,7 @@
       <li>
         <a href="/upgrade-plan" class="nav-link text-white">
           <i class="fa fa-file mx-1"></i>
-         <span>Upgrade plan</span>
+          <span>Upgrade plan</span>
         </a>
       </li>
       <li>
@@ -19,23 +19,25 @@
           <span>Support</span>
         </a>
       </li>
-      <hr>
 
-      <div href="/" class="d-flex align-items-center mb-3 mb-md-0 m-auto text-white text-decoration-none">
-        <span class="fs-4 my-3">My projects:</span>
-      </div>
+    </ul>
+    <hr>
+    <div href="/" class="d-flex align-items-center mb-md-0 m-auto text-white text-decoration-none">
+      <span class="fs-4">My projects:</span>
+    </div>
 
-      <li class="text-center">
-        <form action="/schema" method="POST">
-          <button type="submit" class="btn btn-success w-100">
-            Add new
-            <i class="fa fa-plus"></i>
-          </button>
-        </form>
-      </li>
+    <div class="text-center my-3">
+      <form action="/schema" method="POST">
+        <button type="submit" class="btn btn-outline-success w-100">
+          Add new
+          <i class="fa fa-plus"></i>
+        </button>
+      </form>
+    </div>
 
+    <ul class="nav nav-pills flex-column mb-auto" style="overflow-y: scroll; display: block">
       {% for codeStepper in codeSteppers %}
-        <li class="m-2">
+        <li class="">
           <div class="row">
             <a href="/edit/{{codeStepper.slug}}" class="nav-link text-white w-100 d-inline-block {{codeStepper.slug == activeCodeStepperSlug ? 'active' : ''}}">
               {{codeStepper.title}}
@@ -60,5 +62,5 @@
   {% else %}
     <div class="w-100 rounded border m-3" style="height: calc(100vh - 150px)"></div>
   {% endif %}
-  <div id="modal123-container" data-code-stepper-scripts="{{codeStepperScripts}}" data-code-stepper-styles="{{codeStepperStyles}}" data-site-url="{{siteUrl}}"></div>
+  <div id="modal123-container" data-schema-id="{{codeStepper.slug}}" data-site-url="{{siteUrl}}"></div>
 </main>

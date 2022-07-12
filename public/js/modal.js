@@ -1,12 +1,11 @@
 (() => {
   const asda = (e) => {
     const container = document.getElementById("modal123-container");
-    const schemaUrl = e.target.dataset.schemaUrl;
-    const codeStepperScripts = JSON.parse(container.dataset.codeStepperScripts);
-    const codeStepperStyles = JSON.parse(container.dataset.codeStepperStyles);
-    const siteUrl = container.dataset.siteUrl;
 
-    const encoded = content(schemaUrl, siteUrl, codeStepperScripts, codeStepperStyles);
+    const siteUrl = container.dataset.siteUrl;
+    const schemaId = container.dataset.schemaId;
+
+    const encoded = content(siteUrl, schemaId);
     const highlighted = hljs.highlight(encoded, { language: 'html' }).value
     container.innerHTML = modalHTML(highlighted);
 
@@ -28,7 +27,7 @@
 
   const modalHTML = (content) => `
     <div class="modal fade" id="websiteLinksModal" tabindex="-1" style="z-index:9999">
-      <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" style="z-index:9999">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" style="z-index:9999">
         <div class="modal-content">
           <div class="modal-header">
             <h2 class="modal-title display-6 text-dark">
@@ -54,26 +53,10 @@
     </div>
   `;
 
-  const content = (schemaUrl, root, codestepperScrips, codestepperStyles) => `
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    
-    <!-- Style to include -->
-    ${codestepperStyles.map(s => `<link rel="stylesheet" href="${root}/public/${s.path}">`).join("\n  ")}
-
-  </head>
-  <body>
-
-    <!-- CodeSteppers root element -->
-    <div class="code-stepper" data-schema-url="${root}${schemaUrl}">
+  const content = (root, schemaId) => `
+    <script src="${root}/platform.js" defer></script>
+    <div class="codestepper-app-${schemaId}">
     </div>
-
-    <!-- Scripts to include -->
-    ${codestepperScrips.map(s => `<script src="${root}/public/${s.path}"></script>`).join("\n    ")}
-
-  </body>
-  </html>
   `;
 
   function htmlEncode(html) {

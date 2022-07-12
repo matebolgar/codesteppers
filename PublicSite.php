@@ -157,11 +157,6 @@ class PublicSite
         return;
       }
 
-
-
-
-
-
       $item = $codeSteppers->getEntities()[0];
       $isLoggedIn = isset($request->vars["subscriber"]) && $item->getSubscriberId() === $request->vars["subscriber"]->getId();
 
@@ -266,8 +261,6 @@ class PublicSite
         'content' => $twig->render('edit.twig', [
           'codeStepper' =>  $codeSteppersBySlug->getCount() ? $codeSteppersBySlug->getEntities()[0] : '',
           'codeSteppers' => $allCodeSteppers->getEntities(),
-          'codeStepperScripts' => json_encode(getCodestepperScripts()),
-          'codeStepperStyles' => json_encode(getCodestepperStyles()),
           'siteUrl' => Router::siteUrl(),
           'activeCodeStepperSlug' =>  $request->vars['codeStepperSlug'] ?? '',
         ]),
@@ -290,6 +283,18 @@ class PublicSite
           ...getCodestepperStyles(),
         ],
       ]);
+    });
+
+    $r->get("/api/init", function (Request $request) use ($conn, $twig) {
+      echo json_encode([
+        'scripts' => getCodestepperScriptsFull(1),
+        'styles' => getCodestepperStylesFull(1),
+      ]);
+    });
+
+    $r->get("/platform.js", function (Request $request) use ($conn, $twig) {
+      header('Content-Type: application/javascript');
+      echo file_get_contents("../public/js/platform.js");
     });
 
     $r->get('/upgrade-plan', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
@@ -450,6 +455,17 @@ function getCodestepperStyles()
 {
   $codeAssistStyles = array_filter(scandir('../public/codestepper/css'), filterExtension('css'));
   return array_values(array_map(fn ($item) => ['path' => "codestepper/css/$item"], $codeAssistStyles));
+}
+
+function getCodestepperScriptsFull($version)
+{
+  $codeAssistScripts = array_filter(scandir('../public/codestepper/js'), filterExtension('js'));
+  return array_values(array_map(fn ($item) => "/public/codestepper/js/$item" . "?v=" . $version, $codeAssistScripts));
+}
+function getCodestepperStylesFull($version)
+{
+  $codeAssistStyles = array_filter(scandir('../public/codestepper/css'), filterExtension('css'));
+  return array_values(array_map(fn ($item) => "/public/codestepper/css/$item" . "?v=" . $version, $codeAssistStyles));
 }
 
 
