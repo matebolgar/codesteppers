@@ -1,18 +1,18 @@
-<h2 class="sc-bdVaJa iPHfVO m-auto pb-2 text-center" format="dark">Csatlakozz</h2>
-<p class="sc-bdVaJa gqURud text-center" format="dark">Van már felhasználói fiókod?
-	<a href="{{loginPath}}" class="_2uWfz _16h3z CtrL7">Jelentkezz be</a>
+<h2 class="sc-bdVaJa iPHfVO m-auto pb-2 text-center" format="dark">Join</h2>
+<p class="sc-bdVaJa gqURud text-center" format="dark">Already have an account?
+	<a href="/login" class="_2uWfz _16h3z CtrL7">Log in</a>
 </p>
 {% if registrationEmailSent %}
 	<div id="registrationEmailSent-alert" class="alert alert-success p-2 m-2">
 		<h2>
-			<span>Sikeres!
+			<span>Success!
 				<i class="fa fa-check-circle"></i>
 			</span>
 		</h2>
 		<p style="font-size:14px">
-			A megadott email címre pár percen belül kiküldünk egy visszaigazoló üzenetet.
+			A verification email has been sent to your email address.
 			<br>
-			Kérjük kattints az üzenetben lévő megerősítés gombra!
+			Please check your email to verify your account!
 		</p>
 	</div>
 	<script>
@@ -27,21 +27,21 @@ isLight = ! isLight
 {% if registrationSuccessful is defined and registrationSuccessful %}
 	<div class="alert alert-success p-2 m-2">
 		<p style="font-size:14px">
-			Regisztráció sikeres!
+			Registration successful!
 		</p>
 	</div>
 {% endif %}
 {% if error == 'emailTaken' %}
 	<div class="alert alert-danger p-2 m-2">
 		<p style="font-size:14px">
-			Ezzel az email címmel már létezik felhasználói fiók.
+			Email taken.
 		</p>
 	</div>
 {% endif %}
 {% if error == 'invalidEmail' %}
 	<div class="alert alert-danger p-2 m-2">
 		<p style="font-size:14px">
-			Hibás email cím.
+			Invalid email.
 		</p>
 	</div>
 {% endif %}
@@ -68,7 +68,7 @@ isLight = ! isLight
 		<div class="sc-dnqmqq djVjby">
 			<div class="sc-iwsKbI jFkMBx">
 				<div class="I9NYm _3z-_p db1GS">
-					<label class="_3Xmck _1h-CP _1Bymy" for="login_password">Jelszó</label><input type="password" name="password" required="" class="_2lU9f db1GS _1h-CP _1Bymy" id="login_password">
+					<label class="_3Xmck _1h-CP _1Bymy" for="login_password">Password</label><input type="password" name="password" required="" class="_2lU9f db1GS _1h-CP _1Bymy" id="login_password">
 				</div>
 			</div>
 			<div class="">
@@ -82,14 +82,14 @@ isLight = ! isLight
 	<div class="form-check mb-2 text-sm p-1" style="font-size: 14px">
 		<label class="form-check-label">
 			<input class="me-1" required type="checkbox" name="privacy1" value="1"/>
-			Elolvastam az
-			<a href="/adatvedelmi-szabalyzat" target="_blank">adatvédelmi szabályzatot</a>
-			és hozzájárulok, hogy a kodbazis.hu adataimat kezelje.
+			I agree to the
+			<a href="/adatvedelmi-szabalyzat" target="_blank">Terms of Service</a>
+			Privacy Policy and Cookie Policy
 		</label>
 	</div>
 	<div>
 		<button class="_3jJ8O sc-htpNat fMQhWV" format="primary" id="login_signup_button" type="submit">
-			<span class="sc-bxivhb jrbrfM ms-3">Tovább</span>
+			<span class="sc-bxivhb jrbrfM ms-3">Sign up</span>
 			<i class="fa fa-arrow-circle-right ms-2"></i>
 		</button>
 	</div>

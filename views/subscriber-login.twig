@@ -8,9 +8,9 @@
         </a>
       </li>
       <li>
-        <a href="/upgrade-plan" class="nav-link text-white">
-          <i class="fa fa-file mx-1"></i>
-         <span>Upgrade plan</span>
+        <a href="/sign-up" class="nav-link active">
+          <i class="fa fa-user mx-1"></i>
+          <span>Sign up for free</span>
         </a>
       </li>
       <li>
@@ -42,7 +42,7 @@
         <div class="row m-0">
           <div class="col-md-12">
             <div class="p-3">
-              {% include 'subscriber-login-form.twig' with {'loginError': loginError, 'email': email, registrationPath: '/feliratkozas', 'isPasswordModificationSuccess': isPasswordModificationSuccess}  %}
+              {% include 'subscriber-login-form.twig' with {'loginError': loginError, 'email': email, registrationPath: '/sign-up', 'isPasswordModificationSuccess': isPasswordModificationSuccess}  %}
             </div>
           </div>
         </div>

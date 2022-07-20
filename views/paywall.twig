@@ -39,40 +39,47 @@
           <i>Risk-free, you can cancel at anytime.</i>
         </p>
 
+        {% if error == 'startFailed' %}
+          <div class="alert alert-danger p-1 pe-2 ps-2 w-100 text-center">
+            <p style="font-size:14px">
+              <span>An error occured please try again!</span>
+            </p>
+          </div>
+        {% endif %}
         {% if error == 'transactionFailed' %}
           <div class="alert alert-danger p-1 pe-2 ps-2 w-100 text-center">
             <p style="font-size:14px">
-              <span>Sikertelen tranzakció!</span><br/>
-              SimplePay tranzakció azonosító:
+              <span>Failed transaction!</span><br/>
+              SimplePay transaction identifier:
               {{transactionId}}
               <br/>
-              Kérjük, ellenőrizze a tranzakció során megadott adatok helyességét. Amennyiben minden adatot helyesen adott meg, a visszautasítás okának kivizsgálása érdekében kérjük, szíveskedjen kapcsolatba lépni kártyakibocsátó bankjával.
+              Please check if the details provided during the transaction are correct.
+              If all the details were provided correctly, please contact the bank that
+              issued your card in order to investigate the cause of the rejection.
             </p>
           </div>
         {% endif %}
         {% if error == 'transactionCancelled' %}
           <div class="alert alert-danger p-1 pe-2 ps-2 w-100 text-center">
             <p style="font-size:14px">
-              <span>Megszakított fizetés!</span><br/>
-              Kérjük, próbálja újra!
+              <span>Cancelled payment!</span><br/>
             </p>
           </div>
         {% endif %}
         {% if error == 'transactionTimeout' %}
           <div class="alert alert-danger p-1 pe-2 ps-2 w-100 text-center">
             <p style="font-size:14px">
-              <span>Ön túllépte a tranzakció elindításának lehetséges maximális idejét.</span><br/>
-              Kérjük, próbálja újra!
+              <span>You exceeded the maximum time available to start the transaction.</span><br/>
             </p>
           </div>
         {% endif %}
         {% if transactionSuccessful is defined and transactionId != "" %}
           <div class="alert alert-success p-1 pe-2 ps-2 w-100 text-center">
             <p style="font-size:14px">
-              <span>Sikeres tranzakció!</span>
+              <span>Successful transaction!</span>
             </p>
             <p style="font-size:14px">
-              SimplePay tranzakció azonosító:
+              SimplePay transaction identifier:
               {{transactionId}}
             </p>
           </div>

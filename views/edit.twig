@@ -1,66 +1,73 @@
 <main class="main-content">
-  <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 208px;">
-    <ul class="nav nav-pills flex-column mb-auto">
-      <li class="nav-item">
-        <a href="#" class="nav-link active">
-          <i class="fa fa-edit mx-1"></i>
-          <span>Editor</span>
-        </a>
-      </li>
-      <li>
-        <a href="/upgrade-plan" class="nav-link text-white">
-          <i class="fa fa-file mx-1"></i>
-          <span>Upgrade plan</span>
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link text-white">
-          <i class="fa fa-question mx-1"></i>
-          <span>Support</span>
-        </a>
-      </li>
+	<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 208px;">
+		<ul class="nav nav-pills flex-column mb-auto">
+			<li class="nav-item">
+				<a href="#" class="nav-link active">
+					<i class="fa fa-edit mx-1"></i>
+					<span>Editor</span>
+				</a>
+			</li>
+			<li>
+				{% if plan %}
+					<a href="/active-plan" class="nav-link text-white">
+						<i class="fa fa-file mx-1"></i>
+						<span>Current plan: {{plan | upper}}</span>
+					</a>
+				{% else %}
+					<a href="/upgrade-plan" class="nav-link text-white">
+						<i class="fa fa-file mx-1"></i>
+						<span>Upgrade plan</span>
+					</a>
+				{% endif %}
+			</li>
+			<li>
+				<a href="#" class="nav-link text-white">
+					<i class="fa fa-question mx-1"></i>
+					<span>Support</span>
+				</a>
+			</li>
 
-    </ul>
-    <hr>
-    <div href="/" class="d-flex align-items-center mb-md-0 m-auto text-white text-decoration-none">
-      <span class="fs-4">My projects:</span>
-    </div>
+		</ul>
+		<hr>
+		<div href="/" class="d-flex align-items-center mb-md-0 m-auto text-white text-decoration-none">
+			<span class="fs-4">My projects:</span>
+		</div>
 
-    <div class="text-center my-3">
-      <form action="/schema" method="POST">
-        <button type="submit" class="btn btn-outline-success w-100">
-          Add new
-          <i class="fa fa-plus"></i>
-        </button>
-      </form>
-    </div>
+		<div class="text-center my-3">
+			<form action="/schema" method="POST">
+				<button type="submit" class="btn btn-outline-success w-100">
+					Add new
+					<i class="fa fa-plus"></i>
+				</button>
+			</form>
+		</div>
 
-    <ul class="nav nav-pills flex-column mb-auto" style="overflow-y: scroll; display: block">
-      {% for codeStepper in codeSteppers %}
-        <li class="">
-          <div class="row">
-            <a href="/edit/{{codeStepper.slug}}" class="nav-link text-white w-100 d-inline-block {{codeStepper.slug == activeCodeStepperSlug ? 'active' : ''}}">
-              {{codeStepper.title}}
-            </a>
-          </div>
-        </li>
-      {% endfor %}
+		<ul class="nav nav-pills flex-column mb-auto" style=" display: block">
+			{% for codeStepper in codeSteppers %}
+				<li class="">
+					<div class="row">
+						<a href="/edit/{{codeStepper.slug}}" class="nav-link text-white w-100 d-inline-block {{codeStepper.slug == activeCodeStepperSlug ? 'active' : ''}}">
+							{{codeStepper.title}}
+						</a>
+					</div>
+				</li>
+			{% endfor %}
 
-    </ul>
-  </div>
+		</ul>
+	</div>
 
-  <div class="b-example-divider"></div>
+	<div class="b-example-divider"></div>
 
-  {% if codeStepper.slug is not empty %}
+	{% if codeStepper.slug is not empty %}
 
-    <div class="content-body">
-      <div style="min-height: 700px" class="code-stepper-editor" data-schema-url="/public/codestepper-files/{{codeStepper.slug}}">
-        Betöltés...
-      </div>
-    </div>
+		<div class="content-body">
+			<div style="min-height: 700px" class="code-stepper-editor" data-schema-url="{{siteUrl}}/public/codestepper-files/{{codeStepper.slug}}">
+				Betöltés...
+			</div>
+		</div>
 
-  {% else %}
-    <div class="w-100 rounded border m-3" style="height: calc(100vh - 150px)"></div>
-  {% endif %}
-  <div id="modal123-container" data-schema-id="{{codeStepper.slug}}" data-site-url="{{siteUrl}}"></div>
+	{% else %}
+		<div class="w-100 rounded border m-3" style="height: calc(100vh - 150px)"></div>
+	{% endif %}
+	<div id="modal123-container" data-schema-id="{{codeStepper.slug}}" data-site-url="{{siteUrl}}"></div>
 </main>

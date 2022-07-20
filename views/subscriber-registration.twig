@@ -1,57 +1,53 @@
-<div class="my-2 content-body">
-	<div class="card">
-		{% if isLoggedIn %}
-			<div class="card-body w-100 p-0" id="hero-spot2">
-				<div class="card-title">
-					{% if registrationSuccessful is defined and registrationSuccessful %}
-						<h1 class="mb-4 mt-5 text-success">
-							Regisztráció sikeres <i class="fa fa-check-circle"></i>
-						</h1>
-					{% endif %}
-				</div>
+<main class="main-content">
+  <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 208px;">
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a href="/edit" class="nav-link text-white">
+          <i class="fa fa-edit mx-1"></i>
+          <span>Editor</span>
+        </a>
+      </li>
+      <li>
+        <a href="/sign-up" class="nav-link active">
+          <i class="fa fa-user mx-1"></i>
+          <span>Sign up for free</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link text-white">
+          <i class="fa fa-question mx-1"></i>
+          <span>Support</span>
+        </a>
+      </li>
+      <hr>
 
-			</div>
-			<div class="row">
-				<div class="row m-auto mb-4">
-					{% for item in courses %}
-						<div class="col-md-6">
-							<a href="{{item.course.slug}}">
-								<div class="card p-2 m-2 bg-muted" style="background-color: azure">
-									<img src="/public/files/md-{{item.course.imgUrl}}" class="w-100"/>
-									<button class="btn mt-2" format="primary" id="login_signup_button">
-										<span class="sc-bxivhb jrbrfM">
-											Tovább
-											<i class="fa fa-arrow-circle-right"></i>
-										</span>
-									</button>
-								</div>
-							</a>
-						</div>
-					{% endfor %}
-				</div>
-			</div>
-		{% else %}
-			<div class="row m-0">
-				<div class="col-md-8 m-auto text-center">
-					<div class="card-body w-100 p-0" id="hero-spot2">
-						<h1 class="lead text-center p-2 display-5" style="letter-spacing: -0.04em">
-							<span>Légy tagja a Kódbázis közösségének!</span>
-						</h1>
-					</div>
-				</div>
+    </ul>
+  </div>
 
-				<div class="col-md-4">
-					<div class="p-3">
-						{% include 'subscriber-registration-form.twig' with {
-									'registrationSuccessful': registrationSuccessful, 
-									'error': error, 
-									'loginPath': '/login', 
-									'registrationEmailSent' : registrationEmailSent,
-								}  %}
-					</div>
-				</div>
-			</div>
-		{% endif %}
+  <div class="b-example-divider"></div>
 
-	</div>
-</div>
+  <div class="mb-3 content-body">
+    <div class="card">
+      {% if isLoggedIn %}
+        <div class="card-body w-100 p-0" id="hero-spot2">
+          <div class="card-title">
+            <h2 class="mb-4 mt-5 text-success display-5 text-center">
+              Logged in
+              <i class="fa fa-check-circle"></i>
+            </h2>
+          </div>
+        </div>
+
+      {% else %}
+        <div class="row m-0">
+          <div class="col-md-12">
+            <div class="p-3">
+              {% include 'subscriber-registration-form.twig' with {'loginError': loginError, 'email': email, registrationPath: '/login', 'isPasswordModificationSuccess': isPasswordModificationSuccess}  %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+</main>

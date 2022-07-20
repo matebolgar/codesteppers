@@ -21,9 +21,12 @@ class Subscriber
 
     $initSubscriberSession = PublicSite::initSubscriberSession($conn);
 
-    $r->get('/feliratkozas', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
+    $r->get('/sign-up', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
       header('Content-Type: text/html; charset=UTF-8');
       echo $twig->render('wrapper.twig', [
+        'navbar' => $twig->render("navbar.twig", [
+          'subscriberLabel' => getNick($request->vars) ?? "",
+        ]),
         'structuredData' => PublicSite::organizationStructuredData(),
         'subscriberLabel' =>  getNick($request->vars),
         'noIndex' => true,
@@ -251,7 +254,10 @@ class Subscriber
           'email' => $_GET['email'] ?? '',
         ]),
         'scripts' => [],
-        'styles' => [],
+        'styles' => [
+          ['path' => 'css/login.css'],
+          ['path' => 'css/fonts/fontawesome/css/fontawesome-all.css'],
+        ],
       ]);
     });
 

@@ -42,12 +42,6 @@
             </code></pre>
            
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary close-website-links-modal">
-              Close
-            </button>
-            <button type="button" class="btn btn-success">Copy</button>
-          </div>
         </div>
       </div>
     </div>

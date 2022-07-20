@@ -79,6 +79,7 @@ class PublicSite
         ]),
         'content' => $twig->render('home.twig', [
           'codeSteppers' => [],
+          'isLoggedIn' => isset($request->vars["subscriber"])
         ]),
         'metaTitle' => 'CodeSteppers - Online interactive tool for schools and teachers',
         'description' => 'CodeSteppers - Online interactive tool for schools and teachers',
@@ -157,19 +158,16 @@ class PublicSite
         return;
       }
 
-      $item = $codeSteppers->getEntities()[0];
-      $isLoggedIn = isset($request->vars["subscriber"]) && $item->getSubscriberId() === $request->vars["subscriber"]->getId();
+      $codeStepper = $codeSteppers->getEntities()[0];
+      $isLoggedIn = isset($request->vars["subscriber"]) && $codeStepper->getSubscriberId() === $request->vars["subscriber"]->getId();
 
-      $orders = (new OrderLister($conn))->list(Router::where('subscriberId', 'eq', $item->getSubscriberId()));
+      $orders = (new OrderLister($conn))->list(Router::where('subscriberId', 'eq', $codeStepper->getSubscriberId()));
 
-      $isPayed = false;
-      foreach ($orders->getEntities() as $order) {
-        // TODO validate if within a year
-        // TODO store view count, validate view count
-        if ($order->getStatus() === "SUCCESS") {
-          $isPayed = true;
-        }
-      }
+      $orders = (new OrderLister($conn))->list(
+        isOrderValidQuery($codeStepper->getSubscriberId())
+      );
+
+      $isPayed = (bool)$orders->getCount();
 
       // payed, logged in -> link to dashboard
       if ($isPayed && $isLoggedIn) {
@@ -197,9 +195,6 @@ class PublicSite
     });
 
     $r->get('/edit/{codeStepperSlug}', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
-
-      // var_dump($request->vars);
-      // exit;
 
       $q = null;
       $subscriberId = null;
@@ -251,6 +246,48 @@ class PublicSite
       }
 
       header('Content-Type: text/html; charset=UTF-8');
+
+
+      if(!$subscriberId) {
+        echo $twig->render('wrapper.twig', [
+          'navbar' => $twig->render("navbar.twig", [
+            "buttons" => $twig->render("buttons.twig", [
+              'codeStepper' => $codeSteppersBySlug->getCount() ? $codeSteppersBySlug->getEntities()[0] : '',
+            ]),
+            'subscriberLabel' => getNick($request->vars) ?? "",
+          ]),
+          'content' => $twig->render('edit-guest.twig', [
+            'codeStepper' =>  $codeSteppersBySlug->getCount() ? $codeSteppersBySlug->getEntities()[0] : '',
+            'codeSteppers' => $allCodeSteppers->getEntities(),
+            'siteUrl' => Router::siteUrl(),
+            'activeCodeStepperSlug' =>  $request->vars['codeStepperSlug'] ?? '',
+          ]),
+          'metaTitle' => 'CodeSteppers - Online interactive tool for schools and teachers',
+          'description' => 'CodeSteppers - Online interactive tool for schools and teachers',
+          'structuredData' => self::organizationStructuredData(),
+          'scripts' => [
+            [
+              "path" => "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js",
+              "isCdn" => true,
+            ],
+            ...getCodestepperEditorScripts(),
+            ...getCodestepperScripts(),
+            ["path" => "js/bootstrap.min.js"],
+            ["path" => "js/modal.js"],
+          ],
+          'styles' => [
+            ["path" => "css/dracula.css"],
+            ...getCodestepperEditorStyles(),
+            ...getCodestepperStyles(),
+          ],
+        ]);
+        return;
+      }
+
+      $orders = (new OrderLister($conn))->list(
+        isOrderValidQuery($subscriberId)
+      );
+
       echo $twig->render('wrapper.twig', [
         'navbar' => $twig->render("navbar.twig", [
           "buttons" => $twig->render("buttons.twig", [
@@ -259,6 +296,7 @@ class PublicSite
           'subscriberLabel' => getNick($request->vars) ?? "",
         ]),
         'content' => $twig->render('edit.twig', [
+          'plan' => $orders->getCount() ? $orders->getEntities()[0]->getPlan() : "",
           'codeStepper' =>  $codeSteppersBySlug->getCount() ? $codeSteppersBySlug->getEntities()[0] : '',
           'codeSteppers' => $allCodeSteppers->getEntities(),
           'siteUrl' => Router::siteUrl(),
@@ -294,11 +332,67 @@ class PublicSite
 
     $r->get("/platform.js", function (Request $request) use ($conn, $twig) {
       header('Content-Type: application/javascript');
-      echo file_get_contents("../public/js/platform.js");
+      echo str_replace("{{rootUrl}}", Router::siteUrl(), file_get_contents("../public/js/platform.js"));
+    });
+
+    $r->get('/active-plan', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
+      $id = $request->vars["subscriber"] ? $request->vars["subscriber"]->getId() : -1;
+
+      if($id === -1) {
+        header("Location: /edit");
+        return;
+      }
+      $orders = (new OrderLister($conn))->list(
+        isOrderValidQuery($id)
+      );
+
+      if(!$orders->getCount()) {
+        header("Location: /edit");
+        return;
+      }
+
+      echo $twig->render('wrapper.twig', [
+        'navbar' => $twig->render("navbar.twig", [
+          'subscriberLabel' => getNick($request->vars) ?? "",
+        ]),
+        'structuredData' => PublicSite::organizationStructuredData(),
+        'subscriberLabel' =>  getNick($request->vars),
+        'content' => $twig->render('plan-active.twig', [
+          "plan" => $orders->getEntities()[0]->getPlan(),
+          "activeUntil" =>  strtotime("+1 year", $orders->getEntities()[0]->getCreatedAt()),
+        ]),
+        'scripts' => [],
+        'styles' => [
+          ["path" => "css/plans.css"],
+          ['path' => 'css/promo.css'],
+          ['path' => 'css/login.css'],
+          ['path' => 'css/fonts/fontawesome/css/fontawesome-all.css'],
+        ],
+      ]);
+
     });
 
     $r->get('/upgrade-plan', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
       header('Content-Type: text/html; charset=UTF-8');
+
+      $id = $request->vars["subscriber"] ? $request->vars["subscriber"]->getId() : -1;
+
+      if($id === -1) {
+        header("Location: /edit");
+        return;
+      }
+
+      $orders = (new OrderLister($conn))->list(
+        isOrderValidQuery($id)
+      );
+
+      $isPayed = (bool)$orders->getCount();
+
+      if($isPayed) {
+        header("Location: /active-plan");
+        return;
+      }
+
       echo $twig->render('wrapper.twig', [
         'navbar' => $twig->render("navbar.twig", [
           'subscriberLabel' => getNick($request->vars) ?? "",
@@ -316,6 +410,7 @@ class PublicSite
           ["path" => "css/plans.css"],
           ['path' => 'css/promo.css'],
           ['path' => 'css/login.css'],
+          ['path' => 'css/fonts/fontawesome/css/fontawesome-all.css'],
         ],
       ]);
     });
@@ -370,11 +465,14 @@ class PublicSite
       $trx->addData('url', $backUrl);
 
       $trx->formDetails['element'] = 'button';
-
-      $trx->runStart();
+      try {
+        $trx->runStart();
+      } catch (\Throwable $th) {
+        header("Location: /upgrade-plan?error=startFailed");
+        exit;
+      }
 
       $paymentUrl = $trx->getReturnData()['paymentUrl'] ?? '';
-
 
       (new OrderSaver($conn))->Save(new NewOrder(
         $subscriber->getId(),
@@ -433,7 +531,35 @@ class PublicSite
 }
 
 
-
+function isOrderValidQuery($subscriberId)
+{
+  return new Query(
+    1,
+    0,
+    new Filter(
+      "and",
+      new Clause(
+        'eq',
+        'subscriberId',
+        $subscriberId,
+      ),
+      new Filter(
+        "and",
+        new Clause(
+          'gt',
+          'createdAt',
+          strtotime("-1 year"),
+        ),
+        new Clause(
+          'eq',
+          'status',
+          "SUCCESS",
+        )
+      ),
+    ),
+    new OrderBy('createdAt', 'desc')
+  );
+}
 
 function getCodestepperEditorScripts()
 {
