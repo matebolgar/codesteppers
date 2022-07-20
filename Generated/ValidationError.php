@@ -7,7 +7,7 @@ use JsonSerializable;
 use Throwable;
 
 class ValidationError extends Exception implements JsonSerializable, 
-\CodeSteppers\Generated\Subscriber\Error\ValidationError, \CodeSteppers\Generated\Codestepper\Error\ValidationError, \CodeSteppers\Generated\Order\Error\ValidationError
+\CodeSteppers\Generated\Subscriber\Error\ValidationError, \CodeSteppers\Generated\Codestepper\Error\ValidationError, \CodeSteppers\Generated\Order\Error\ValidationError, \CodeSteppers\Generated\Message\Error\ValidationError
 {
     private $fields = [];
 

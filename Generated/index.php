@@ -5,6 +5,7 @@ require '../../vendor/autoload.php';
 use CodeSteppers\Generated\Route\Subscriber;
 use CodeSteppers\Generated\Route\Codestepper;
 use CodeSteppers\Generated\Route\Order;
+use CodeSteppers\Generated\Route\Message;
 
 use CodeSteppers\Generated\ValidationError;
 use CodeSteppers\Generated\OperationError;
