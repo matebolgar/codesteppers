@@ -4,7 +4,7 @@
       <li class="nav-item">
         <a href="#" class="nav-link active">
           <i class="fa fa-edit mx-1"></i>
-          <span>Editor</span>
+          <span>Editor (trial mode)</span>
         </a>
       </li>
       <li>
@@ -54,7 +54,7 @@
   {% if codeStepper.slug is not empty %}
 
     <div class="content-body">
-      <div style="min-height: 700px" class="code-stepper-editor" data-schema-url="/public/codestepper-files/{{codeStepper.slug}}">
+      <div style="min-height: 700px" class="code-stepper-editor" data-schema-url="{{siteUrl}}/public/codestepper-files/{{codeStepper.slug}}">
         Betöltés...
       </div>
     </div>

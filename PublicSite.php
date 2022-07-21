@@ -80,8 +80,10 @@ class PublicSite
 
       header('Content-Type: text/html; charset=UTF-8');
       echo $twig->render('wrapper.twig', [
+        'isHome' => true,
         'navbar' => $twig->render("navbar.twig", [
           'subscriberLabel' => getNick($request->vars) ?? "",
+          'buttons' => $twig->render('try-out-button.twig'),
         ]),
         'content' => $twig->render('home.twig', [
           'codeSteppers' => [],

@@ -51,7 +51,7 @@
       gtag('config', 'UA-188538631-1');
     </script> #}
   </head>
-  <body class="home">
+  <body class="home" {{isHome is defined ? 'style="background: rgb(19 20 45);"' : ''}}>
 
     {{ navbar | raw }}
 
