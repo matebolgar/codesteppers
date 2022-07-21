@@ -1,6 +1,6 @@
 <?php
 
-namespace Kodbazis\Mailer;
+namespace Codesteppers\Mailer;
 
 use Exception;
 

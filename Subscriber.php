@@ -91,7 +91,7 @@ class Subscriber
 
       enqueueEmail(
         $request->body['email'],
-        'Megerősítés egyetlen kattintással',
+        'Verification by one click',
         $body,
         $conn
       );
