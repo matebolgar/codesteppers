@@ -1,60 +1,67 @@
 <nav id="main-nav" class="navbar m-auto shadow nav-colored navbar-visible w-100" style='z-index: 1;'>
-  <div class="row w-100 m-auto">
-    <div class="col-8 m-auto p-0">
-      <a href="/">
-        <div id="main-navbar-toggler" class="navbar-toggler text-white" type="button">
-          CodeSteppers -
-          <span class="oswald-font">Embeddable presentation for teachers and online schools</span>
-        </div>
-      </a>
-    </div>
-    <div class="col-4 m-auto text-end px-2" style="word-break: break-all; word-wrap:break-word;">
+	<div class="row w-100 m-auto">
+		<div class="col-8 m-auto p-0">
+			<a href="/">
+				<div id="main-navbar-toggler" class="navbar-toggler text-white" type="button">
+					CodeSteppers -
+					<span class="oswald-font">Embeddable presentation for teachers and online schools</span>
+				</div>
+			</a>
+		</div>
+		<div class="col-4 m-auto text-end px-2" style="word-break: break-all; word-wrap:break-word;">
 
-      {% if buttons is defined %}
-        {{buttons | raw}}
-      {% endif %}
-      {% if subscriberLabel != '' %}
-        <button id="subscriber-navbar-toggler" class="btn btn-sm text-light" style="border: none">
-          {{subscriberLabel}}
-          ▾
-        </button>
-      {% else %}
-        {% if not isLoginButtonHidden %}
-          <a href="/login">
-            <button class="btn btn-sm btn-outline-primary fw-bold">
-              Login
-            </button>
-          </a>
-        {% endif %}
-      {% endif %}
-    </div>
+			{% if buttons is defined %}
+				{{buttons | raw}}
+			{% endif %}
+			{% if subscriberLabel != '' %}
+				<button id="subscriber-navbar-toggler" class="btn btn-sm text-light" style="border: none">
+					{{subscriberLabel}}
+					▾
+				</button>
+			{% else %}
+				{% if not isLoginButtonHidden %}
+					<a href="/login">
+						<button class="btn btn-sm btn-outline-primary fw-bold">
+							Login
+						</button>
+					</a>
+				{% endif %}
+			{% endif %}
+		</div>
 
-  </div>
-  <div class="row w-100">
-    <div class="col-lg-3 p-0" style="position: absolute;right: 0;">
+	</div>
+	<div class="row w-100">
+		<div class="col-lg-3 p-0" style="position: absolute;right: 0;">
 
-      <div id="subscriber-navbar-items" class="d-none w-100 border-dark border-left border-right border-bottom bg-black">
-        <ul class="navbar-nav me-auto text-center">
-          <li class="navbar-item nav-item border-bottom border-dark py-3">
-            <a href="/edit" target="_blank">
-                <span>Edit my projects <i class='fa fa-arrow-circle-right'></i></span>
-            </a>
-          </li>
-          <li class="navbar-item nav-item border-bottom border-dark">
-            <a class="nav-link text-light p-2 pe-3" href="#">
-              <form action="/api/subscriber-logout" method="post">
-                <button type="submit" class="btn btn-sm btn-outline-danger fw-bold">Logout</button>
-              </form>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class="col-lg-6"></div>
-    <div class="col-lg-3 p-0" style="position: absolute;left: 0;">
-      <div id="main-navbar-items" style="border: 1px solid black" class="d-none w-100 border-dark border-left border-right border-bottom">
-        <ul class="navbar-nav me-auto lead"></ul>
-      </div>
-    </div>
-  </div>
+			<div id="subscriber-navbar-items" class="d-none w-100 border-dark border-left border-right border-bottom bg-black">
+				<ul class="navbar-nav me-auto text-center">
+					<li class="navbar-item nav-item border-bottom border-dark">
+						<a class="nav-link text-light p-2 pe-3" href="/edit">
+							<button class="btn btn-sm btn-outline-primary">
+								<span>Edit my projects
+									<i class='fa fa-arrow-circle-right'></i>
+								</span>
+							</button>
+						</a>
+					</li>
+					<li class="navbar-item nav-item border-bottom border-dark">
+						<a class="nav-link text-light p-2 pe-3" href="#">
+							<form action="/api/subscriber-logout" method="post">
+								<button type="submit" class="btn btn-sm btn-outline-danger fw-bold">
+									Logout
+                  <i class='fa fa-sign-out-alt'></i>
+								</button>
+							</form>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-lg-6"></div>
+		<div class="col-lg-3 p-0" style="position: absolute;left: 0;">
+			<div id="main-navbar-items" style="border: 1px solid black" class="d-none w-100 border-dark border-left border-right border-bottom">
+				<ul class="navbar-nav me-auto lead"></ul>
+			</div>
+		</div>
+	</div>
 </nav>
