@@ -1,1 +1,70 @@
-{"id":"62c32c71707e3","type":"codeSurfer","steps":[{"fileName":"app.js","showNumbers":true,"title":"Welcome to CodeSteppers","focus":"","label":"Welcome","content":"\/*\nNullam ultrices nunc justo, ut aliquam tellus imperdiet nec. \nIn varius dignissim venenatis. Sed fermentum dignissim imperdiet. \nAliquam congue nulla vel nibh laoreet aliquam. Sed et semper mauris, \nut vehicula nisl. Integer ultricies orci in nibh vehicula semper. \n\nIn blandit et nibh a dapibus. Aenean vel libero non odio blandit commodo. \nEtiam vel pulvinar arcu, dapibus semper nisi. Fusce dignissim, justo \nsit amet posuere fringilla, elit mauris tempus arcu, non elementum nunc \nsem quis felis. Vestibulum vitae mauris tristique, pellentesque quam vitae, \nrhoncus nisi.\n\nAlso zooming and more!\n*\/"},{"fileName":"app.js","showNumbers":true,"title":"","focus":"","label":"","content":"\/*\nNullam ultrices nunc justo, ut aliquam tellus imperdiet nec. \nIn varius dignissim venenatis. Sed fermentum dignissim imperdiet. \n*\/\n\n  console.log(\"Ideal for online schools and teachers!\");\n\n\/*\nAliquam congue nulla vel nibh laoreet aliquam. Sed et semper mauris, \nut vehicula nisl. Integer ultricies orci in nibh vehicula semper. \n\nIn blandit et nibh a dapibus. Aenean vel libero non odio blandit commodo. \nEtiam vel pulvinar arcu, dapibus semper nisi. Fusce dignissim, justo \nsit amet posuere fringilla, elit mauris tempus arcu, non elementum nunc \nsem quis felis. Vestibulum vitae mauris tristique, pellentesque quam vitae, \nrhoncus nisi.\n\nAlso zooming and more!\n*\/\n\n"},{"fileName":"app.js","showNumbers":true,"title":"","focus":"","label":"","content":"\/*\nNullam ultrices nunc justo, ut aliquam tellus imperdiet nec. \nIn varius dignissim venenatis. Sed fermentum dignissim imperdiet. \n*\/\n\nfunction logHello() {\n  console.log(\"Ideal for online schools and teachers!\");\n}\n\n\n\/*\nAliquam congue nulla vel nibh laoreet aliquam. Sed et semper mauris, \nut vehicula nisl. Integer ultricies orci in nibh vehicula semper. \n\nIn blandit et nibh a dapibus. Aenean vel libero non odio blandit commodo. \nEtiam vel pulvinar arcu, dapibus semper nisi. Fusce dignissim, justo \nsit amet posuere fringilla, elit mauris tempus arcu, non elementum nunc \nsem quis felis. Vestibulum vitae mauris tristique, pellentesque quam vitae, \nrhoncus nisi.\n\nAlso zooming and more!\n*\/\n"},{"fileName":"app.js","showNumbers":true,"title":"","focus":"","label":"Features","content":"\/*\n- Donec in sapien eu est elementum faucibus. \n\n- Etiam eu vestibulum enim. Donec nisi felis, finibus sit amet semper. \n\n- Interdum et malesuada fames ac ante ipsum primis in faucibus. \n\n- Mauris efficitur cursus dui, ac vulputate enim vehicula sit amet. \n\n- Suspendisse bibendum semper ultricies. \n\n- Nunc vel est et nibh pretium dapibus vel a ligula. Morbi egestas aliquam suscipit. \n\n- Aenean ornare consequat ipsum ut porttitor. \n\n- Easily embeddable to any website\n*\/\n\n`<h1>\n    Lots of features and syntax highlighting for ${languages}!\n<\/h1>`"},{"fileName":"app.js","showNumbers":true,"title":"","focus":"","label":"Examples","content":"\/*\n*  \n*   Examples currently running in real online learning platform\n*  \n*   Watch intro video\n*\n*\n*\n*\n*\n*\/"},{"fileName":"app.js","showNumbers":true,"title":"","focus":"","label":"Pricing","content":"\/*\nBasic - Sed ac mauris ipsum. Vivamus dictum, tellus non facilisis ultricies, \nnisl nulla egestas mauris, quis dictum purus arcu lobortis sapien. \nMaecenas in tempus nulla. Sed sed finibus ante. \n\nAdvanced - Pellentesque ultrices velit tortor. \nNulla id leo viverra nisi scelerisque convallis a vitae nisl. \n\nPro - In hac habitasse platea dictumst. \nNunc malesuada consequat enim, at varius odio efficitur sit amet.\n*\/"},{"fileName":"app.js","showNumbers":true,"title":"","focus":"","label":"Try it now","content":"\/*\n*\n*  Try it now for free\n*\n*\n*\n*\n*\n*\n*\/"}]}
+{
+  "id": "62c32c71707e3",
+  "type": "codeSurfer",
+  "theme": "dark",
+  "steps": [
+    {
+      "fileName": "app.js",
+      "language": "javascript",
+      "showNumbers": true,
+      "title": "Welcome to CodeSteppers",
+      "focus": "",
+      "label": "Welcome",
+      "content": "\/*\nNullam ultrices nunc justo, ut aliquam tellus imperdiet nec. \nIn varius dignissim venenatis. Sed fermentum dignissim imperdiet. \nAliquam congue nulla vel nibh laoreet aliquam. Sed et semper mauris, \nut vehicula nisl. Integer ultricies orci in nibh vehicula semper. \n\nIn blandit et nibh a dapibus. Aenean vel libero non odio blandit commodo. \nEtiam vel pulvinar arcu, dapibus semper nisi. Fusce dignissim, justo \nsit amet posuere fringilla, elit mauris tempus arcu, non elementum nunc \nsem quis felis. Vestibulum vitae mauris tristique, pellentesque quam vitae, \nrhoncus nisi.\n\nAlso zooming and more!\n*\/"
+    },
+    {
+      "fileName": "app.js",
+      "language": "javascript",
+      "showNumbers": true,
+      "title": "",
+      "focus": "",
+      "label": "",
+      "content": "\/*\nNullam ultrices nunc justo, ut aliquam tellus imperdiet nec. \nIn varius dignissim venenatis. Sed fermentum dignissim imperdiet. \n*\/\n\n  console.log(\"Ideal for online schools and teachers!\");\n\n\/*\nAliquam congue nulla vel nibh laoreet aliquam. Sed et semper mauris, \nut vehicula nisl. Integer ultricies orci in nibh vehicula semper. \n\nIn blandit et nibh a dapibus. Aenean vel libero non odio blandit commodo. \nEtiam vel pulvinar arcu, dapibus semper nisi. Fusce dignissim, justo \nsit amet posuere fringilla, elit mauris tempus arcu, non elementum nunc \nsem quis felis. Vestibulum vitae mauris tristique, pellentesque quam vitae, \nrhoncus nisi.\n\nAlso zooming and more!\n*\/\n\n"
+    },
+    {
+      "fileName": "app.js",
+      "language": "javascript",
+      "showNumbers": true,
+      "title": "",
+      "focus": "",
+      "label": "",
+      "content": "\/*\nNullam ultrices nunc justo, ut aliquam tellus imperdiet nec. \nIn varius dignissim venenatis. Sed fermentum dignissim imperdiet. \n*\/\n\nfunction logHello() {\n  console.log(\"Ideal for online schools and teachers!\");\n}\n\n\n\/*\nAliquam congue nulla vel nibh laoreet aliquam. Sed et semper mauris, \nut vehicula nisl. Integer ultricies orci in nibh vehicula semper. \n\nIn blandit et nibh a dapibus. Aenean vel libero non odio blandit commodo. \nEtiam vel pulvinar arcu, dapibus semper nisi. Fusce dignissim, justo \nsit amet posuere fringilla, elit mauris tempus arcu, non elementum nunc \nsem quis felis. Vestibulum vitae mauris tristique, pellentesque quam vitae, \nrhoncus nisi.\n\nAlso zooming and more!\n*\/\n"
+    },
+    {
+      "fileName": "app.js",
+      "language": "javascript",
+      "showNumbers": true,
+      "title": "",
+      "focus": "",
+      "label": "Features",
+      "content": "\/*\n- Donec in sapien eu est elementum faucibus. \n\n- Etiam eu vestibulum enim. Donec nisi felis, finibus sit amet semper. \n\n- Interdum et malesuada fames ac ante ipsum primis in faucibus. \n\n- Mauris efficitur cursus dui, ac vulputate enim vehicula sit amet. \n\n- Suspendisse bibendum semper ultricies. \n\n- Nunc vel est et nibh pretium dapibus vel a ligula. Morbi egestas aliquam suscipit. \n\n- Aenean ornare consequat ipsum ut porttitor. \n\n- Easily embeddable to any website\n*\/\n\n`<h1>\n    Lots of features and syntax highlighting for ${languages}!\n<\/h1>`"
+    },
+    {
+      "fileName": "app.js",
+      "language": "javascript",
+      "showNumbers": true,
+      "title": "",
+      "focus": "",
+      "label": "Examples",
+      "content": "\/*\n*  \n*   Examples currently running in real online learning platform\n*  \n*   Watch intro video\n*\n*\n*\n*\n*\n*\/"
+    },
+    {
+      "fileName": "app.js",
+      "language": "javascript",
+      "showNumbers": true,
+      "title": "",
+      "focus": "",
+      "label": "Pricing",
+      "content": "\/*\nBasic - Sed ac mauris ipsum. Vivamus dictum, tellus non facilisis ultricies, \nnisl nulla egestas mauris, quis dictum purus arcu lobortis sapien. \nMaecenas in tempus nulla. Sed sed finibus ante. \n\nAdvanced - Pellentesque ultrices velit tortor. \nNulla id leo viverra nisi scelerisque convallis a vitae nisl. \n\nPro - In hac habitasse platea dictumst. \nNunc malesuada consequat enim, at varius odio efficitur sit amet.\n*\/"
+    },
+    {
+      "fileName": "app.js",
+      "language": "javascript",
+      "showNumbers": true,
+      "title": "",
+      "focus": "",
+      "label": "Try it now",
+      "content": "\/*\n*\n*  Try it now for free\n*\n*\n*\n*\n*\n*\n*\/"
+    }
+  ]
+}

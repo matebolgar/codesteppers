@@ -85,7 +85,8 @@ class PublicSite
         ]),
         'content' => $twig->render('home.twig', [
           'codeSteppers' => [],
-          'isLoggedIn' => isset($request->vars["subscriber"])
+          'isLoggedIn' => isset($request->vars["subscriber"]),
+          'siteUrl' => Router::siteUrl(),
         ]),
         'metaTitle' => 'CodeSteppers - Online interactive tool for schools and teachers',
         'description' => 'CodeSteppers - Online interactive tool for schools and teachers',

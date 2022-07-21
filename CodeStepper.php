@@ -604,7 +604,6 @@ class CodeStepper
         "type" => "codeSurfer",
         "theme" => "dark",
         "showNumbers" => true,
-        "jumpFromPrev" => false,
         "steps" => [
           [
             "fileName" => "subtitle",
