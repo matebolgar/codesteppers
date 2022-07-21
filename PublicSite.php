@@ -6,6 +6,7 @@ use CodeSteppers\Generated\Listing\Clause;
 use CodeSteppers\Generated\Listing\Filter;
 use CodeSteppers\Generated\Listing\OrderBy;
 use CodeSteppers\Generated\Listing\Query;
+use CodeSteppers\Generated\Message\Save\NewMessage;
 use CodeSteppers\Generated\Order\Patch\PatchedOrder;
 use CodeSteppers\Generated\Request;
 use mysqli;
@@ -13,6 +14,7 @@ use Twig\Environment;
 use CodeSteppers\Generated\Repository\Subscriber\SqlLister as SubscriberLister;
 use CodeSteppers\Generated\Repository\Codestepper\SqlLister as CodestepperLister;
 use CodeSteppers\Generated\Repository\Order\SqlSaver as OrderSaver;
+use CodeSteppers\Generated\Repository\Message\SqlSaver as MessageSaver;
 use CodeSteppers\Generated\Repository\Order\SqlLister as OrderLister;
 use CodeSteppers\Generated\Repository\Order\SqlPatcher as OrderPatcher;
 use CodeSteppers\Generated\Order\Save\NewOrder;
@@ -610,16 +612,15 @@ function getFileExtension($fileName)
 
 function enqueueEmail($recipientEmail, $subject, $body, $conn)
 {
-  var_dump($recipientEmail, $subject, $body);
-  // (new MessageSaver($conn))->Save(new NewMessage(
-  //     $recipientEmail,
-  //     $subject,
-  //     $body,
-  //     "notSent",
-  //     0,
-  //     null,
-  //     time()
-  // ));
+  (new MessageSaver($conn))->Save(new NewMessage(
+      $recipientEmail,
+      $subject,
+      $body,
+      "notSent",
+      0,
+      null,
+      time()
+  ));
 }
 
 

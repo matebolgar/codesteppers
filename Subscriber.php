@@ -87,7 +87,7 @@ class Subscriber
       ]);
 
       $params = ['registrationEmailSent=1'];
-      // header('Location: ' .  $_SERVER['HTTP_REFERER']  . Router::mergeQueries($_SERVER['HTTP_REFERER'], $params));
+      header('Location: ' .  $_SERVER['HTTP_REFERER']  . Router::mergeQueries($_SERVER['HTTP_REFERER'], $params));
 
       enqueueEmail(
         $request->body['email'],
@@ -121,7 +121,7 @@ class Subscriber
     });
 
 
-    $r->get('/elfelejtett-jelszo', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
+    $r->get('/forgot-password', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
       header('Content-Type: text/html; charset=UTF-8');
       if (isset($request->vars['subscriber'])) {
         header('Location: /');
@@ -129,6 +129,10 @@ class Subscriber
       }
 
       echo $twig->render('wrapper.twig', [
+        'navbar' => $twig->render("navbar.twig", [
+          'subscriberLabel' => "",
+          'isLoginButtonHidden' => true
+        ]),
         "title" => "Elfelejtett jelszó",
         'content' => $twig->render('forgot-password.twig', [
           'isError' => isset($_GET['isError']),
@@ -145,7 +149,7 @@ class Subscriber
     });
 
     $r->get('/api/forgot-password', function (Request $request) {
-      header('Location: /elfelejtett-jelszo?isError=1');
+      header('Location: /forgot-password?isError=1');
     });
 
     $r->post('/api/forgot-password', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
@@ -158,10 +162,10 @@ class Subscriber
       $byEmail = (new SubscriberLister($conn))->list(Router::where('email', 'eq', $request->body['email']));
 
       if ($byEmail->getCount() === 0) {
-        header('Location: /elfelejtett-jelszo?isError=1');
+        header('Location: /forgot-password?isError=1');
         return;
       }
-      // header('Location: /elfelejtett-jelszo?emailSent=1');
+      header('Location: /forgot-password?emailSent=1');
 
       $subscriber = $byEmail->getEntities()[0];
       $token = uniqid();
@@ -173,19 +177,19 @@ class Subscriber
 
       $body = $twig->render('forgot-password-email.twig', [
         'email' => $subscriber->getEmail(),
-        'link' => Router::siteUrl() . "/jelszo-megvaltoztatasa/" . $token . "?referer=" . $_GET['referer'],
+        'link' => Router::siteUrl() . "/password-change/" . $token . "?referer=" . $_GET['referer'],
       ]);
 
       enqueueEmail(
         $subscriber->getEmail(),
-        'Jelszó megváltoztatása',
+        'Password change',
         $body,
         $conn
       );
     });
 
 
-    $r->get('/jelszo-megvaltoztatasa/{token}', function (Request $request) use ($conn, $twig) {
+    $r->get('/password-change/{token}', function (Request $request) use ($conn, $twig) {
       $byToken = (new SubscriberLister($conn))->list(Router::where('verificationToken', 'eq', $request->vars['token']));
 
       if ($byToken->getCount() === 0) {
@@ -193,6 +197,10 @@ class Subscriber
         return;
       }
       echo $twig->render('wrapper.twig', [
+        'navbar' => $twig->render("navbar.twig", [
+          'subscriberLabel' => "",
+          'isLoginButtonHidden' => true
+        ]),
         'content' => $twig->render('create-new-password.twig', [
           'token' => $request->vars['token'],
           'referer' => $_GET['referer'] ?? '',
