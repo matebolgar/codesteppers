@@ -25,17 +25,18 @@ class SqlPatcher implements Patcher
           
           $stmt = $this->connection->prepare(
               'UPDATE `orders` SET 
-                `status` = ?
+                `status` = ?, `count` = ?
                 WHERE `id` = ?;'
           );
           
           call_user_func(function (...$params) use ($stmt) {
                 $stmt->bind_param(
-                    "ss",
+                    "sis",
                     ...$params
                 );
             },
-                $merged->getStatus(), $id);
+                $merged->getStatus(),
+        $merged->getCount(), $id);
           
           
           $stmt->execute();
@@ -44,7 +45,7 @@ class SqlPatcher implements Patcher
               throw new OperationError($stmt->error);
           }
           
-          return new Order($id, $byId->getSubscriberId(),$byId->getPlan(),$byId->getRef(),$merged->getStatus(),$byId->getCreatedAt());
+          return new Order($id, $byId->getSubscriberId(),$byId->getPlan(),$byId->getRef(),$merged->getStatus(),$merged->getCount(),$byId->getCreatedAt());
       
       } catch (\Error $exception) {
             if ($_SERVER['DEPLOYMENT_ENV'] === 'dev') {
@@ -64,7 +65,7 @@ class SqlPatcher implements Patcher
     private function merge(Order $prev, PatchedOrder $patched): PatchedOrder
     {
         return new PatchedOrder(
-            $patched->getStatus() !== null ? $patched->getStatus() : $prev->getStatus()
+            $patched->getStatus() !== null ? $patched->getStatus() : $prev->getStatus(), $patched->getCount() !== null ? $patched->getCount() : $prev->getCount()
         );
     }
 }

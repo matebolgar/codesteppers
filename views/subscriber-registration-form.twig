@@ -15,14 +15,6 @@
 			Please check your email to verify your account!
 		</p>
 	</div>
-	<script>
-		const el = document.getElementById('registrationEmailSent-alert');
-let isLight = false
-setInterval(() => {
-el.style.background = isLight ? '#D4EDDA' : '#7ABE89';
-isLight = ! isLight
-}, 950);
-	</script>
 {% endif %}
 {% if registrationSuccessful is defined and registrationSuccessful %}
 	<div class="alert alert-success p-2 m-2">

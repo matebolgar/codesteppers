@@ -65,7 +65,7 @@
         }
 
         try {
-          $toSave = new NewOrder((int)($entity['subscriberId']), (string)($entity['plan']), (string)($entity['ref']), (string)($entity['status']), (int)($entity['createdAt'] ?? 0));
+          $toSave = new NewOrder((int)($entity['subscriberId']), (string)($entity['plan']), (string)($entity['ref']), (string)($entity['status']), (int)($entity['count'] ?? 0), (int)($entity['createdAt'] ?? 0));
               return $this->saver->Save($toSave);
         } catch (Exception $err) {
                 $this->operationError->addField(Error::getOperationError());
@@ -87,6 +87,7 @@
             'plan' => [$this, 'isString'],
             'ref' => [$this, 'isString'],
             'status' => [$this, 'isString'],
+            'count' => [$this, 'isInt'],
             'createdAt' => [$this, 'isInt']
 
         ];

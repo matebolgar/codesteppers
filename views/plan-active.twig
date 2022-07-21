@@ -1,40 +1,432 @@
+{% set usagePercent = order.count / planQuotaMap[order.plan] * 100 %}
 <main class="main-content">
 	<div class="d-flex flex-column flex-shrink-0 px-2 text-white bg-dark" style="width: 208px;">
 		<ul class="nav nav-pills flex-column py-2">
-      <li class="nav-item">
-        <a href="/edit" class="nav-link text-white">
-          <i class="fa fa-edit mx-1"></i>
-          <span>Editor</span>
-        </a>
-      </li>
-      <li>
-        <a href="/upgrade-plan" class="nav-link text-white active">
-          <i class="fa fa-file mx-1"></i>
-          <span>Current plan: {{plan | upper}}</span>
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link text-white">
-          <i class="fa fa-question mx-1"></i>
-          <span>Support</span>
-        </a>
-      </li>
-    </ul>
-  </div>
+			<li class="nav-item">
+				<a href="/" class="nav-link text-white">
+					<i class="fa fa-home mx-1"></i>
+					<span>Home</span>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a href="/edit" class="nav-link text-white">
+					<i class="fa fa-edit mx-1"></i>
+					<span>Editor</span>
+				</a>
+			</li>
+			<li>
+				<a href="/upgrade-plan" class="nav-link text-white active">
+					<i class="fa fa-file mx-1"></i>
+					<span>Current plan:
+						{{order.plan | upper}}</span>
+				</a>
+			</li>
+			<li>
+				<a href="#" class="nav-link text-white">
+					<i class="fa fa-question mx-1"></i>
+					<span>Support</span>
+				</a>
+			</li>
+		</ul>
+	</div>
 
-  <div class="b-example-divider"></div>
+	<div class="b-example-divider"></div>
 
-  <div class="mb-3 content-body my-2">
+	<div class="mb-3 content-body my-2 w-100">
 
-    <div class="row">
+		<div class="row my-3 w-100">
 
-      <div class="col-md-12">
-        Plan active: {{plan | upper}}
-        <i class="fa fa-success"></i>
-        Active until: {{activeUntil | date("m/d/Y")}} 
-      </div>
-    </div>
+			<div class="col-md-12 px-4">
+				<h1 class="display-6 text-center py-3">
+					Current usage:
+				</h1>
 
-  </div>
+				<div class="progress">
+					<div class="progress-bar" role="progressbar" style="width: {{usagePercent | number_format}}%;">
+						{{usagePercent | number_format}}%
+					</div>
+				</div>
+				<div class="text-center">
+					{{order.count}}
+					/
+					{{planQuotaMap[order.plan]}}
+				</div>
+
+				{% if usagePercent >= 100 %}
+					<div class="text-center text-danger">
+						Usage quota exceeded!
+					</div>
+				{% endif %}
+
+			</div>
+		</div>
+
+
+		{% if order.plan == "lite" %}
+
+			<div class="row mb-5">
+
+				<div class="col-md-12">
+					<h1 class="display-6 text-center">
+						Select your Plan 14-day money back guarantee.
+					</h1>
+
+					<p class="text-center">
+						<i>Risk-free, you can cancel at anytime.</i>
+					</p>
+
+					{% if error == 'startFailed' %}
+						<div class="alert alert-danger p-1 pe-2 ps-2 w-100 text-center">
+							<p style="font-size:14px">
+								<span>An error occured please try again!</span>
+							</p>
+						</div>
+					{% endif %}
+					{% if error == 'transactionFailed' %}
+						<div class="alert alert-danger p-1 pe-2 ps-2 w-100 text-center">
+							<p style="font-size:14px">
+								<span>Failed transaction!</span><br/>
+								SimplePay transaction identifier:
+								{{transactionId}}
+								<br/>
+								Please check if the details provided during the transaction are correct. If all the details were provided correctly, please contact the bank that issued your card in order to investigate the cause of the rejection.
+							</p>
+						</div>
+					{% endif %}
+					{% if error == 'transactionCancelled' %}
+						<div class="alert alert-danger p-1 pe-2 ps-2 w-100 text-center">
+							<p style="font-size:14px">
+								<span>Cancelled payment!</span><br/>
+							</p>
+						</div>
+					{% endif %}
+					{% if error == 'transactionTimeout' %}
+						<div class="alert alert-danger p-1 pe-2 ps-2 w-100 text-center">
+							<p style="font-size:14px">
+								<span>You exceeded the maximum time available to start the transaction.</span><br/>
+							</p>
+						</div>
+					{% endif %}
+					{% if transactionSuccessful is defined and transactionId != "" %}
+						<div class="alert alert-success p-1 pe-2 ps-2 w-100 text-center">
+							<p style="font-size:14px">
+								<span>Successful transaction!</span>
+							</p>
+							<p style="font-size:14px">
+								SimplePay transaction identifier:
+								{{transactionId}}
+							</p>
+						</div>
+					{% endif %}
+
+					<div class="popup-select-plan-table-container m-2" ng-if="(!subscription || subscription.plan.parameters.apps_count == 1) &amp;&amp; !config.showOnlyPacks">
+						<div class="popup-select-plan-table">
+
+							<div class="popup-select-plan-table-col" ng-repeat="plan in preparedPlans | reverseObject">
+								<div class="popup-select-plan-table-head popup-select-plan-table-cell">
+
+
+									<div class="popup-select-plan-table-head-title ng-binding" ng-if="plan.periods.monthly.price > 0">
+										Enterprise
+									</div>
+
+
+									<div class="popup-select-plan-table-head-caption ng-binding" ng-bind-html="plansCaptions[plan.display_name]">Best for high traffic websites and agencies</div>
+								</div>
+
+								<div class="popup-select-plan-table-price popup-select-plan-table-cell">
+
+
+									<div class="popup-select-plan-table-price" ng-if="plan.periods.monthly.price > 0">
+										<div class="popup-select-plan-table-price-block">
+											<span class="popup-select-plan-table-price-block-currency">$</span>
+											<span class="popup-select-plan-table-price-block-value ng-binding">25</span>
+											<span class="popup-select-plan-table-price-block-delimiter">/</span>
+											<span class="popup-select-plan-table-price-block-period" translate="">mo</span>
+										</div>
+
+										<div class="popup-select-plan-table-price-select-button-wrapper">
+											<form action="/upgrade-plan/enterprise" method="POST">
+												<button type="submit" class="popup-select-plan-table-price-select-button button-40 button button-green">
+													<span>Pay yearly</span>
+												</button>
+											</form>
+										</div>
+
+									</div>
+
+								</div>
+
+								<div class="popup-select-plan-table-cell">
+									<div class="popup-select-plan-table-feature ng-binding">
+										5,000,000
+										<translate>views</translate>
+										<br/>
+										<small class="small">(Resets monthly)</small>
+
+										<div class="popup-select-plan-table-cell-views-info tooltip">
+											<svg width="2" height="8" viewbox="0 0 2 8">
+												<rect y="3" width="2" height="5" rx="1" ry="1"></rect>
+												<rect width="2" height="2" rx="1" ry="1"></rect>
+											</svg>
+
+											<div class="tooltip-content">
+												<div class="tooltip-content-inner">
+													<p translate="">The number of views is the number of times an app loads on your website.</p>
+													<p translate="">It depends on the number of visits to a page with the widgets.</p>
+													<p translate="">The limit is provided on a monthly basis, and it's reset once a month.</p>
+													<p>
+														<a href="https://help.elfsight.com/article/694-views-metric" target="_blank" translate="">Learn more about views</a>
+													</p>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="popup-select-plan-table-feature">
+
+
+										<span>
+											Premium support</span>
+
+									</div>
+
+									<div class="popup-select-plan-table-feature" ng-class="{'popup-select-plan-table-cell-disable': plan.name === 'Lite'}" translate="">Free installation service</div>
+
+									<div class="popup-select-plan-table-feature" ng-class="{'popup-select-plan-table-cell-disable': plan.name === 'Lite'}" translate="">CodeStepper logo removal</div>
+								</div>
+							</div>
+
+							<div class="popup-select-plan-table-col popup-select-plan-table-col-highlight">
+								<div class="popup-select-plan-table-head popup-select-plan-table-cell">
+
+
+									<div class="popup-select-plan-table-head-title ng-binding" ng-if="plan.periods.monthly.price > 0">
+										Pro
+									</div>
+
+
+									<div class="popup-select-plan-table-head-caption ng-binding" ng-bind-html="plansCaptions[plan.display_name]">Best for growing businesses</div>
+								</div>
+
+								<div class="popup-select-plan-table-price popup-select-plan-table-cell">
+
+									<div class="popup-select-plan-table-price" ng-if="plan.periods.monthly.price > 0">
+										<div class="popup-select-plan-table-price-block">
+											<span class="popup-select-plan-table-price-block-currency">$</span>
+											<span class="popup-select-plan-table-price-block-value ng-binding">10</span>
+											<span class="popup-select-plan-table-price-block-delimiter">/</span>
+											<span class="popup-select-plan-table-price-block-period" translate="">mo</span>
+										</div>
+
+
+										<div class="popup-select-plan-table-price-select-button-wrapper">
+
+											<form action="/upgrade-plan/pro" method="POST">
+												<button type="submit" class="popup-select-plan-table-price-select-button button-40 button button-green">
+
+													<span>Pay yearly</span>
+												</button>
+											</form>
+										</div>
+									</div>
+
+								</div>
+
+								<div class="popup-select-plan-table-cell">
+									<div class="popup-select-plan-table-feature ng-binding">
+										50,000
+										<br/>
+										<small class="small">(Resets monthly)</small>
+
+										<div class="popup-select-plan-table-cell-views-info tooltip">
+											<svg width="2" height="8" viewbox="0 0 2 8">
+												<rect y="3" width="2" height="5" rx="1" ry="1"></rect>
+												<rect width="2" height="2" rx="1" ry="1"></rect>
+											</svg>
+
+											<div class="tooltip-content">
+												<div class="tooltip-content-inner">
+													<p translate="">The number of views is the number of times an app loads on your website.</p>
+													<p translate="">It depends on the number of visits to a page with the widgets.</p>
+													<p translate="">The limit is provided on a monthly basis, and it's reset once a month.</p>
+
+													<p>
+														<a href="https://help.elfsight.com/article/694-views-metric" target="_blank" translate="">Learn more about views</a>
+													</p>
+												</div>
+											</div>
+										</div>
+									</div>
+
+
+									<div class="popup-select-plan-table-feature">
+										<span>
+											Premium support
+										</span>
+									</div>
+
+									<div class="popup-select-plan-table-feature" ng-class="{'popup-select-plan-table-cell-disable': plan.name === 'Lite'}" translate="">Free installation service</div>
+
+									<div class="popup-select-plan-table-feature" ng-class="{'popup-select-plan-table-cell-disable': plan.name === 'Lite'}" translate="">CodeStepper logo removal</div>
+								</div>
+							</div>
+
+							<div class="popup-select-plan-table-col">
+								<div class="popup-select-plan-table-head popup-select-plan-table-cell">
+
+									<div class="popup-select-plan-table-head-title ng-binding" ng-if="plan.periods.monthly.price > 0">
+										Basic
+									</div>
+
+
+									<div class="popup-select-plan-table-head-caption ng-binding" ng-bind-html="plansCaptions[plan.display_name]">Best for low-traffic websites</div>
+								</div>
+
+								<div class="popup-select-plan-table-price popup-select-plan-table-cell">
+									<div class="popup-select-plan-table-price" ng-if="plan.periods.monthly.price > 0">
+										<div class="popup-select-plan-table-price-block">
+											<span class="popup-select-plan-table-price-block-currency">$</span>
+											<span class="popup-select-plan-table-price-block-value ng-binding">5</span>
+											<span class="popup-select-plan-table-price-block-delimiter">/</span>
+											<span class="popup-select-plan-table-price-block-period" translate="">mo</span>
+										</div>
+
+										<div class="popup-select-plan-table-price-select-button-wrapper">
+											<form action="/upgrade-plan/basic" method="POST">
+												<button type="submit" class="popup-select-plan-table-price-select-button button-40 button button-green">
+
+													<span>Pay yearly</span>
+
+
+												</button>
+											</form>
+										</div>
+
+									</div>
+
+								</div>
+
+								<div class="popup-select-plan-table-cell">
+									<div class="popup-select-plan-table-feature ng-binding">
+										5,000
+										<translate>views</translate>
+										<br/>
+										<small class="small">(Resets monthly)</small>
+
+										<div class="popup-select-plan-table-cell-views-info tooltip">
+											<svg width="2" height="8" viewbox="0 0 2 8">
+												<rect y="3" width="2" height="5" rx="1" ry="1"></rect>
+												<rect width="2" height="2" rx="1" ry="1"></rect>
+											</svg>
+
+											<div class="tooltip-content">
+												<div class="tooltip-content-inner">
+													<p translate="">The number of views is the number of times an app loads on your website.</p>
+													<p translate="">It depends on the number of visits to a page with the widgets.</p>
+													<p translate="">The limit is provided on a monthly basis, and it's reset once a month.</p>
+
+													<p>
+														<a href="https://help.elfsight.com/article/694-views-metric" target="_blank" translate="">Learn more about views</a>
+													</p>
+												</div>
+											</div>
+										</div>
+									</div>
+
+
+									<div class="popup-select-plan-table-feature">
+
+
+										<span>
+											Premium support</span>
+
+									</div>
+
+									<div class="popup-select-plan-table-feature" ng-class="{'popup-select-plan-table-cell-disable': plan.name === 'Lite'}" translate="">Free installation service</div>
+
+									<div class="popup-select-plan-table-feature" ng-class="{'popup-select-plan-table-cell-disable': plan.name === 'Lite'}" translate="">CodeStepper logo removal</div>
+								</div>
+							</div>
+
+							<div class="popup-select-plan-table-col popup-select-plan-table-col-current" ng-repeat="plan in preparedPlans | reverseObject">
+								<div class="popup-select-plan-table-head popup-select-plan-table-cell">
+
+									<div class="popup-select-plan-table-head-title ng-binding" ng-if="plan.periods.monthly.price == 0" ng-click="createFreeSubscription(plan)">
+										Lite
+									</div>
+									<!-- end ngIf: plan.periods.monthly.price == 0 -->
+
+
+									<div class="popup-select-plan-table-head-caption ng-binding" ng-bind-html="plansCaptions[plan.display_name]">Good for testing purposes and development stage</div>
+								</div>
+
+								<div class="popup-select-plan-table-price popup-select-plan-table-cell">
+
+									<div class="popup-select-plan-table-price popup-select-plan-table-price-free" ng-if="plan.periods.monthly.price == 0">
+										<div class="popup-select-plan-table-price-block">
+											<span class="popup-select-plan-table-price-block-currency">$</span>
+											<span class="popup-select-plan-table-price-block-value">0</span>
+											<span class="popup-select-plan-table-price-block-delimiter">/</span>
+											<span class="popup-select-plan-table-price-block-period" translate="">mo</span>
+										</div>
+
+										<span class="popup-select-plan-table-price-current" ng-show="plan.name == subscription.plan.name" translate="">Current plan</span>
+
+									</div>
+
+								</div>
+
+								<div class="popup-select-plan-table-cell">
+
+									<div class="popup-select-plan-table-feature ng-binding">
+										200
+										<translate>views</translate>
+										<br/>
+										<small class="small">(Resets monthly)</small>
+
+										<div class="popup-select-plan-table-cell-views-info tooltip">
+											<svg width="2" height="8" viewbox="0 0 2 8">
+												<rect y="3" width="2" height="5" rx="1" ry="1"></rect>
+												<rect width="2" height="2" rx="1" ry="1"></rect>
+											</svg>
+
+											<div class="tooltip-content">
+												<div class="tooltip-content-inner">
+													<p translate="">The number of views is the number of times an app loads on your website.</p>
+													<p translate="">It depends on the number of visits to a page with the widgets.</p>
+													<p translate="">The limit is provided on a monthly basis, and it's reset once a month.</p>
+
+													<p>
+														<a href="https://help.elfsight.com/article/694-views-metric" target="_blank" translate="">Learn more about views</a>
+													</p>
+												</div>
+											</div>
+										</div>
+									</div>
+
+
+									<div class="popup-select-plan-table-feature">
+
+										<span ng-if="plan.name === 'Lite'">Only bug fixes</span>
+										<!-- end ngIf: plan.name === 'Lite' -->
+
+									</div>
+
+									<div class="popup-select-plan-table-feature popup-select-plan-table-cell-disable" ng-class="{'popup-select-plan-table-cell-disable': plan.name === 'Lite'}" translate="">Free installation service</div>
+
+									<div class="popup-select-plan-table-feature popup-select-plan-table-cell-disable" ng-class="{'popup-select-plan-table-cell-disable': plan.name === 'Lite'}" translate="">CodeStepper logo removal</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+		{% endif %}
+
+	</div>
 
 </main>

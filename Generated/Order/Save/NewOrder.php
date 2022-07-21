@@ -10,16 +10,18 @@ class NewOrder implements JsonSerializable
 private $plan;
 private $ref;
 private $status;
+private $count;
 private $createdAt;
 
 
     
-public function __construct($subscriberId, $plan, $ref, $status, $createdAt)
+public function __construct($subscriberId, $plan, $ref, $status, $count, $createdAt)
 {
         $this->subscriberId = $subscriberId;
 $this->plan = $plan;
 $this->ref = $ref;
 $this->status = $status;
+$this->count = $count;
 $this->createdAt = $createdAt;
 
 }
@@ -40,6 +42,10 @@ $this->createdAt = $createdAt;
     {
         return $this->status;
     }
+    public function getCount(): ?int
+    {
+        return $this->count;
+    }
     public function getCreatedAt(): ?int
     {
         return $this->createdAt;
@@ -53,6 +59,7 @@ $this->createdAt = $createdAt;
  'plan' => $this->plan,
  'ref' => $this->ref,
  'status' => $this->status,
+ 'count' => $this->count,
  'createdAt' => $this->createdAt,
 
         ];

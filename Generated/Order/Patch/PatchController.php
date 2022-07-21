@@ -35,7 +35,7 @@
         public function patch(array $entity, string $id): Order
         {
             try {
-                @$toPatch = new PatchedOrder($entity['status'] ?? null);
+                @$toPatch = new PatchedOrder($entity['status'] ?? null, $entity['count'] ?? null);
                 return $this->patcher->patch($id, $toPatch);
             } catch (Exception $err) {
                 $this->operationError->addField(Error::getOperationError());

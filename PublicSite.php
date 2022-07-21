@@ -146,6 +146,7 @@ class PublicSite
       @header("Access-Control-Allow-Origin: " . $_SERVER['HTTP_ORIGIN']);
       header("Access-Control-Allow-Credentials: true");
       header('Access-Control-Allow-Methods: GET');
+      header('Content-Type: application/json');
 
       $getStatus = fn ($code) => json_encode(["status" => $code]);
       if ($request->query["is-embedded"] ?? "") {
@@ -168,7 +169,7 @@ class PublicSite
       }
 
       $codeStepper = $codeSteppers->getEntities()[0];
-      $isLoggedIn = isset($request->vars["subscriber"]) && $codeStepper->getSubscriberId() === $request->vars["subscriber"]->getId();
+      $isLoggedIn = false;
 
       $orders = (new OrderLister($conn))->list(Router::where('subscriberId', 'eq', $codeStepper->getSubscriberId()));
 
@@ -176,29 +177,24 @@ class PublicSite
         isOrderValidQuery($codeStepper->getSubscriberId())
       );
 
-      $isPayed = (bool)$orders->getCount();
-
-      // payed, logged in -> link to dashboard
-      if ($isPayed && $isLoggedIn) {
+      $order = $orders->getEntities()[0];
+      $isLite = $order->getPlan() === "lite";
+    
+      // quota exceeded
+      if(planQuotaMap()[$order->getPlan()] <= $order->getCount()) {
         echo $getStatus(0);
         return;
       }
 
-      // not payed, logged in -> X link to paywall
-      if (!$isPayed && $isLoggedIn) {
+      (new OrderPatcher($conn))->patch($order->getId(), new PatchedOrder(null, $order->getCount() + 1));
+
+      if ($isLite) {
         echo $getStatus(1);
         return;
       }
 
-      // payed, not logged in -> no link
-      if ($isPayed && !$isLoggedIn) {
+      if (!$isLite) {
         echo $getStatus(2);
-        return;
-      }
-
-      // not payed, not logged in -> link to landing page
-      if (!$isPayed && !$isLoggedIn) {
-        echo $getStatus(3);
         return;
       }
     });
@@ -367,7 +363,8 @@ class PublicSite
         'structuredData' => PublicSite::organizationStructuredData(),
         'subscriberLabel' =>  getNick($request->vars),
         'content' => $twig->render('plan-active.twig', [
-          "plan" => $orders->getEntities()[0]->getPlan(),
+          "order" => $orders->getEntities()[0],
+          "planQuotaMap" => planQuotaMap(),
           "activeUntil" =>  strtotime("+1 year", $orders->getEntities()[0]->getCreatedAt()),
         ]),
         'scripts' => [],
@@ -409,6 +406,7 @@ class PublicSite
         'structuredData' => PublicSite::organizationStructuredData(),
         'subscriberLabel' =>  getNick($request->vars),
         'content' => $twig->render('paywall.twig', [
+          'order' => $orders->getEntities()[0],
           'error' => $_GET['error'] ?? '',
           'transactionSuccessful' => $_GET['transactionSuccessful'] ?? '',
           'transactionId' => $_GET['transactionId'] ?? '',
@@ -488,6 +486,7 @@ class PublicSite
         $request->vars["type"],
         $orderRef,
         "STARTED",
+        0,
         time(),
       ));
 
@@ -512,7 +511,7 @@ class PublicSite
       $orders = (new OrderLister($conn))->list(Router::where('ref', 'eq', $orderRef));
       $order = $orders->getEntities()[0];
 
-      $to = fn ($status) => (new OrderPatcher($conn))->patch($order->getId(), new PatchedOrder($status));
+      $to = fn ($status) => (new OrderPatcher($conn))->patch($order->getId(), new PatchedOrder($status, null));
       switch ($result['e']) {
         case 'SUCCESS':
           $to("SUCCESS");
@@ -646,6 +645,15 @@ function getCodestepperStylesFull($version)
   return array_values(array_map(fn ($item) => "/public/codestepper/css/$item" . "?v=" . $version, $codeAssistStyles));
 }
 
+
+function planQuotaMap() {
+  return [
+      "lite" => 200,
+      "basic" => 5000,
+      "pro" => 50000,
+      "enterprise" => 5000000,
+  ];
+}
 
 function filterExtension($ext)
 {

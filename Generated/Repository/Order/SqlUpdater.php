@@ -24,19 +24,20 @@ class SqlUpdater implements Updater
           
           $stmt = $this->connection->prepare(
               'UPDATE `orders` SET 
-                `status` = ?
+                `status` = ?, `count` = ?
                 WHERE `id` = ?;'
           );
           
           $status= $entity->getStatus();
+        $count= $entity->getCount();
          
           $stmt->bind_param(
-              "ss",
-               $status, $id        
+              "sis",
+               $status, $count, $id        
           );
           $stmt->execute();
           
-          return new Order($id, $byId->getSubscriberId(),$byId->getPlan(),$byId->getRef(),$entity->getStatus(),$byId->getCreatedAt());
+          return new Order($id, $byId->getSubscriberId(),$byId->getPlan(),$byId->getRef(),$entity->getStatus(),$entity->getCount(),$byId->getCreatedAt());
       
       } catch (\Error $exception) {
           if ($_SERVER['DEPLOYMENT_ENV'] === 'dev') {

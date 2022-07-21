@@ -22,25 +22,26 @@ class SqlSaver implements Saver
         try {
             $statement = $this->connection->prepare(
                 "INSERT INTO `orders` (
-                `id`, `subscriberId`, `plan`, `ref`, `status`, `createdAt`
+                `id`, `subscriberId`, `plan`, `ref`, `status`, `count`, `createdAt`
                 ) 
-                VALUES (NULL, ?,?,?,?,?);"
+                VALUES (NULL, ?,?,?,?,?,?);"
             );
     
             $subscriberId = $new->getSubscriberId();
         $plan = $new->getPlan();
         $ref = $new->getRef();
         $status = $new->getStatus();
+        $count = $new->getCount();
         $createdAt = $new->getCreatedAt();
         
     
             $statement->bind_param(
-                "isssi",
-                 $subscriberId, $plan, $ref, $status, $createdAt        
+                "isssii",
+                 $subscriberId, $plan, $ref, $status, $count, $createdAt        
              );
             $statement->execute();
     
-            return new Order((string)$statement->insert_id, $new->getSubscriberId(),$new->getPlan(),$new->getRef(),$new->getStatus(),$new->getCreatedAt());
+            return new Order((string)$statement->insert_id, $new->getSubscriberId(),$new->getPlan(),$new->getRef(),$new->getStatus(),$new->getCount(),$new->getCreatedAt());
         } catch (\Error $exception) {
             if ($_SERVER['DEPLOYMENT_ENV'] === 'dev') {
                 var_dump($exception);

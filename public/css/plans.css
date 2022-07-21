@@ -2221,7 +2221,8 @@ svg.button-icon,
   display: none;
 }
 .popup-select-plan-table-cell {
-  padding: 20px 26px;
+  padding: 20px 8px;
+  padding-bottom: 0;
 }
 .popup-select-plan-table-cell-views-info {
   display: inline-flex;

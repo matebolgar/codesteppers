@@ -3,6 +3,7 @@
 namespace CodeSteppers;
 
 use CodeSteppers\Generated\Listing\Query;
+use CodeSteppers\Generated\Order\Save\NewOrder;
 use mysqli;
 use Twig\Environment;
 use CodeSteppers\Generated\Repository\Subscriber\SqlLister as SubscriberLister;
@@ -11,6 +12,8 @@ use CodeSteppers\Generated\Repository\Subscriber\SqlSaver as SubscriberSaver;
 use CodeSteppers\Generated\Subscriber\Patch\PatchedSubscriber;
 use CodeSteppers\Generated\Request;
 use CodeSteppers\Generated\Subscriber\Save\NewSubscriber;
+use CodeSteppers\Generated\Repository\Order\SqlSaver as OrderSaver;
+use CodeSteppers\Generated\Repository\Order\SqlLister as OrderLister;
 
 class Subscriber
 {
@@ -22,7 +25,21 @@ class Subscriber
     $initSubscriberSession = PublicSite::initSubscriberSession($conn);
 
     $r->get('/sign-up', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
+
+    
+
       header('Content-Type: text/html; charset=UTF-8');
+
+      $order = null; 
+      if(isset($request->vars["subscriber"])) {
+        $orders = (new OrderLister($conn))->list(
+           isOrderValidQuery($request->vars["subscriber"]->getId())
+        );
+        if($orders->getCount()) {
+          $order = $orders->getEntities()[0];
+        }
+      }
+      
       echo $twig->render('wrapper.twig', [
         'navbar' => $twig->render("navbar.twig", [
           'subscriberLabel' => getNick($request->vars) ?? "",
@@ -31,7 +48,7 @@ class Subscriber
         'subscriberLabel' =>  getNick($request->vars),
         'noIndex' => true,
         'content' => $twig->render('subscriber-registration.twig', [
-          "courses" => [],
+          "plan" => $order ? $order->getPlan() : "",
           'isLoggedIn' => isset($_SESSION['subscriberId']),
           'registrationSuccessful' => isset($_GET['registrationSuccessful']),
           'registrationEmailSent' => isset($_GET['registrationEmailSent']),
@@ -113,6 +130,15 @@ class Subscriber
       }
 
       $byToken = (new SubscriberPatcher($conn))->patch($subscriber->getId(), new PatchedSubscriber(null, null, 1, '', null, null));
+      (new OrderSaver($conn))->Save(new NewOrder(
+        $subscriber->getId(),
+        "lite",
+        "",
+        "SUCCESS",
+        0,
+        time(),
+      ));
+      
       session_start();
       $_SESSION['subscriberId'] = $subscriber->getId();
       $requestUri = parse_url($_GET['referer'])['path'];
