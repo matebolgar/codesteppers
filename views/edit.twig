@@ -1,6 +1,6 @@
 <main class="main-content">
-	<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 208px;">
-		<ul class="nav nav-pills flex-column mb-auto">
+	<div class="d-flex flex-column flex-shrink-0 px-2 text-white bg-dark" style="width: 208px;">
+		<ul class="nav nav-pills flex-column py-2">
 			<li class="nav-item">
 				<a href="#" class="nav-link active">
 					<i class="fa fa-edit mx-1"></i>
@@ -11,7 +11,8 @@
 				{% if plan %}
 					<a href="/active-plan" class="nav-link text-white">
 						<i class="fa fa-file mx-1"></i>
-						<span>Current plan: {{plan | upper}}</span>
+						<span>Current plan:
+							{{plan | upper}}</span>
 					</a>
 				{% else %}
 					<a href="/upgrade-plan" class="nav-link text-white">
@@ -26,10 +27,9 @@
 					<span>Support</span>
 				</a>
 			</li>
-
 		</ul>
 		<hr>
-		<div href="/" class="d-flex align-items-center mb-md-0 m-auto text-white text-decoration-none">
+		<div class="d-flex mb-md-0 text-white text-decoration-none justify-content-center py-2">
 			<span class="fs-4">My projects:</span>
 		</div>
 
@@ -42,9 +42,9 @@
 			</form>
 		</div>
 
-		<ul class="nav nav-pills flex-column mb-auto" style=" display: block">
+		<ul class="nav nav-pills flex-column" style="display: block;">
 			{% for codeStepper in codeSteppers %}
-				<li class="">
+				<li class="px-1">
 					<div class="row">
 						<a href="/edit/{{codeStepper.slug}}" class="nav-link text-white w-100 d-inline-block {{codeStepper.slug == activeCodeStepperSlug ? 'active' : ''}}">
 							{{codeStepper.title}}
