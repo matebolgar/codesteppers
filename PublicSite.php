@@ -6,6 +6,7 @@ use CodeSteppers\Generated\Listing\Clause;
 use CodeSteppers\Generated\Listing\Filter;
 use CodeSteppers\Generated\Listing\OrderBy;
 use CodeSteppers\Generated\Listing\Query;
+use CodeSteppers\Generated\Message\Patch\PatchedMessage;
 use CodeSteppers\Generated\Message\Save\NewMessage;
 use CodeSteppers\Generated\Order\Patch\PatchedOrder;
 use CodeSteppers\Generated\Request;
@@ -14,10 +15,13 @@ use Twig\Environment;
 use CodeSteppers\Generated\Repository\Subscriber\SqlLister as SubscriberLister;
 use CodeSteppers\Generated\Repository\Codestepper\SqlLister as CodestepperLister;
 use CodeSteppers\Generated\Repository\Order\SqlSaver as OrderSaver;
-use CodeSteppers\Generated\Repository\Message\SqlSaver as MessageSaver;
 use CodeSteppers\Generated\Repository\Order\SqlLister as OrderLister;
 use CodeSteppers\Generated\Repository\Order\SqlPatcher as OrderPatcher;
 use CodeSteppers\Generated\Order\Save\NewOrder;
+use CodeSteppers\Generated\Repository\Message\SqlSaver as MessageSaver;
+use CodeSteppers\Generated\Repository\Message\SqlPatcher as MessagePatcher;
+use CodeSteppers\Generated\Repository\Message\SqlLister as MessageLister;
+use CodeSteppers\Mailer\Mailer;
 
 
 class PublicSite
@@ -529,6 +533,49 @@ class PublicSite
           break;
       }
     });
+
+    $r->post("/api/send-mails", function (Request $request) use ($conn, $twig) {
+      header('Content-Type: application/json');
+      if (($request->body['key'] ?? 0) !== ($_SERVER['MASTER_PW'] ?? 1)) {
+          http_response_code(401);
+          echo json_encode(['error' => 'unauthorized']);
+          return;
+      }
+
+      $messages = (new MessageLister($conn))->list(new Query(
+          1000,
+          0,
+          new Filter(
+              'and',
+              new Clause('lt', 'numberOfAttempts', 10),
+              new Clause('eq', 'status', "notSent"),
+          ),
+          new OrderBy('createdAt', 'asc')
+      ));
+
+      foreach ($messages->getEntities() as $message) {
+          (new MessagePatcher($conn))->patch($message->getId(), new PatchedMessage(
+              "sending",
+              $message->getNumberOfAttempts() + 1,
+              null,
+          ));
+          $isSent = (new Mailer())->sendMail($message->getEmail(), $message->getSubject(), $message->getBody());
+          if ($isSent) {
+              (new MessagePatcher($conn))->patch($message->getId(), new PatchedMessage(
+                  "sent",
+                  null,
+                  time()
+              ));
+          } else {
+              (new MessagePatcher($conn))->patch($message->getId(), new PatchedMessage(
+                  "notSent",
+                  null,
+                  null,
+              ));
+          }
+      }
+  });
+
   }
 }
 
