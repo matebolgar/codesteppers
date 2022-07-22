@@ -173,15 +173,11 @@ class PublicSite
 
       $orders = (new OrderLister($conn))->list(Router::where('subscriberId', 'eq', $codeStepper->getSubscriberId()));
 
-      $orders = (new OrderLister($conn))->list(
-        isOrderValidQuery($codeStepper->getSubscriberId())
-      );
-
-      $order = $orders->getEntities()[0];
+      $order = getActiveOrder($conn, $codeStepper->getSubscriberId());
       $isLite = $order->getPlan() === "lite";
-    
+
       // quota exceeded
-      if(planQuotaMap()[$order->getPlan()] <= $order->getCount()) {
+      if (planQuotaMap()[$order->getPlan()] <= $order->getCount()) {
         echo $getStatus(0);
         return;
       }
@@ -253,7 +249,7 @@ class PublicSite
       header('Content-Type: text/html; charset=UTF-8');
 
 
-      if(!$subscriberId) {
+      if (!$subscriberId) {
         echo $twig->render('wrapper.twig', [
           'navbar' => $twig->render("navbar.twig", [
             "buttons" => $twig->render("buttons.twig", [
@@ -289,9 +285,7 @@ class PublicSite
         return;
       }
 
-      $orders = (new OrderLister($conn))->list(
-        isOrderValidQuery($subscriberId)
-      );
+      $order = getActiveOrder($conn, $subscriberId);
 
       echo $twig->render('wrapper.twig', [
         'navbar' => $twig->render("navbar.twig", [
@@ -301,7 +295,7 @@ class PublicSite
           'subscriberLabel' => getNick($request->vars) ?? "",
         ]),
         'content' => $twig->render('edit.twig', [
-          'plan' => $orders->getCount() ? $orders->getEntities()[0]->getPlan() : "",
+          'plan' => $order->getPlan() ?? "",
           'codeStepper' =>  $codeSteppersBySlug->getCount() ? $codeSteppersBySlug->getEntities()[0] : '',
           'codeSteppers' => $allCodeSteppers->getEntities(),
           'siteUrl' => Router::siteUrl(),
@@ -343,15 +337,14 @@ class PublicSite
     $r->get('/active-plan', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
       $id = $request->vars["subscriber"] ? $request->vars["subscriber"]->getId() : -1;
 
-      if($id === -1) {
+      if ($id === -1) {
         header("Location: /edit");
         return;
       }
-      $orders = (new OrderLister($conn))->list(
-        isOrderValidQuery($id)
-      );
 
-      if(!$orders->getCount()) {
+      $order = getActiveOrder($conn, $id);
+
+      if (!$order) {
         header("Location: /edit");
         return;
       }
@@ -363,54 +356,13 @@ class PublicSite
         'structuredData' => PublicSite::organizationStructuredData(),
         'subscriberLabel' =>  getNick($request->vars),
         'content' => $twig->render('plan-active.twig', [
-          "order" => $orders->getEntities()[0],
+          "order" => $order,
           "planQuotaMap" => planQuotaMap(),
-          "activeUntil" =>  strtotime("+1 year", $orders->getEntities()[0]->getCreatedAt()),
-        ]),
-        'scripts' => [],
-        'styles' => [
-          ["path" => "css/plans.css"],
-          ['path' => 'css/promo.css'],
-          ['path' => 'css/login.css'],
-          ['path' => 'css/fonts/fontawesome/css/fontawesome-all.css'],
-        ],
-      ]);
-
-    });
-
-    $r->get('/upgrade-plan', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
-      header('Content-Type: text/html; charset=UTF-8');
-
-      $id = $request->vars["subscriber"] ? $request->vars["subscriber"]->getId() : -1;
-
-      if($id === -1) {
-        header("Location: /edit");
-        return;
-      }
-
-      $orders = (new OrderLister($conn))->list(
-        isOrderValidQuery($id)
-      );
-
-      $isPayed = (bool)$orders->getCount();
-
-      if($isPayed) {
-        header("Location: /active-plan");
-        return;
-      }
-
-      echo $twig->render('wrapper.twig', [
-        'navbar' => $twig->render("navbar.twig", [
-          'subscriberLabel' => getNick($request->vars) ?? "",
-        ]),
-        'structuredData' => PublicSite::organizationStructuredData(),
-        'subscriberLabel' =>  getNick($request->vars),
-        'content' => $twig->render('paywall.twig', [
-          'order' => $orders->getEntities()[0],
           'error' => $_GET['error'] ?? '',
           'transactionSuccessful' => $_GET['transactionSuccessful'] ?? '',
           'transactionId' => $_GET['transactionId'] ?? '',
           'orderRef' => $_GET['orderRef'] ?? '',
+          "activeUntil" =>  strtotime("+1 year", $order->getCreatedAt()),
         ]),
         'scripts' => [],
         'styles' => [
@@ -475,7 +427,7 @@ class PublicSite
       try {
         $trx->runStart();
       } catch (\Throwable $th) {
-        header("Location: /upgrade-plan?error=startFailed");
+        header("Location: /active-plan?error=startFailed");
         exit;
       }
 
@@ -515,74 +467,102 @@ class PublicSite
       switch ($result['e']) {
         case 'SUCCESS':
           $to("SUCCESS");
-          header('Location: /upgrade-plan?transactionSuccessful=1&orderRef=' . $result['o'] . '&transactionId=' . $result['t']);
+          header('Location: /active-plan?transactionSuccessful=1&orderRef=' . $result['o'] . '&transactionId=' . $result['t']);
           return;
           break;
         case 'FAIL':
           $to("FAIL");
-          header('Location: /upgrade-plan?error=transactionFailed&transactionId=' . $result["t"]);
+          header('Location: /active-plan?error=transactionFailed&transactionId=' . $result["t"]);
           return;
           break;
         case 'CANCEL':
           $to("CANCEL");
-          header('Location: /upgrade-plan?error=transactionCancelled');
+          header('Location: /active-plan?error=transactionCancelled');
           return;
           break;
         case 'TIMEOUT':
           $to("TIMEOUT");
-          header('Location: /upgrade-plan?error=transactionTimeout');
+          header('Location: /active-plan?error=transactionTimeout');
           return;
           break;
       }
     });
 
+
+
+    $r->post("/api/reset-plans", function (Request $request) use ($conn, $twig) {
+      header('Content-Type: application/json');
+      if (($request->body['key'] ?? 0) !== ($_SERVER['MASTER_PW'] ?? 1)) {
+        http_response_code(401);
+        echo json_encode(['error' => 'unauthorized']);
+        return;
+      }
+
+      $conn->query("UPDATE `orders` SET `count` = '0'");
+    });
+
     $r->post("/api/send-mails", function (Request $request) use ($conn, $twig) {
       header('Content-Type: application/json');
       if (($request->body['key'] ?? 0) !== ($_SERVER['MASTER_PW'] ?? 1)) {
-          http_response_code(401);
-          echo json_encode(['error' => 'unauthorized']);
-          return;
+        http_response_code(401);
+        echo json_encode(['error' => 'unauthorized']);
+        return;
       }
 
       $messages = (new MessageLister($conn))->list(new Query(
-          1000,
-          0,
-          new Filter(
-              'and',
-              new Clause('lt', 'numberOfAttempts', 10),
-              new Clause('eq', 'status', "notSent"),
-          ),
-          new OrderBy('createdAt', 'asc')
+        1000,
+        0,
+        new Filter(
+          'and',
+          new Clause('lt', 'numberOfAttempts', 10),
+          new Clause('eq', 'status', "notSent"),
+        ),
+        new OrderBy('createdAt', 'asc')
       ));
 
       foreach ($messages->getEntities() as $message) {
+        (new MessagePatcher($conn))->patch($message->getId(), new PatchedMessage(
+          "sending",
+          $message->getNumberOfAttempts() + 1,
+          null,
+        ));
+        $isSent = (new Mailer())->sendMail($message->getEmail(), $message->getSubject(), $message->getBody());
+        if ($isSent) {
           (new MessagePatcher($conn))->patch($message->getId(), new PatchedMessage(
-              "sending",
-              $message->getNumberOfAttempts() + 1,
-              null,
+            "sent",
+            null,
+            time()
           ));
-          $isSent = (new Mailer())->sendMail($message->getEmail(), $message->getSubject(), $message->getBody());
-          if ($isSent) {
-              (new MessagePatcher($conn))->patch($message->getId(), new PatchedMessage(
-                  "sent",
-                  null,
-                  time()
-              ));
-          } else {
-              (new MessagePatcher($conn))->patch($message->getId(), new PatchedMessage(
-                  "notSent",
-                  null,
-                  null,
-              ));
-          }
+        } else {
+          (new MessagePatcher($conn))->patch($message->getId(), new PatchedMessage(
+            "notSent",
+            null,
+            null,
+          ));
+        }
       }
-  });
-
+    });
   }
 }
 
+function getActiveOrder($conn, $subscriberId)
+{
+  $orders = (new OrderLister($conn))->list(lastOrderWithinAYearQuery($subscriberId));
+  if ($orders->getCount()) {
+    return $orders->getEntities()[0];
+  }
 
-function isOrderValidQuery($subscriberId)
+  $liteOrders = (new OrderLister($conn))->list(liteOrderQuery($subscriberId));
+
+  if (!$liteOrders->getCount()) {
+    return;
+  }
+
+  return $liteOrders->getEntities()[0];
+}
+
+
+function lastOrderWithinAYearQuery($subscriberId)
 {
   return new Query(
     1,
@@ -606,6 +586,28 @@ function isOrderValidQuery($subscriberId)
           'status',
           "SUCCESS",
         )
+      ),
+    ),
+    new OrderBy('createdAt', 'desc')
+  );
+}
+
+function liteOrderQuery($subscriberId)
+{
+  return new Query(
+    1,
+    0,
+    new Filter(
+      "and",
+      new Clause(
+        'eq',
+        'subscriberId',
+        $subscriberId,
+      ),
+      new Clause(
+        'eq',
+        'plan',
+        'lite',
       ),
     ),
     new OrderBy('createdAt', 'desc')
@@ -646,12 +648,13 @@ function getCodestepperStylesFull($version)
 }
 
 
-function planQuotaMap() {
+function planQuotaMap()
+{
   return [
-      "lite" => 200,
-      "basic" => 5000,
-      "pro" => 50000,
-      "enterprise" => 5000000,
+    "lite" => 200,
+    "basic" => 5000,
+    "pro" => 50000,
+    "enterprise" => 5000000,
   ];
 }
 
@@ -671,13 +674,13 @@ function getFileExtension($fileName)
 function enqueueEmail($recipientEmail, $subject, $body, $conn)
 {
   (new MessageSaver($conn))->Save(new NewMessage(
-      $recipientEmail,
-      $subject,
-      $body,
-      "notSent",
-      0,
-      null,
-      time()
+    $recipientEmail,
+    $subject,
+    $body,
+    "notSent",
+    0,
+    null,
+    time()
   ));
 }
 

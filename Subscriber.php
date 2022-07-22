@@ -32,12 +32,7 @@ class Subscriber
 
       $order = null; 
       if(isset($request->vars["subscriber"])) {
-        $orders = (new OrderLister($conn))->list(
-           isOrderValidQuery($request->vars["subscriber"]->getId())
-        );
-        if($orders->getCount()) {
-          $order = $orders->getEntities()[0];
-        }
+        $order = getActiveOrder($conn, $request->vars["subscriber"]->getId());
       }
       
       echo $twig->render('wrapper.twig', [

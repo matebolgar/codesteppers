@@ -15,7 +15,7 @@
 				</a>
 			</li>
 			<li>
-				<a href="/upgrade-plan" class="nav-link text-white active">
+				<a href="/active-plan" class="nav-link text-white active">
 					<i class="fa fa-file mx-1"></i>
 					<span>Current plan:
 						{{order.plan | upper}}</span>
@@ -34,22 +34,68 @@
 
 	<div class="mb-3 content-body my-2 w-100">
 
-		<div class="row my-3 w-100">
+		{% if error == 'startFailed' %}
+			<div class="alert alert-danger p-1 pe-2 ps-2 w-100 text-center">
+				<p style="font-size:14px">
+					<span>An error occured please try again!</span>
+				</p>
+			</div>
+		{% endif %}
+		{% if error == 'transactionFailed' %}
+			<div class="alert alert-danger p-1 pe-2 ps-2 w-100 text-center">
+				<p style="font-size:14px">
+					<span>Failed transaction!</span><br/>
+					SimplePay transaction identifier:
+					{{transactionId}}
+					<br/>
+					Please check if the details provided during the transaction are correct. If all the details were provided correctly, please contact the bank that issued your card in order to investigate the cause of the rejection.
+				</p>
+			</div>
+		{% endif %}
+		{% if error == 'transactionCancelled' %}
+			<div class="alert alert-danger p-1 pe-2 ps-2 w-100 text-center">
+				<p style="font-size:14px">
+					<span>Cancelled payment!</span><br/>
+				</p>
+			</div>
+		{% endif %}
+		{% if error == 'transactionTimeout' %}
+			<div class="alert alert-danger p-1 pe-2 ps-2 w-100 text-center">
+				<p style="font-size:14px">
+					<span>You exceeded the maximum time available to start the transaction.</span><br/>
+				</p>
+			</div>
+		{% endif %}
+		{% if transactionSuccessful is defined and transactionId != "" %}
+			<div class="alert alert-success p-1 pe-2 ps-2 w-100 text-center">
+				<p style="font-size:14px">
+					<span>Successful transaction!</span>
+				</p>
+				<p style="font-size:14px">
+					SimplePay transaction identifier:
+					{{transactionId}}
+				</p>
+			</div>
+		{% endif %}
+
+		<div class="row my-3 w-100 m-auto">
 
 			<div class="col-md-12 px-4">
-				<h1 class="display-6 text-center py-3">
+				<h1 class="display-6 text-center py-1">
 					Current usage:
 				</h1>
 
-				<div class="progress">
-					<div class="progress-bar" role="progressbar" style="width: {{usagePercent | number_format}}%;">
-						{{usagePercent | number_format}}%
+				<div class="my-3">
+					<div class="progress">
+						<div class="progress-bar" role="progressbar" style="width: {{usagePercent | number_format}}%;">
+							{{usagePercent | number_format}}%
+						</div>
 					</div>
-				</div>
-				<div class="text-center">
-					{{order.count}}
-					/
-					{{planQuotaMap[order.plan]}}
+					<div class="text-center my-1">
+						{{order.count}}
+						/
+						{{planQuotaMap[order.plan]}}
+					</div>
 				</div>
 
 				{% if usagePercent >= 100 %}
@@ -58,13 +104,21 @@
 					</div>
 				{% endif %}
 
+
+				{% if order.plan != "lite" %}
+					<h2 class="text-center py-3">
+						Valid until:
+						{{activeUntil | date("m/d/Y")}}
+					</h2>
+				{% endif %}
+
 			</div>
 		</div>
 
 
 		{% if order.plan == "lite" %}
 
-			<div class="row mb-5">
+			<div class="row mb-3 w-100 m-auto">
 
 				<div class="col-md-12">
 					<h1 class="display-6 text-center">
@@ -74,50 +128,6 @@
 					<p class="text-center">
 						<i>Risk-free, you can cancel at anytime.</i>
 					</p>
-
-					{% if error == 'startFailed' %}
-						<div class="alert alert-danger p-1 pe-2 ps-2 w-100 text-center">
-							<p style="font-size:14px">
-								<span>An error occured please try again!</span>
-							</p>
-						</div>
-					{% endif %}
-					{% if error == 'transactionFailed' %}
-						<div class="alert alert-danger p-1 pe-2 ps-2 w-100 text-center">
-							<p style="font-size:14px">
-								<span>Failed transaction!</span><br/>
-								SimplePay transaction identifier:
-								{{transactionId}}
-								<br/>
-								Please check if the details provided during the transaction are correct. If all the details were provided correctly, please contact the bank that issued your card in order to investigate the cause of the rejection.
-							</p>
-						</div>
-					{% endif %}
-					{% if error == 'transactionCancelled' %}
-						<div class="alert alert-danger p-1 pe-2 ps-2 w-100 text-center">
-							<p style="font-size:14px">
-								<span>Cancelled payment!</span><br/>
-							</p>
-						</div>
-					{% endif %}
-					{% if error == 'transactionTimeout' %}
-						<div class="alert alert-danger p-1 pe-2 ps-2 w-100 text-center">
-							<p style="font-size:14px">
-								<span>You exceeded the maximum time available to start the transaction.</span><br/>
-							</p>
-						</div>
-					{% endif %}
-					{% if transactionSuccessful is defined and transactionId != "" %}
-						<div class="alert alert-success p-1 pe-2 ps-2 w-100 text-center">
-							<p style="font-size:14px">
-								<span>Successful transaction!</span>
-							</p>
-							<p style="font-size:14px">
-								SimplePay transaction identifier:
-								{{transactionId}}
-							</p>
-						</div>
-					{% endif %}
 
 					<div class="popup-select-plan-table-container m-2" ng-if="(!subscription || subscription.plan.parameters.apps_count == 1) &amp;&amp; !config.showOnlyPacks">
 						<div class="popup-select-plan-table">
@@ -423,6 +433,12 @@
 					</div>
 
 				</div>
+			</div>
+
+      <div class="text-center">
+        <a target="_blank" href="https://simplepay.hu/wp-content/uploads/2022/03/PaymentService_Fizetesi_tajekoztato_EN.pdf">
+          <img class="img-thumbnail" src="/public/images/simplepay_otp_bankcard_en_top_new.webp" style="width: 200px" />
+        </a>
 			</div>
 
 		{% endif %}
