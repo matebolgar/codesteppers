@@ -90,8 +90,9 @@ class CodeStepper
       if ($request->body["title"] !== $schema["title"]) {
         $codeSteppers = (new CodestepperLister($conn))->list(Router::where('slug', 'eq', $request->vars['slug']));
         if ($codeSteppers->getCount()) {
+          $codeStepper = $codeSteppers->getEntities()[0];
           (new CodestepperPatcher($conn))->patch(
-            $codeSteppers->getEntities()[0]->getId(),
+            $codeStepper->getId(),
             new PatchedCodestepper(null, null, $request->body["title"])
           );
         }
@@ -124,14 +125,11 @@ class CodeStepper
       $folderPath = $root . "/" . $id;
       mkdir($folderPath);
 
-      $names = [
-        "Első", "Második", "Harmadik", "Negyedik", "Ötödik", "Hatodik", "Hetedik", "Nyolcadik", "Kilencedik", "Tizedik"
-      ];
       $i =  count($schema["parts"]);
 
       $schema["parts"][] = [
         "slug" => $id,
-        "title" => ($names[$i] ?? "Új")  . " rész",
+        "title" => "New page",
         "layout" => "cr-4",
         "modulePaths" => [],
       ];
@@ -526,12 +524,12 @@ class CodeStepper
     return [
       "id" => $projectId,
       "slug" => $projectId,
-      "title" => "",
+      "title" => "New CodeStepper",
       "logoUrl" => "",
       "colorMode" => "dark",
       "primaryColor" => "#FFC73F",
-      "secondaryColor" => "",
-      "secondaryColorMode" => "auto",
+      "secondaryColor" => "#FD3459",
+      "secondaryColorMode" => "custom",
       "isDrawerOpenByDefault" => false,
       "parts" => [
         [
@@ -557,10 +555,34 @@ class CodeStepper
     $init = self::getInitialProject($codeStepperId, $partId);
     file_put_contents($schemaPath, json_encode($init, JSON_UNESCAPED_UNICODE));
 
-    (new CodestepperSaver($conn))->Save(new NewCodestepper($codeStepperId, $subscriberId, null, "New CodeStepper", time()));
+    (new CodestepperSaver($conn))->Save(new NewCodestepper($codeStepperId, $subscriberId, null, $init["title"], time()));
     return $codeStepperId;
   }
 
+  public static function createFirstSchemaForGuest($conn, $guestId)
+  {
+    $codeStepperId = uniqid();
+    $partId = uniqid();
+
+    $root = __DIR__ . "/public/codestepper-files/" . $codeStepperId;
+    $schemaPath = $root . "/schema.json";
+
+    mkdir($root);
+
+    require __DIR__ . "/dir-utils.php";
+
+    xcopy(__DIR__ . "/public/intro", $root);
+
+    $schema = json_decode(file_get_contents($schemaPath), true);
+    $schema["id"] = $codeStepperId;
+    $schema["slug"] = $codeStepperId;
+
+    file_put_contents($schemaPath, json_encode($schema, JSON_UNESCAPED_UNICODE));
+
+    (new CodestepperSaver($conn))->Save(new NewCodestepper($codeStepperId, null, $guestId, $schema["title"], time()));
+    return $codeStepperId;
+  }
+  
   public static function createSchemaForGuest($conn, $guestId)
   {
     $codeStepperId = uniqid();

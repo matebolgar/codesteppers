@@ -26,16 +26,18 @@ class Subscriber
 
     $r->get('/sign-up', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
 
-    
+
 
       header('Content-Type: text/html; charset=UTF-8');
 
-      $order = null; 
-      if(isset($request->vars["subscriber"])) {
+      $order = null;
+      if (isset($request->vars["subscriber"])) {
         $order = getActiveOrder($conn, $request->vars["subscriber"]->getId());
       }
-      
+
       echo $twig->render('wrapper.twig', [
+        'metaTitle' => 'Sign Up - CodeSteppers',
+        'description' => 'Sign up for free',
         'navbar' => $twig->render("navbar.twig", [
           'subscriberLabel' => getNick($request->vars) ?? "",
         ]),
@@ -86,16 +88,19 @@ class Subscriber
       ));
 
       if (isset($_COOKIE["guestId"])) {
-        $stmt = $conn->prepare("UPDATE `codesteppers` SET `subscriberId` = ? WHERE `codesteppers`.`guestId` = ?");
+        $stmt = $conn->prepare("UPDATE `codesteppers` SET `subscriberId` = ?, `guestId` = NULL WHERE `codesteppers`.`guestId` = ?");
         $subscriberId = $newSubscriber->getId();
         $guestId = $_COOKIE["guestId"];
         $stmt->bind_param("is", $subscriberId, $guestId);
         $stmt->execute();
+
+        $cookieParams = session_get_cookie_params();
+        setcookie("guestId", '', 0, $cookieParams['path'], $cookieParams['domain'], $cookieParams['secure'], isset($cookieParams['httponly']));
       }
 
       $body = $twig->render('verification-email.twig', [
         'email' => $request->body['email'],
-        'link' => Router::siteUrl() . "/megerosites/" . $token . "?referer=" . $_SERVER['HTTP_REFERER'],
+        'link' => Router::siteUrl() . "/verification/" . $token . "?referer=" . $_SERVER['HTTP_REFERER'],
       ]);
 
       $params = ['registrationEmailSent=1'];
@@ -109,7 +114,7 @@ class Subscriber
       );
     });
 
-    $r->get('/megerosites/{token}', function (Request $request) use ($conn, $twig) {
+    $r->get('/verification/{token}', function (Request $request) use ($conn, $twig) {
       $byToken = (new SubscriberLister($conn))->list(Router::where('verificationToken', 'eq', $request->vars['token']));
 
       if ($byToken->getCount() === 0) {
@@ -133,7 +138,7 @@ class Subscriber
         0,
         time(),
       ));
-      
+
       session_start();
       $_SESSION['subscriberId'] = $subscriber->getId();
       $requestUri = parse_url($_GET['referer'])['path'];
@@ -150,6 +155,8 @@ class Subscriber
       }
 
       echo $twig->render('wrapper.twig', [
+        'metaTitle' => 'Forgot Password',
+        'description' => 'Forgot Password',
         'navbar' => $twig->render("navbar.twig", [
           'subscriberLabel' => "",
           'isLoginButtonHidden' => true
@@ -218,6 +225,8 @@ class Subscriber
         return;
       }
       echo $twig->render('wrapper.twig', [
+        'metaTitle' => 'Password change',
+        'description' => 'Password change',
         'navbar' => $twig->render("navbar.twig", [
           'subscriberLabel' => "",
           'isLoginButtonHidden' => true
@@ -261,6 +270,8 @@ class Subscriber
     $r->get('/jelszo-modositasa-sikeres', function (Request $request) use ($conn, $twig) {
       header('Content-Type: text/html; charset=UTF-8');
       echo $twig->render('wrapper.twig', [
+        'metaTitle' => 'Password modification successful',
+        'description' => 'Password modification successful',
         'content' => $twig->render('subscriber-password-modification-success.twig', []),
       ]);
     });
@@ -268,6 +279,8 @@ class Subscriber
     $r->get('/login', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
       header('Content-Type: text/html; charset=UTF-8');
       echo $twig->render('wrapper.twig', [
+        'metaTitle' => 'Login - CodeSteppers',
+        'description' => 'Login - CodeSteppers',
         'navbar' => $twig->render("navbar.twig", [
           'subscriberLabel' => getNick($request->vars) ?? "",
           'isLoginButtonHidden' => true

@@ -23,7 +23,14 @@ class SqlByIdGetter implements ById
             $stmt->bind_param('s', $id);
             $stmt->execute();
             $result = $stmt->get_result()->fetch_assoc();
-            return new Message((int)$result['id'], (string)$result['email'], (string)$result['subject'], (string)$result['body'], (string)$result['status'], (int)$result['numberOfAttempts'], (int)$result['sentAt'], (int)$result['createdAt']);
+            return new Message($result['id'] === null ? null : (int)$result['id'],
+                        $result['email'] === null ? null : (string)$result['email'],
+                        $result['subject'] === null ? null : (string)$result['subject'],
+                        $result['body'] === null ? null : (string)$result['body'],
+                        $result['status'] === null ? null : (string)$result['status'],
+                        $result['numberOfAttempts'] === null ? null : (int)$result['numberOfAttempts'],
+                        $result['sentAt'] === null ? null : (int)$result['sentAt'],
+                        $result['createdAt'] === null ? null : (int)$result['createdAt']);
         
         } catch (\Error $exception) {
             if ($_SERVER['DEPLOYMENT_ENV'] === 'dev') {

@@ -14,13 +14,19 @@
 					<span>Editor</span>
 				</a>
 			</li>
-			<li>
-				<a href="/active-plan" class="nav-link text-white active">
+			{% if order.plan == "lite" %}
+				<a href="/active-plan" class="nav-link active">
+					<i class="fa fa-file mx-1"></i>
+					<span>Upgrade plan</span>
+				</a>
+			{% endif %}
+			{% if order.plan != "lite" and order.plan is not empty %}
+				<a href="/active-plan" class="nav-link active">
 					<i class="fa fa-file mx-1"></i>
 					<span>Current plan:
 						{{order.plan | upper}}</span>
 				</a>
-			</li>
+			{% endif %}
 			<li>
 				<a href="#" class="nav-link text-white">
 					<i class="fa fa-question mx-1"></i>
@@ -95,6 +101,9 @@
 						{{order.count}}
 						/
 						{{planQuotaMap[order.plan]}}
+					</div>	
+          <div class="text-center my-1 text-muted">
+						(Resets monthly)
 					</div>
 				</div>
 
@@ -435,10 +444,10 @@
 				</div>
 			</div>
 
-      <div class="text-center">
-        <a target="_blank" href="https://simplepay.hu/wp-content/uploads/2022/03/PaymentService_Fizetesi_tajekoztato_EN.pdf">
-          <img class="img-thumbnail" src="/public/images/simplepay_otp_bankcard_en_top_new.webp" style="width: 200px" />
-        </a>
+			<div class="text-center">
+				<a target="_blank" href="https://simplepay.hu/wp-content/uploads/2022/03/PaymentService_Fizetesi_tajekoztato_EN.pdf">
+					<img class="img-thumbnail" src="/public/images/simplepay_otp_bankcard_en_top_new.webp" style="width: 200px"/>
+				</a>
 			</div>
 
 		{% endif %}

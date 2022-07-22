@@ -14,16 +14,17 @@
 				</a>
 			</li>
 			<li>
-				{% if plan %}
+				{% if plan == "lite" %}
+					<a href="/active-plan" class="nav-link text-white">
+						<i class="fa fa-file mx-1"></i>
+						<span>Upgrade plan</span>
+					</a>
+				{% endif %}
+				{% if plan != "lite" and plan is not empty %}
 					<a href="/active-plan" class="nav-link text-white">
 						<i class="fa fa-file mx-1"></i>
 						<span>Current plan:
 							{{plan | upper}}</span>
-					</a>
-				{% else %}
-					<a href="/active-plan" class="nav-link text-white">
-						<i class="fa fa-file mx-1"></i>
-						<span>Upgrade plan</span>
 					</a>
 				{% endif %}
 			</li>
@@ -49,7 +50,7 @@
 		</div>
 
 		<ul class="nav nav-pills flex-column" style="display: block; overflow-y: scroll;
-				    overflow-x: hidden;">
+								    overflow-x: hidden;">
 			{% for codeStepper in codeSteppers %}
 				<li class="px-1">
 					<div class="row">

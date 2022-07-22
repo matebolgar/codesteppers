@@ -23,7 +23,13 @@ class SqlByIdGetter implements ById
             $stmt->bind_param('s', $id);
             $stmt->execute();
             $result = $stmt->get_result()->fetch_assoc();
-            return new Order((int)$result['id'], (int)$result['subscriberId'], (string)$result['plan'], (string)$result['ref'], (string)$result['status'], (int)$result['count'], (int)$result['createdAt']);
+            return new Order($result['id'] === null ? null : (int)$result['id'],
+                        (int)$result['subscriberId'],
+                        (string)$result['plan'],
+                        (string)$result['ref'],
+                        (string)$result['status'],
+                        $result['count'] === null ? null : (int)$result['count'],
+                        $result['createdAt'] === null ? null : (int)$result['createdAt']);
         
         } catch (\Error $exception) {
             if ($_SERVER['DEPLOYMENT_ENV'] === 'dev') {

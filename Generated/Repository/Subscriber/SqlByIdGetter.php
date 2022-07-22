@@ -23,7 +23,13 @@ class SqlByIdGetter implements ById
             $stmt->bind_param('s', $id);
             $stmt->execute();
             $result = $stmt->get_result()->fetch_assoc();
-            return new Subscriber((int)$result['id'], (string)$result['email'], (string)$result['password'], (bool)$result['isVerified'], (string)$result['verificationToken'], (int)$result['createdAt'], (bool)$result['isUnsubscribed']);
+            return new Subscriber($result['id'] === null ? null : (int)$result['id'],
+                        (string)$result['email'],
+                        $result['password'] === null ? null : (string)$result['password'],
+                        $result['isVerified'] === null ? null : (bool)$result['isVerified'],
+                        $result['verificationToken'] === null ? null : (string)$result['verificationToken'],
+                        $result['createdAt'] === null ? null : (int)$result['createdAt'],
+                        $result['isUnsubscribed'] === null ? null : (bool)$result['isUnsubscribed']);
         
         } catch (\Error $exception) {
             if ($_SERVER['DEPLOYMENT_ENV'] === 'dev') {

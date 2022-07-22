@@ -36,7 +36,7 @@
     {
         $missing = array_map(function ($fieldName) {
             return Error::getValidationError($fieldName);
-        }, array_filter([], function ($fieldName) use ($entity) {
+        }, array_filter(['slug'], function ($fieldName) use ($entity) {
             return empty($entity[$fieldName]);
         }));
 
@@ -65,7 +65,7 @@
         }
 
         try {
-          $toSave = new NewCodestepper((string)($entity['slug'] ?? ''), (int)($entity['subscriberId'] ?? 0), (string)($entity['guestId'] ?? ''), (string)($entity['title'] ?? ''), (int)($entity['createdAt'] ?? 0));
+          $toSave = new NewCodestepper((string)($entity['slug']), (int)($entity['subscriberId'] ?? 0), (string)($entity['guestId'] ?? ''), (string)($entity['title'] ?? ''), (int)($entity['createdAt'] ?? 0));
               return $this->saver->Save($toSave);
         } catch (Exception $err) {
                 $this->operationError->addField(Error::getOperationError());

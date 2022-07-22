@@ -83,15 +83,15 @@ class PublicSite
         'isHome' => true,
         'navbar' => $twig->render("navbar.twig", [
           'subscriberLabel' => getNick($request->vars) ?? "",
-          'buttons' => $twig->render('try-out-button.twig'),
+          'buttons' => $twig->render('try-out-button.twig', ["isLoggedIn" => getNick($request->vars) ?? ""]),
         ]),
         'content' => $twig->render('home.twig', [
           'codeSteppers' => [],
           'isLoggedIn' => isset($request->vars["subscriber"]),
           'siteUrl' => Router::siteUrl(),
         ]),
-        'metaTitle' => 'CodeSteppers - Online interactive tool for schools and teachers',
-        'description' => 'CodeSteppers - Online interactive tool for schools and teachers',
+        'metaTitle' => 'CodeSteppers - Embeddable presentation for teachers and online schools',
+        'description' => 'CodeSteppers - Embeddable presentation for teachers and online schools',
         'subscriberLabel' =>  getNick($request->vars),
         'structuredData' => self::organizationStructuredData(),
         'scripts' => [
@@ -135,7 +135,7 @@ class PublicSite
         $id = "guest-" . uniqid();
         $cookieParams = session_get_cookie_params();
         setcookie("guestId", $id, time() + 60 * 60 * 24, $cookieParams['path'], $cookieParams['domain'], $cookieParams['secure'], isset($cookieParams['httponly']));
-        $codeStepperId = CodeStepper::createSchemaForGuest($conn, $id);
+        $codeStepperId = CodeStepper::createFirstSchemaForGuest($conn, $id);
 
         header("Location: /edit/$codeStepperId");
       }
@@ -263,8 +263,8 @@ class PublicSite
             'siteUrl' => Router::siteUrl(),
             'activeCodeStepperSlug' =>  $request->vars['codeStepperSlug'] ?? '',
           ]),
-          'metaTitle' => 'CodeSteppers - Online interactive tool for schools and teachers',
-          'description' => 'CodeSteppers - Online interactive tool for schools and teachers',
+          'metaTitle' => 'Editor (trial mode) - CodeSteppers',
+          'description' => 'Try out the CodeSteppers editor for free',
           'structuredData' => self::organizationStructuredData(),
           'scripts' => [
             [
@@ -301,8 +301,8 @@ class PublicSite
           'siteUrl' => Router::siteUrl(),
           'activeCodeStepperSlug' =>  $request->vars['codeStepperSlug'] ?? '',
         ]),
-        'metaTitle' => 'CodeSteppers - Online interactive tool for schools and teachers',
-        'description' => 'CodeSteppers - Online interactive tool for schools and teachers',
+        'metaTitle' => 'Editor - CodeSteppers',
+        'description' => 'Editor - CodeSteppers',
         'structuredData' => self::organizationStructuredData(),
         'scripts' => [
           [
@@ -350,6 +350,8 @@ class PublicSite
       }
 
       echo $twig->render('wrapper.twig', [
+        'metaTitle' => 'Current Plan - CodeSteppers',
+        'description' => 'Check out your current usage and upgrade plan if necessary',
         'navbar' => $twig->render("navbar.twig", [
           'subscriberLabel' => getNick($request->vars) ?? "",
         ]),
@@ -499,6 +501,27 @@ class PublicSite
       }
 
       $conn->query("UPDATE `orders` SET `count` = '0'");
+    });
+
+    $r->post("/api/prune-guest-codesteppers", function (Request $request) use ($conn, $twig) {
+      header('Content-Type: application/json');
+      if (($request->body['key'] ?? 0) !== ($_SERVER['MASTER_PW'] ?? 1)) {
+        http_response_code(401);
+        echo json_encode(['error' => 'unauthorized']);
+        return;
+      }
+
+      $res = $conn->query("SELECT * FROM codesteppers WHERE codesteppers.subscriberId IS NULL");
+      $codeSteppers =  mysqli_fetch_all($res, MYSQLI_ASSOC);
+
+      require __DIR__ . "/dir-utils.php";
+
+      foreach ($codeSteppers as $codeStepper) {
+        $root = __DIR__ . "/public/codestepper-files/" . $codeStepper["slug"];
+        rrmdir($root);
+      }
+
+      $conn->query("DELETE FROM codesteppers WHERE codesteppers.subscriberId IS NULL");
     });
 
     $r->post("/api/send-mails", function (Request $request) use ($conn, $twig) {

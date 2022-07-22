@@ -10,7 +10,7 @@
       <li class="nav-item">
 				<a href="/edit" class="nav-link text-white">
 					<i class="fa fa-edit mx-1"></i>
-					<span>{{(plan is empty or plan == "lite") ? "Editor (trial mode)" : "Editor" }}</span>
+					<span>{{(plan is empty) ? "Editor (trial mode)" : "Editor" }}</span>
 				</a>
 			</li>
 			{% if plan is empty %}
@@ -47,13 +47,21 @@
 
 	<div class="mb-3 content-body">
 		<div class="card">
-			{% if isLoggedIn %}
+			{% if registrationSuccessful %}
 				<div class="card-body w-100 p-0" id="hero-spot2">
 					<div class="card-title">
 						<h2 class="mb-4 mt-5 text-success display-5 text-center">
-							Logged in
+							Registration Successful
 							<i class="fa fa-check-circle"></i>
 						</h2>
+            <br/>
+            <a class="nav-link text-light p-2 pe-3 text-center" href="/edit">
+							<button class="btn btn-sm btn-primary">
+								<span>Edit my projects
+									<i class='fa fa-arrow-circle-right'></i>
+								</span>
+							</button>
+						</a>
 					</div>
 				</div>
 
