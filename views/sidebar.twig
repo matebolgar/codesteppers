@@ -19,17 +19,17 @@
 					<span>Sign up for free</span>
 				</a>
 			{% endif %}
-			{% if plan == "lite" %}
+			{% if order.plan == "lite" %}
 				<a href="/active-plan" class="nav-link {{activeItem == 'plan' ? 'active' : 'text-white'}}">
 					<i class="fa fa-file mx-1"></i>
 					<span>Upgrade plan</span>
 				</a>
 			{% endif %}
-			{% if plan != "lite" and plan is not empty %}
+			{% if order.plan != "lite" and order.plan is not empty %}
 				<a href="/active-plan" class="nav-link {{activeItem == 'plan' ? 'active' : 'text-white'}}">
 					<i class="fa fa-file mx-1"></i>
 					<span>Current plan:
-						{{plan | upper}}</span>
+						{{order.plan | upper}}</span>
 				</a>
 			{% endif %}
 		</li>

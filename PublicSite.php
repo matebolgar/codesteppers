@@ -364,6 +364,7 @@ class PublicSite
         'structuredData' => PublicSite::organizationStructuredData(),
         'subscriberLabel' =>  getNick($request->vars),
         'content' => $twig->render('plan-active.twig', [
+          'sidebar' => getSidebar($conn, $twig, $request->vars["subscriberId"] ?? "", "plan"),
           "order" => $order,
           "planQuotaMap" => planQuotaMap(),
           'error' => $_GET['error'] ?? '',
