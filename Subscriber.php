@@ -45,6 +45,7 @@ class Subscriber
         'subscriberLabel' =>  getNick($request->vars),
         'noIndex' => true,
         'content' => $twig->render('subscriber-registration.twig', [
+          'sidebar' => getSidebar($conn, $twig, $request->vars["subscriberId"] ?? "", "user"),
           "plan" => $order ? $order->getPlan() : "",
           'isLoggedIn' => isset($_SESSION['subscriberId']),
           'registrationSuccessful' => isset($_GET['registrationSuccessful']),
@@ -163,6 +164,7 @@ class Subscriber
         ]),
         "title" => "Elfelejtett jelszó",
         'content' => $twig->render('forgot-password.twig', [
+          'sidebar' => getSidebar($conn, $twig, $request->vars["subscriberId"] ?? "", "user"),
           'isError' => isset($_GET['isError']),
           'emailSent' => isset($_GET['emailSent']),
           'referer' => $_SERVER['HTTP_REFERER'] ?? '',
@@ -232,6 +234,7 @@ class Subscriber
           'isLoginButtonHidden' => true
         ]),
         'content' => $twig->render('create-new-password.twig', [
+          'sidebar' => getSidebar($conn, $twig, $request->vars["subscriberId"] ?? "", ""),
           'token' => $request->vars['token'],
           'referer' => $_GET['referer'] ?? '',
         ]),
@@ -267,7 +270,7 @@ class Subscriber
       header('Location: /login?isPasswordModificationSuccess=1');
     });
 
-    $r->get('/jelszo-modositasa-sikeres', function (Request $request) use ($conn, $twig) {
+    $r->get('/password-modification-successful', function (Request $request) use ($conn, $twig) {
       header('Content-Type: text/html; charset=UTF-8');
       echo $twig->render('wrapper.twig', [
         'metaTitle' => 'Password modification successful',
@@ -288,6 +291,7 @@ class Subscriber
         'structuredData' => PublicSite::organizationStructuredData(),
         'subscriberLabel' =>  getNick($request->vars),
         'content' => $twig->render('subscriber-login.twig', [
+          'sidebar' => getSidebar($conn, $twig, $request->vars["subscriberId"] ?? "", ""),
           'subscriberLabel' =>  getNick($request->vars),
           'isLoggedIn' => isset($_SESSION['subscriberId']),
           'error' => $_GET['error'] ?? '',

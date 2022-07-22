@@ -54,6 +54,7 @@ class PublicSite
         return $request;
       }
       $request->vars['subscriber'] = $subscriber;
+      $request->vars['subscriberId'] = $subscriber->getId();
       return $request;
     };
   }
@@ -258,6 +259,7 @@ class PublicSite
             'subscriberLabel' => getNick($request->vars) ?? "",
           ]),
           'content' => $twig->render('edit-guest.twig', [
+            'sidebar' => getSidebar($conn, $twig, "", "edit"),
             'codeStepper' =>  $codeSteppersBySlug->getCount() ? $codeSteppersBySlug->getEntities()[0] : '',
             'codeSteppers' => $allCodeSteppers->getEntities(),
             'siteUrl' => Router::siteUrl(),
@@ -295,11 +297,15 @@ class PublicSite
           'subscriberLabel' => getNick($request->vars) ?? "",
         ]),
         'content' => $twig->render('edit.twig', [
-          'plan' => $order->getPlan() ?? "",
+          'sidebar' => $twig->render("sidebar.twig", [
+            'order' => getActiveOrder($conn, $subscriberId),
+            'isLoggedIn' => true,
+            'codeSteppers' => $allCodeSteppers->getEntities(),
+            'activeItem' => 'editor',
+            'activeCodeStepperSlug' =>  $request->vars['codeStepperSlug'] ?? '',
+          ]),
           'codeStepper' =>  $codeSteppersBySlug->getCount() ? $codeSteppersBySlug->getEntities()[0] : '',
-          'codeSteppers' => $allCodeSteppers->getEntities(),
           'siteUrl' => Router::siteUrl(),
-          'activeCodeStepperSlug' =>  $request->vars['codeStepperSlug'] ?? '',
         ]),
         'metaTitle' => 'Editor - CodeSteppers',
         'description' => 'Editor - CodeSteppers',
@@ -490,6 +496,35 @@ class PublicSite
       }
     });
 
+    $r->get("/terms-and-conditions", function (Request $request) use ($conn, $twig) {
+
+      echo $twig->render('wrapper.twig', [
+        'navbar' => $twig->render("navbar.twig", [
+          'subscriberLabel' => getNick($request->vars) ?? "",
+        ]),
+        'content' => $twig->render("terms.twig", [
+          'sidebar' => getSidebar($conn, $twig, $request->vars["subscriberId"] ?? "", ""),
+        ]),
+        'metaTitle' => 'Terms and Conditions',
+        'description' => 'Terms and Conditions',
+        'structuredData' => self::organizationStructuredData(),
+        'scripts' => [
+          [
+            "path" => "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js",
+            "isCdn" => true,
+          ],
+          ...getCodestepperEditorScripts(),
+          ...getCodestepperScripts(),
+          ["path" => "js/bootstrap.min.js"],
+          ["path" => "js/modal.js"],
+        ],
+        'styles' => [
+          ["path" => "css/dracula.css"],
+          ...getCodestepperEditorStyles(),
+          ...getCodestepperStyles(),
+        ],
+      ]);
+    });
 
 
     $r->post("/api/reset-plans", function (Request $request) use ($conn, $twig) {
@@ -566,6 +601,15 @@ class PublicSite
       }
     });
   }
+}
+
+function getSidebar($conn, $twig, $subscriberId, $activeItem)
+{
+  return $twig->render("sidebar.twig", [
+    'order' => getActiveOrder($conn, $subscriberId),
+    'isLoggedIn' => (bool)$subscriberId,
+    'activeItem' => $activeItem
+  ]);
 }
 
 function getActiveOrder($conn, $subscriberId)
