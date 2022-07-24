@@ -286,7 +286,6 @@ class Subscriber
         'description' => 'Login - CodeSteppers',
         'navbar' => $twig->render("navbar.twig", [
           'subscriberLabel' => getNick($request->vars) ?? "",
-          'isLoginButtonHidden' => true
         ]),
         'structuredData' => PublicSite::organizationStructuredData(),
         'subscriberLabel' =>  getNick($request->vars),
