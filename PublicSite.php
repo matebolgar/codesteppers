@@ -109,8 +109,8 @@ class PublicSite
     $r->get('/edit', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
 
 
-      if ($request->vars["subscriber"]) {
-        $id = $request->vars["subscriber"]->getId();
+      if (@$request->vars["subscriberId"]) {
+        $id = $request->vars["subscriberId"];
         $allCodeSteppers = (new CodestepperLister($conn))->list(Router::where('subscriberId', 'eq', $id));
         if ($allCodeSteppers->getCount()) {
           header("Location: /edit/" . $allCodeSteppers->getEntities()[0]->getSlug());
@@ -136,7 +136,7 @@ class PublicSite
         $id = "guest-" . uniqid();
         $cookieParams = session_get_cookie_params();
         setcookie("guestId", $id, time() + 60 * 60 * 24, $cookieParams['path'], $cookieParams['domain'], $cookieParams['secure'], isset($cookieParams['httponly']));
-        $codeStepperId = CodeStepper::createSchemaForSubscriber($conn, $id);
+        $codeStepperId = CodeStepper::createSchemaForGuest($conn, $id);
 
         header("Location: /edit/$codeStepperId");
       }

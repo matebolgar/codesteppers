@@ -559,30 +559,6 @@ class CodeStepper
     (new CodestepperSaver($conn))->Save(new NewCodestepper($codeStepperId, $subscriberId, null, $init["title"], time()));
     return $codeStepperId;
   }
-
-  public static function createFirstSchemaForGuest($conn, $guestId)
-  {
-    $codeStepperId = uniqid();
-    $partId = uniqid();
-
-    $root = __DIR__ . "/public/codestepper-files/" . $codeStepperId;
-    $schemaPath = $root . "/schema.json";
-
-    mkdir($root);
-
-    require __DIR__ . "/dir-utils.php";
-
-    xcopy(__DIR__ . "/public/intro", $root);
-
-    $schema = json_decode(file_get_contents($schemaPath), true);
-    $schema["id"] = $codeStepperId;
-    $schema["slug"] = $codeStepperId;
-
-    file_put_contents($schemaPath, json_encode($schema, JSON_UNESCAPED_UNICODE));
-
-    (new CodestepperSaver($conn))->Save(new NewCodestepper($codeStepperId, null, $guestId, $schema["title"], time()));
-    return $codeStepperId;
-  }
   
   public static function createSchemaForGuest($conn, $guestId)
   {
