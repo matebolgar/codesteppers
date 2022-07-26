@@ -18,7 +18,7 @@ h4,
 .popup-change-plan-title,
 .popup-widgets-limit-extension-header-title,
 .all-apps-plans-table-head-title {
-  color: #111;
+  color: #fffffe;
   font-size: 24px;
   font-weight: 700;
   line-height: 32px;
@@ -59,7 +59,7 @@ h5,
 .popup-cancel-subscription .state-confirmation-info-title,
 .popup-cancel-subscription .state-reason-reasons-title,
 .all-apps-plans-packs-features-title {
-  color: #111;
+  color: #fffffe;
   font-size: 20px;
   font-weight: 700;
   line-height: 28px;
@@ -1031,11 +1031,11 @@ svg.button-icon,
   }
 }
 .button-white {
-  color: #111;
-  background: #fff;
+  color: #fffffe;
+  background: #3B3B3B;
 }
 .button-white:hover {
-  color: #111;
+  color: #fffffe;
 }
 .button-white:not(.button-loading):hover {
   background: #fafafa;
@@ -1062,7 +1062,7 @@ svg.button-icon,
 }
 .button-black.button-clear,
 .button-black.button-outline {
-  color: #111;
+  color: #fffffe;
 }
 .button-black.button-clear:not(.button-loading):hover,
 .button-black.button-outline:not(.button-loading):hover {
@@ -1175,14 +1175,14 @@ svg.button-icon,
   box-shadow: inset 0 0 0 1px #9a8aff;
 }
 .button-yellow {
-  color: #111;
+  color: #fffffe;
   background: #ffec00;
 }
 .button-yellow:hover {
-  color: #111;
+  color: #fffffe;
 }
 .button-yellow:not(.button-loading):hover {
-  color: #111;
+  color: #fffffe;
   background: #ffee1a;
 }
 .button-yellow.button-clear,
@@ -1298,7 +1298,7 @@ svg.button-icon,
   right: 0;
   left: 0;
   z-index: 3;
-  background: #fff;
+  background: #3B3B3B;
   box-shadow: 0 2px 6px rgba(0,0,0,0.12);
 }
 .header-left,
@@ -1338,7 +1338,7 @@ svg.button-icon,
   color: #858585;
 }
 .header-headway-trigger:hover {
-  color: #111;
+  color: #fffffe;
 }
 .header-headway-trigger-text {
   line-height: 15px;
@@ -1404,7 +1404,7 @@ svg.button-icon,
   pointer-events: none;
 }
 .header-user-menu-list {
-  background: #fff;
+  background: #3B3B3B;
   padding: 12px 28px;
   border-radius: 5px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.2);
@@ -1422,11 +1422,11 @@ svg.button-icon,
 .header-user-menu-list-item a {
   cursor: pointer;
   display: block;
-  color: #565656;
+  color: #a6a6a6;
   padding: 4px;
 }
 .header-user-menu-list-item a:hover {
-  color: #111;
+  color: #fffffe;
 }
 .header-user-menu-visible {
   pointer-events: all;
@@ -1650,7 +1650,7 @@ svg.button-icon,
   z-index: 99996;
 }
 .popup-inner {
-  background: #fff;
+  background: #3B3B3B;
   margin: auto;
   transition: opacity 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
   opacity: 0;
@@ -1794,7 +1794,7 @@ svg.button-icon,
   border-radius: 2px;
   border: solid 1px rgba(17,17,17,0.2);
   color: rgba(17,17,17,0.7);
-  background: #fff;
+  background: #3B3B3B;
 }
 .popup-change-app-notice {
   display: flex;
@@ -1872,7 +1872,7 @@ svg.button-icon,
 }
 .popup-select-plan-header-caption {
   margin-top: 0;
-  color: #565656;
+  color: #a6a6a6;
 }
 .popup-select-plan-content {
   display: flex;
@@ -1905,7 +1905,7 @@ svg.button-icon,
   transition: none;
 }
 .popup-select-plan-content-inner div.tabs-nav-item:first-child.tabs-nav-item {
-  color: #111;
+  color: #fffffe;
 }
 .popup-select-plan-content-inner div.tabs-nav-item::after {
   display: none;
@@ -1913,7 +1913,7 @@ svg.button-icon,
 .popup-select-plan-content-inner div.tabs-nav-item.tabs-nav-item-active {
   border-color: rgba(0,0,0,0.1);
   background: #fafafa;
-  color: #111;
+  color: #fffffe;
 }
 .popup-select-plan-content-caption {
   color: rgba(17,17,17,0.3);
@@ -1936,7 +1936,7 @@ svg.button-icon,
   padding: 20px 55px;
   border-radius: 44px;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.05);
-  background: #fff;
+  background: #3B3B3B;
 }
 .popup-select-plan-bonus.three-apps-packs {
   color: #8d38ff;
@@ -2147,7 +2147,7 @@ svg.button-icon,
 }
 .popup-select-plan-table-container {
   border-radius: 10px;
-  background: #fff;
+  background: #3B3B3B;
 }
 .popup-select-plan-packs .popup-select-plan-table,
 .popup-select-plan-three-packs .popup-select-plan-table {
@@ -2178,7 +2178,7 @@ svg.button-icon,
 }
 .popup-select-plan-three-packs .popup-select-plan-table-col {
   width: 33.333%;
-  background: #fff;
+  background: #3B3B3B;
 }
 .popup-select-plan-table-col:first-child {
   border-radius: 10px 0 0 10px;
@@ -2190,7 +2190,7 @@ svg.button-icon,
 .popup-select-plan-table-col-highlight {
   padding-bottom: 8px 0;
   margin: -8px 0;
-  background: #fff;
+  background: #3B3B3B;
   border-radius: 10px;
   border: 1px solid rgba(0,0,0,0.05);
   box-shadow: 0 10px 16px rgba(0,0,0,0.12);
@@ -2245,7 +2245,7 @@ svg.button-icon,
   margin-left: -120px;
 }
 .popup-select-plan-table-cell-disable.popup-select-plan-table-feature {
-  color: #b3b3b3;
+  color: #a6a6a6;
   text-decoration: line-through;
 }
 .popup-select-plan-table-head {
@@ -2266,7 +2266,7 @@ svg.button-icon,
   pointer-events: none;
 }
 .popup-select-plan-table-head-caption {
-  color: #565656;
+  color: #a6a6a6;
   min-height: 48px;
 }
 .popup-select-plan-packs .popup-select-plan-table-head-caption {
@@ -2304,7 +2304,7 @@ svg.button-icon,
 }
 .popup-select-plan-table-price-block-value {
   font-size: 72px;
-  color: #111;
+  color: #fffffe;
   font-weight: 600;
   line-height: 88px;
 }
@@ -2314,7 +2314,7 @@ svg.button-icon,
 .popup-select-plan-table-price-block-currency,
 .popup-select-plan-table-price-block-delimiter,
 .popup-select-plan-table-price-block-period {
-  color: #b3b3b3;
+  color: #a6a6a6;
   text-transform: uppercase;
 }
 .popup-select-plan-table-price-block-currency {
@@ -2326,7 +2326,7 @@ svg.button-icon,
   font-size: 28px;
   font-weight: 500;
   line-height: 1;
-  color: #111;
+  color: #fffffe;
   position: absolute;
   top: 18px;
   right: 0;
@@ -2365,7 +2365,7 @@ svg.button-icon,
   margin-bottom: 12px;
   line-height: 20px;
   text-align: center;
-  color: #111;
+  color: #fffffe;
 }
 .popup-select-plan-packs .popup-select-plan-table-feature {
   color: #fff;
@@ -2388,7 +2388,7 @@ svg.button-icon,
 .popup-select-plan-current {
   padding: 4px 8px;
   background: #eaeaec;
-  color: #111;
+  color: #fffffe;
 }
 .popup-select-plan-text {
   opacity: 0.7;
@@ -2402,7 +2402,7 @@ svg.button-icon,
   position: relative;
 }
 .popup-select-plan-toggle .toggle-value {
-  color: #b3b3b3;
+  color: #a6a6a6;
   transition: 0.3s all ease-out;
 }
 .popup-select-plan-toggle .toggle-value-left {
@@ -2412,7 +2412,7 @@ svg.button-icon,
   padding-left: 12px;
 }
 .popup-select-plan-toggle .toggle-value-active {
-  color: #111;
+  color: #fffffe;
 }
 .popup-select-plan-toggle-save {
   color: #ff4734;
@@ -2435,7 +2435,7 @@ svg.button-icon,
   display: inline-block;
 }
 .popup-select-plan-bottom {
-  color: #b3b3b3;
+  color: #a6a6a6;
   text-align: center;
   padding-top: 20px;
 }
@@ -2511,7 +2511,7 @@ svg.button-icon,
   border-bottom: 1px solid #ededed;
   margin-top: 80px;
   margin-bottom: 40px;
-  color: #565656;
+  color: #a6a6a6;
 }
 .popup-faq-type-item {
   margin-left: 84px;
@@ -2522,7 +2522,7 @@ svg.button-icon,
   margin-bottom: 16px;
 }
 .popup-faq-type-item-content {
-  color: #565656;
+  color: #a6a6a6;
 }
 .popup-faq-type-item-list {
   list-style: none;
@@ -2619,7 +2619,7 @@ svg.button-icon,
 .popup-upgrade-modal-info-hint {
   margin-top: 16px;
   line-height: 1.4;
-  color: #565656;
+  color: #a6a6a6;
 }
 .popup-upgrade-total {
   width: 360px;
@@ -2717,7 +2717,7 @@ svg.button-icon,
   margin: 0 auto;
 }
 .popup-downgrade-header {
-  color: #111;
+  color: #fffffe;
 }
 .popup-downgrade-header td {
   margin: 0;
@@ -2727,7 +2727,7 @@ svg.button-icon,
   position: absolute;
   left: 40px;
   top: 36px;
-  color: #565656;
+  color: #a6a6a6;
   transition: all 0.2s ease;
 }
 .popup-downgrade-header-back-icon {
@@ -2746,7 +2746,7 @@ svg.button-icon,
   margin-bottom: 0;
 }
 .popup-downgrade-table thead th {
-  color: #111;
+  color: #fffffe;
   text-align: center;
   vertical-align: baseline;
   font-size: 18px;
@@ -2774,7 +2774,7 @@ svg.button-icon,
   text-align: left;
 }
 .popup-downgrade-table tbody .popup-downgrade-table-first-col-title {
-  color: #565656;
+  color: #a6a6a6;
   margin: 0;
 }
 .popup-downgrade-table tbody .popup-downgrade-table-first-col-notice {
@@ -2931,7 +2931,7 @@ svg.button-icon,
   overflow: hidden;
   max-height: 0px;
   transition: 0.25s;
-  background: #fff;
+  background: #3B3B3B;
 }
 .popup-cancel-subscription .state-reason-reasons-offers.visible {
   max-height: 260px;
@@ -2972,7 +2972,7 @@ svg.button-icon,
   width: 100%;
   padding: 10px 12px;
   line-height: 1.56;
-  background: #fff;
+  background: #3B3B3B;
 }
 .popup-cancel-subscription .state-reason-reasons-list-item label input {
   display: block;
@@ -3429,7 +3429,7 @@ svg.button-icon,
 }
 .popup-change-plan-info-hint {
   margin-top: 16px;
-  color: #565656;
+  color: #a6a6a6;
 }
 .popup-change-plan-actions {
   margin-top: 32px;
@@ -3493,7 +3493,7 @@ svg.button-icon,
   line-height: 1.8;
   transform: translateX(-50%);
   color: #fff;
-  background: #343434;
+  background: #3B3B3B;
 }
 .popup-birthday-button {
   position: absolute;
@@ -3546,7 +3546,7 @@ svg.button-icon,
   line-height: 1.8;
   transform: translateX(-50%);
   color: #fff;
-  background: #343434;
+  background: #3B3B3B;
 }
 .popup-blackfriday-button {
   position: absolute;
@@ -3621,7 +3621,7 @@ svg.button-icon,
   border-radius: 3px;
   line-height: 20px;
   border: 1px solid #d8d8d8;
-  background: #fff;
+  background: #3B3B3B;
 }
 .popup-installation-types-help-request-form-textarea {
   max-height: 116px;

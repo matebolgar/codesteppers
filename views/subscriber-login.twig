@@ -1,28 +1,27 @@
-<main class="main-content">
+<main class="main-content text-light" style="background: #303030">
 	{{sidebar | raw}}
 
-  <div class="mb-3 content-body">
-    <div class="card">
-      {% if isLoggedIn %}
-        <div class="card-body w-100 p-0" id="hero-spot2">
-          <div class="card-title">
-            <h2 class="mb-4 mt-5 text-success display-5 text-center">
-              Logged in
-              <i class="fa fa-check-circle"></i>
-            </h2>
-          </div>
-        </div>
+	<div class="mb-3 content-body">
+		{% if isLoggedIn %}
+			<div class="card-body w-100 p-0" id="hero-spot2">
+				<div class="card-title">
+					<h2 class="mb-4 mt-5 text-success display-5 text-center">
+						Logged in
+						<i class="fa fa-check-circle"></i>
+					</h2>
+				</div>
+			</div>
 
-      {% else %}
-        <div class="row m-0">
-          <div class="col-lg-6 offset-lg-3">
-            <div class="p-3">
-              {% include 'subscriber-login-form.twig' with {'loginError': loginError, 'email': email, registrationPath: '/sign-up', 'isPasswordModificationSuccess': isPasswordModificationSuccess}  %}
-            </div>
-          </div>
-        </div>
-      {% endif %}
-    </div>
-  </div>
+		{% else %}
+			<div class="row m-0">
+				<div class="col-lg-6 offset-lg-3">
+					<div class="p-3">
+						{% include 'subscriber-login-form.twig' with {'loginError': loginError, 'email': email, registrationPath: '/sign-up', 'isPasswordModificationSuccess': isPasswordModificationSuccess}  %}
+					</div>
+				</div>
+			</div>
+		{% endif %}
+
+	</div>
 
 </main>

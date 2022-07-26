@@ -1,5 +1,5 @@
 {% set usagePercent = order.count / planQuotaMap[order.plan] * 100 %}
-<main class="main-content">
+<main class="main-content text-light" style="background: #303030">
 	{{sidebar | raw}}
 
 	<div class="mb-3 content-body my-2 w-100">
@@ -66,7 +66,7 @@
 						/
 						{{planQuotaMap[order.plan]}}
 					</div>	
-          <div class="text-center my-1 text-muted">
+          <div class="text-center my-1" style="color: #a6a6a6">
 						(Resets monthly)
 					</div>
 				</div>
@@ -105,7 +105,7 @@
 					<div class="popup-select-plan-table-container m-2" ng-if="(!subscription || subscription.plan.parameters.apps_count == 1) &amp;&amp; !config.showOnlyPacks">
 						<div class="popup-select-plan-table">
 
-							<div class="popup-select-plan-table-col" ng-repeat="plan in preparedPlans | reverseObject">
+							<div class="popup-select-plan-table-col" >
 								<div class="popup-select-plan-table-head popup-select-plan-table-cell">
 
 
@@ -114,7 +114,7 @@
 									</div>
 
 
-									<div class="popup-select-plan-table-head-caption ng-binding" ng-bind-html="plansCaptions[plan.display_name]">Best for high traffic websites and agencies</div>
+									<div class="popup-select-plan-table-head-caption ng-binding" >Best for high traffic websites and agencies</div>
 								</div>
 
 								<div class="popup-select-plan-table-price popup-select-plan-table-cell">
@@ -153,16 +153,7 @@
 												<rect width="2" height="2" rx="1" ry="1"></rect>
 											</svg>
 
-											<div class="tooltip-content">
-												<div class="tooltip-content-inner">
-													<p translate="">The number of views is the number of times an app loads on your website.</p>
-													<p translate="">It depends on the number of visits to a page with the widgets.</p>
-													<p translate="">The limit is provided on a monthly basis, and it's reset once a month.</p>
-													<p>
-														<a href="https://help.elfsight.com/article/694-views-metric" target="_blank" translate="">Learn more about views</a>
-													</p>
-												</div>
-											</div>
+											
 										</div>
 									</div>
 
@@ -174,9 +165,9 @@
 
 									</div>
 
-									<div class="popup-select-plan-table-feature" ng-class="{'popup-select-plan-table-cell-disable': plan.name === 'Lite'}" translate="">Free installation service</div>
+									<div class="popup-select-plan-table-feature"  translate="">Free installation service</div>
 
-									<div class="popup-select-plan-table-feature" ng-class="{'popup-select-plan-table-cell-disable': plan.name === 'Lite'}" translate="">CodeStepper logo removal</div>
+									<div class="popup-select-plan-table-feature"  translate="">CodeStepper logo removal</div>
 								</div>
 							</div>
 
@@ -189,7 +180,7 @@
 									</div>
 
 
-									<div class="popup-select-plan-table-head-caption ng-binding" ng-bind-html="plansCaptions[plan.display_name]">Best for growing businesses</div>
+									<div class="popup-select-plan-table-head-caption ng-binding" >Best for growing businesses</div>
 								</div>
 
 								<div class="popup-select-plan-table-price popup-select-plan-table-cell">
@@ -228,17 +219,7 @@
 												<rect width="2" height="2" rx="1" ry="1"></rect>
 											</svg>
 
-											<div class="tooltip-content">
-												<div class="tooltip-content-inner">
-													<p translate="">The number of views is the number of times an app loads on your website.</p>
-													<p translate="">It depends on the number of visits to a page with the widgets.</p>
-													<p translate="">The limit is provided on a monthly basis, and it's reset once a month.</p>
-
-													<p>
-														<a href="https://help.elfsight.com/article/694-views-metric" target="_blank" translate="">Learn more about views</a>
-													</p>
-												</div>
-											</div>
+											
 										</div>
 									</div>
 
@@ -249,9 +230,9 @@
 										</span>
 									</div>
 
-									<div class="popup-select-plan-table-feature" ng-class="{'popup-select-plan-table-cell-disable': plan.name === 'Lite'}" translate="">Free installation service</div>
+									<div class="popup-select-plan-table-feature"  translate="">Free installation service</div>
 
-									<div class="popup-select-plan-table-feature" ng-class="{'popup-select-plan-table-cell-disable': plan.name === 'Lite'}" translate="">CodeStepper logo removal</div>
+									<div class="popup-select-plan-table-feature"  translate="">CodeStepper logo removal</div>
 								</div>
 							</div>
 
@@ -263,7 +244,7 @@
 									</div>
 
 
-									<div class="popup-select-plan-table-head-caption ng-binding" ng-bind-html="plansCaptions[plan.display_name]">Best for low-traffic websites</div>
+									<div class="popup-select-plan-table-head-caption ng-binding" >Best for low-traffic websites</div>
 								</div>
 
 								<div class="popup-select-plan-table-price popup-select-plan-table-cell">
@@ -303,17 +284,7 @@
 												<rect width="2" height="2" rx="1" ry="1"></rect>
 											</svg>
 
-											<div class="tooltip-content">
-												<div class="tooltip-content-inner">
-													<p translate="">The number of views is the number of times an app loads on your website.</p>
-													<p translate="">It depends on the number of visits to a page with the widgets.</p>
-													<p translate="">The limit is provided on a monthly basis, and it's reset once a month.</p>
-
-													<p>
-														<a href="https://help.elfsight.com/article/694-views-metric" target="_blank" translate="">Learn more about views</a>
-													</p>
-												</div>
-											</div>
+											
 										</div>
 									</div>
 
@@ -326,27 +297,27 @@
 
 									</div>
 
-									<div class="popup-select-plan-table-feature" ng-class="{'popup-select-plan-table-cell-disable': plan.name === 'Lite'}" translate="">Free installation service</div>
+									<div class="popup-select-plan-table-feature"  translate="">Free installation service</div>
 
-									<div class="popup-select-plan-table-feature" ng-class="{'popup-select-plan-table-cell-disable': plan.name === 'Lite'}" translate="">CodeStepper logo removal</div>
+									<div class="popup-select-plan-table-feature"  translate="">CodeStepper logo removal</div>
 								</div>
 							</div>
 
-							<div class="popup-select-plan-table-col popup-select-plan-table-col-current" ng-repeat="plan in preparedPlans | reverseObject">
+							<div class="popup-select-plan-table-col popup-select-plan-table-col-current">
 								<div class="popup-select-plan-table-head popup-select-plan-table-cell">
 
-									<div class="popup-select-plan-table-head-title ng-binding" ng-if="plan.periods.monthly.price == 0" ng-click="createFreeSubscription(plan)">
+									<div class="popup-select-plan-table-head-title ng-binding" >
 										Lite
 									</div>
 									<!-- end ngIf: plan.periods.monthly.price == 0 -->
 
 
-									<div class="popup-select-plan-table-head-caption ng-binding" ng-bind-html="plansCaptions[plan.display_name]">Good for testing purposes and development stage</div>
+									<div class="popup-select-plan-table-head-caption ng-binding" >Good for testing purposes and development stage</div>
 								</div>
 
 								<div class="popup-select-plan-table-price popup-select-plan-table-cell">
 
-									<div class="popup-select-plan-table-price popup-select-plan-table-price-free" ng-if="plan.periods.monthly.price == 0">
+									<div class="popup-select-plan-table-price popup-select-plan-table-price-free" >
 										<div class="popup-select-plan-table-price-block">
 											<span class="popup-select-plan-table-price-block-currency">$</span>
 											<span class="popup-select-plan-table-price-block-value">0</span>
@@ -374,17 +345,7 @@
 												<rect width="2" height="2" rx="1" ry="1"></rect>
 											</svg>
 
-											<div class="tooltip-content">
-												<div class="tooltip-content-inner">
-													<p translate="">The number of views is the number of times an app loads on your website.</p>
-													<p translate="">It depends on the number of visits to a page with the widgets.</p>
-													<p translate="">The limit is provided on a monthly basis, and it's reset once a month.</p>
-
-													<p>
-														<a href="https://help.elfsight.com/article/694-views-metric" target="_blank" translate="">Learn more about views</a>
-													</p>
-												</div>
-											</div>
+											
 										</div>
 									</div>
 
@@ -396,9 +357,9 @@
 
 									</div>
 
-									<div class="popup-select-plan-table-feature popup-select-plan-table-cell-disable" ng-class="{'popup-select-plan-table-cell-disable': plan.name === 'Lite'}" translate="">Free installation service</div>
+									<div class="popup-select-plan-table-feature popup-select-plan-table-cell-disable"  translate="">Free installation service</div>
 
-									<div class="popup-select-plan-table-feature popup-select-plan-table-cell-disable" ng-class="{'popup-select-plan-table-cell-disable': plan.name === 'Lite'}" translate="">CodeStepper logo removal</div>
+									<div class="popup-select-plan-table-feature popup-select-plan-table-cell-disable"  translate="">CodeStepper logo removal</div>
 								</div>
 							</div>
 
@@ -410,7 +371,7 @@
 
 			<div class="text-center">
 				<a target="_blank" href="https://simplepay.hu/wp-content/uploads/2022/03/PaymentService_Fizetesi_tajekoztato_EN.pdf">
-					<img class="img-thumbnail" src="/public/images/simplepay_otp_bankcard_en_top_new.webp" style="width: 200px"/>
+					<img src="/public/images/simplepay_otp_bankcard_en_top_new.webp" style="width: 200px"/>
 				</a>
 			</div>
 

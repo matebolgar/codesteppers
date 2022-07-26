@@ -151,7 +151,7 @@ class PublicSite
 
       $getStatus = fn ($code) => json_encode(["status" => $code]);
 
-      if(isset($request->query['is-embedded'])) {
+      if (isset($request->query['is-embedded'])) {
         echo $getStatus(2);
         return;
       }
@@ -505,22 +505,44 @@ class PublicSite
       }
     });
 
-    $r->get("/terms-and-conditions", function (Request $request) use ($conn, $twig) {
 
-      echo $twig->render('wrapper.twig', [
-        'navbar' => $twig->render("navbar.twig", [
-          'subscriberLabel' => getNick($request->vars) ?? "",
-        ]),
-        'content' => $twig->render("terms.twig", [
-          'sidebar' => getSidebar($conn, $twig, $request->vars["subscriberId"] ?? "", ""),
-        ]),
-        'metaTitle' => 'Terms and Conditions',
-        'description' => 'Terms and Conditions',
-        'structuredData' => self::organizationStructuredData(),
-        'scripts' => [],
-        'styles' => [],
-      ]);
-    });
+    $items = [
+      [
+        "path" => "/terms-and-conditions",
+        "title" => "Terms and Conditions",
+        "template" => "terms.twig",
+      ],
+      [
+        "path" => "/cookie-policy",
+        "title" => "Cookie Policy",
+        "template" => "cookie-policy.twig",
+      ],
+      [
+        "path" => "/privacy-policy",
+        "title" => "Privacy Policy",
+        "template" => "privacy-policy.twig",
+      ],
+    ];
+
+    foreach ($items as $item) {
+
+      $r->get($item["path"], function (Request $request) use ($conn, $twig, $item) {
+        echo $twig->render('wrapper.twig', [
+          'navbar' => $twig->render("navbar.twig", [
+            'subscriberLabel' => getNick($request->vars) ?? "",
+          ]),
+          'content' => $twig->render($item["template"], [
+            'sidebar' => getSidebar($conn, $twig, $request->vars["subscriberId"] ?? "", ""),
+          ]),
+          'metaTitle' => $item["title"],
+          'description' => $item["title"],
+          'structuredData' => self::organizationStructuredData(),
+          'scripts' => [],
+          'styles' => [],
+        ]);
+      });
+    }
+
 
 
     $r->get("/support", $initSubscriberSession, function (Request $request) use ($conn, $twig) {

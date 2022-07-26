@@ -1,8 +1,20 @@
-<main class="main-content">
+<main class="main-content text-light" style="background: #303030">
 	{{sidebar | raw}}
 
 	<div class="mb-3 content-body">
-		<div class="card">
+
+		{% if isLoggedIn %}
+			<div class="card-body w-100 p-0" id="hero-spot2">
+				<div class="card-title">
+					<h2 class="mb-4 mt-5 text-success display-5 text-center">
+						Logged in
+						<i class="fa fa-check-circle"></i>
+					</h2>
+				</div>
+			</div>
+
+		{% else %}
+
 			{% if registrationSuccessful %}
 				<div class="card-body w-100 p-0" id="hero-spot2">
 					<div class="card-title">
@@ -30,7 +42,9 @@
 					</div>
 				</div>
 			{% endif %}
-		</div>
+		{% endif %}
+
 	</div>
+
 
 </main>
