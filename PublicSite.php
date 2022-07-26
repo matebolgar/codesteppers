@@ -175,8 +175,7 @@ class PublicSite
       $order = getActiveOrder($conn, $codeStepper->getSubscriberId());
 
       if (!$order) {
-        echo $getStatus(-1);
-        http_response_code(404);
+        echo $getStatus(1);
         return;
       }
 
