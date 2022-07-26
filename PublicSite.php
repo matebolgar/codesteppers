@@ -136,7 +136,7 @@ class PublicSite
         $id = "guest-" . uniqid();
         $cookieParams = session_get_cookie_params();
         setcookie("guestId", $id, time() + 60 * 60 * 24, $cookieParams['path'], $cookieParams['domain'], $cookieParams['secure'], isset($cookieParams['httponly']));
-        $codeStepperId = CodeStepper::createFirstSchemaForGuest($conn, $id);
+        $codeStepperId = CodeStepper::createSchemaForSubscriber($conn, $id);
 
         header("Location: /edit/$codeStepperId");
       }
@@ -150,10 +150,6 @@ class PublicSite
       header('Content-Type: application/json');
 
       $getStatus = fn ($code) => json_encode(["status" => $code]);
-      if ($request->query["is-embedded"] ?? "") {
-        echo $getStatus(2);
-        return;
-      }
 
       $codeSteppers = (new CodestepperLister($conn))->list(new Query(
         1,
@@ -172,9 +168,15 @@ class PublicSite
       $codeStepper = $codeSteppers->getEntities()[0];
       $isLoggedIn = false;
 
-      $orders = (new OrderLister($conn))->list(Router::where('subscriberId', 'eq', $codeStepper->getSubscriberId()));
 
       $order = getActiveOrder($conn, $codeStepper->getSubscriberId());
+
+      if (!$order) {
+        echo $getStatus(-1);
+        http_response_code(404);
+        return;
+      }
+
       $isLite = $order->getPlan() === "lite";
 
       // quota exceeded
@@ -259,14 +261,18 @@ class PublicSite
             'subscriberLabel' => getNick($request->vars) ?? "",
           ]),
           'content' => $twig->render('edit-guest.twig', [
-            'sidebar' => getSidebar($conn, $twig, "", "edit"),
+            'sidebar' => $twig->render("sidebar.twig", [
+              'order' => null,
+              'isLoggedIn' => (bool)$subscriberId,
+              'activeItem' => "editor",
+              'codeSteppers' => $allCodeSteppers->getEntities(),
+              'activeCodeStepperSlug' =>  $request->vars['codeStepperSlug'] ?? '',
+            ]),
             'codeStepper' =>  $codeSteppersBySlug->getCount() ? $codeSteppersBySlug->getEntities()[0] : '',
-            'codeSteppers' => $allCodeSteppers->getEntities(),
             'siteUrl' => Router::siteUrl(),
-            'activeCodeStepperSlug' =>  $request->vars['codeStepperSlug'] ?? '',
           ]),
-          'metaTitle' => 'Editor (trial mode) - CodeSteppers',
-          'description' => 'Try out the CodeSteppers editor for free',
+          'metaTitle' => 'Editor - CodeSteppers',
+          'description' => 'Try out the CodeSteppers editor',
           'structuredData' => self::organizationStructuredData(),
           'scripts' => [
             [
@@ -509,23 +515,30 @@ class PublicSite
         'metaTitle' => 'Terms and Conditions',
         'description' => 'Terms and Conditions',
         'structuredData' => self::organizationStructuredData(),
-        'scripts' => [
-          [
-            "path" => "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js",
-            "isCdn" => true,
-          ],
-          ...getCodestepperEditorScripts(),
-          ...getCodestepperScripts(),
-          ["path" => "js/bootstrap.min.js"],
-          ["path" => "js/modal.js"],
-        ],
-        'styles' => [
-          ["path" => "css/dracula.css"],
-          ...getCodestepperEditorStyles(),
-          ...getCodestepperStyles(),
-        ],
+        'scripts' => [],
+        'styles' => [],
       ]);
     });
+
+
+    $r->get("/support", $initSubscriberSession, function (Request $request) use ($conn, $twig) {
+
+      echo $twig->render('wrapper.twig', [
+        'navbar' => $twig->render("navbar.twig", [
+          'subscriberLabel' => getNick($request->vars) ?? "",
+        ]),
+        'content' => $twig->render("support.twig", [
+          'sidebar' => getSidebar($conn, $twig, $request->vars["subscriberId"] ?? "", "support"),
+        ]),
+        'metaTitle' => 'Support',
+        'description' => 'Support',
+        'structuredData' => self::organizationStructuredData(),
+        'scripts' => [],
+        'styles' => [],
+      ]);
+    });
+
+
 
 
     $r->post("/api/reset-plans", function (Request $request) use ($conn, $twig) {
@@ -723,6 +736,7 @@ function planQuotaMap()
     "basic" => 5000,
     "pro" => 50000,
     "enterprise" => 5000000,
+    "admin" => 500000000,
   ];
 }
 

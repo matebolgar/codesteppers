@@ -558,6 +558,13 @@ footer .right {
   color: rgb(0 0 0 / 0%);
 }
 
+.text-gradient {
+  background-image: linear-gradient(to right, rgb(255 199 63) 0%, rgb(253 52 89) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: rgb(0 0 0 / 0%);
+  color: rgb(0 0 0 / 0%);
+}
+
 @media screen and (max-width: 670px) {
   .main-brand {
     font-size: 0.5em;
@@ -748,4 +755,9 @@ h6 {
 
 body::backdrop {
   background-color: #fafafa;
+}
+
+.badge-lg {
+  font-size: 1.03em;
+  margin: 3px
 }

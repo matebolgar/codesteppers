@@ -1,0 +1,17 @@
+{
+  "id": "62debc80de9ee",
+  "type": "codeSurfer",
+  "theme": "materialDark",
+  "showNumbers": false,
+  "steps": [
+    {
+      "fileName": "",
+      "language": "html",
+      "title": "Paste this code to your website:",
+      "focus": "",
+      "label": "",
+      "content": "<script src=\"https:\/\/codesteppers.com\/platform.js\" defer>\n<\/script>\n<div class=\"codestepper-app-62de28dc99405\"><\/div>",
+      "jumpFromPrev": false
+    }
+  ]
+}

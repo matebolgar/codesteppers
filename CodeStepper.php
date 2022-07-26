@@ -291,6 +291,7 @@ class CodeStepper
         "fileName" => "",
         "language" => $code["steps"][$stepIndex]["language"] ?? "",
         "showNumbers" => true,
+        "showButtons" => true,
         "title" => "",
         "focus" => "",
         "label" => "",
@@ -611,13 +612,13 @@ class CodeStepper
       'htmlArray' => [
         "id" => uniqid(),
         "type" => "htmlArray",
-        "scriptUrls" => [],
-        "styleUrls" => [],
         "items" => [
           [
             "start" => 0,
             "end" => 0,
-            "content" => ""
+            "content" => "",
+            "scriptUrls" => [],
+            "styleUrls" => [],
           ]
         ]
       ],
@@ -626,6 +627,7 @@ class CodeStepper
         "type" => "codeSurfer",
         "theme" => "dark",
         "showNumbers" => true,
+        "showButtons" => true,
         "steps" => [
           [
             "fileName" => "subtitle",

@@ -37,7 +37,7 @@ class Subscriber
 
       echo $twig->render('wrapper.twig', [
         'metaTitle' => 'Sign Up - CodeSteppers',
-        'description' => 'Sign up for free',
+        'description' => 'Sign up',
         'navbar' => $twig->render("navbar.twig", [
           'subscriberLabel' => getNick($request->vars) ?? "",
         ]),

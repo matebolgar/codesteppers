@@ -1,0 +1,85 @@
+{
+  "id": "62de2ae6091eb",
+  "type": "htmlArray",
+  "scriptUrls": [],
+  "styleUrls": [],
+  "items": [
+    {
+      "start": 0,
+      "end": 0,
+      "content": "<div class=\"display-2 text-center fade-in\">\r\n    Welcome\r\n<\/div>\r\n\r\n<div class=\"text-center\">\r\n    <p>\r\n    Move the presentation with the arrows or the slider!\r\n    <\/p>\r\n<\/div>\r\n",
+      "scriptUrls": [
+        ""
+      ],
+      "styleUrls": [
+        ""
+      ]
+    },
+    {
+      "start": 1,
+      "end": 1,
+      "content": "<div class=\"fade-in\">\r\n<h1 class=\"text-center display-6 my-2\">\r\n    Supported languages:\r\n<\/h1>\r\n\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Apacheconf<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">C<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Clojure<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">C++<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">C#<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">CSS<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Docker<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Erlang<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Fortran<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">F#<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Git<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Go<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">GraphQL<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Haskell<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">HTML<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Java<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">JavaScript<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">JSON<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">JSX<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Julia<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Kotlin<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Lisp<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Lua<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Matlab<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">MongoDB<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Nginx<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Objective-C<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">PHP<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Python<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Regex<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Ruby<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Rust<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Scala<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Scheme<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">SQL<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Swift<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Twig<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">TypeScript<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">Visual Basic<\/span>\r\n<span class=\"badge badge-lg rounded-pill bg-success text-dark\">YAML<\/span>\r\n\r\n<\/div>",
+      "scriptUrls": [
+        ""
+      ],
+      "styleUrls": [
+        ""
+      ]
+    },
+    {
+      "start": 2,
+      "end": 2,
+      "content": "<div class=\"fade-in\">\r\n<p class=\"p-2\">\r\n\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque facilisis, neque et fringilla vestibulum, arcu est tempus lacus, et aliquam nulla orci sed lorem. Nullam lobortis lacus velit, non vestibulum neque porttitor ut. Phasellus nec est eu risus feugiat pretium. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed in lacus in lorem blandit sagittis. Nam gravida ipsum et libero elementum ornare. Quisque efficitur odio elementum iaculis posuere. Duis placerat ac dui viverra finibus. Cras vel dictum magna.\r\n<\/p>\r\n<img class=\"img-fluid rounded\" src=\"https:\/\/www.nasa.gov\/sites\/default\/files\/styles\/full_width\/public\/thumbnails\/image\/sombrero-galaxy.jpg?itok=0bph5fym\">\r\n\r\n<\/div>",
+      "scriptUrls": [
+        ""
+      ],
+      "styleUrls": [
+        ""
+      ]
+    },
+    {
+      "start": 3,
+      "end": 3,
+      "content": "<h1 class=\"text-center m-1 display-6\">\r\n  <b>Example<\/b>\r\n<\/h1>\r\n<p class=\"m-2 text-center\">\r\n  Increment or decrement the value by one, depending on which shape and radio button is selected.\r\n<\/p>\r\n\r\n<div class=\"bg-dark border border-dark rounded p-2 m-2\">\r\n  <form id=\"shapes\">\r\n    <select class=\"form-control\" name=\"selectedShape\">\r\n      <option value=\"circle\" selected=\"selected\">Circle<\/option>\r\n      <option value=\"square\">Square<\/option>\r\n      <option value=\"rectangle\">Rectangle<\/option>\r\n    <\/select>\r\n    <br>\r\n    <label class=\"radio-inline me-5\">\r\n      <span class=\"fa fa-plus\">\r\n        <input type=\"radio\" name=\"action\" value=\"increment\" checked=\"checked\">\r\n      <\/span><\/label>\r\n    <label class=\"radio-inline\">\r\n      <span class=\"fa fa-minus\">\r\n        <input type=\"radio\" name=\"action\" value=\"decrement\">\r\n      <\/span><\/label>\r\n    <br>\r\n    <br>\r\n    <button type=\"submit\" class=\"btn btn-primary d-inline-block\">\r\n      Submit\r\n    <\/button>\r\n  <\/form>\r\n  <br>\r\n<\/div>\r\n<div style=\"display: flex; justify-content: space-evenly;\">\r\n  <div id=\"sh-circle\" class=\"center d-inline-block\">0<\/div>\r\n  <div id=\"sh-square\" class=\"center d-inline-block\">0<\/div>\r\n  <div id=\"sh-rectangle\" class=\"center d-inline-block\">0<\/div>\r\n<\/div>",
+      "scriptUrls": [
+        "https:\/\/codesteppers.com\/public\/example\/script.js"
+      ],
+      "styleUrls": [
+        "https:\/\/codesteppers.com\/public\/example\/style.css"
+      ]
+    },
+    {
+      "start": 4,
+      "end": 4,
+      "content": "<div class=\"codestepper-app-62de90d8745cc\">\r\n<\/div>",
+      "scriptUrls": [
+        "https:\/\/codesteppers.com\/platform.js"
+      ],
+      "styleUrls": [
+        ""
+      ]
+    },
+    {
+      "start": 5,
+      "end": 5,
+      "content": "<script src=\"https:\/\/codesteppers.com\/platform.js\" defer><\/script>\r\n\r\n<div style=\"padding-top: 65px;\">\r\n    <div class=\"codestepper-app-62debc3225e83\">\r\n    <\/div>\r\n<\/div>",
+      "scriptUrls": [
+        "https:\/\/codesteppers.com\/platform.js"
+      ],
+      "styleUrls": [
+        ""
+      ]
+    },
+    {
+      "start": 6,
+      "end": 6,
+      "content": "<div class=\"fade-in\">\r\n<div class=\"w-100 text-end\">\r\n    <i class=\"display-1 fa fa-arrow-up px-2\"><\/i>\r\n    <p class=\"text-end\">\r\n        Try it out!\r\n    <\/p>\r\n<\/div>\r\n\r\n<\/div>",
+      "scriptUrls": [
+        ""
+      ],
+      "styleUrls": [
+        ""
+      ]
+    }
+  ]
+}

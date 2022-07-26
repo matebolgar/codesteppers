@@ -17,10 +17,11 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       var element = _step.value;
 
       var schemaId = element.className.split("-")[2];
-      if (!schemaId) {
+      if (!schemaId || element.dataset.isMounted) {
         continue;
       }
       element.innerHTML = "<div class=\"code-stepper\" data-schema-url=\"" + rootURL + "/public/codestepper-files/" + schemaId + "\"></div>";
+      element.dataset.isMounted = 1;
     }
   } catch (err) {
     _didIteratorError = true;

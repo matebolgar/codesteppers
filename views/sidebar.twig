@@ -9,14 +9,14 @@
 		<li class="nav-item">
 			<a href="/edit" class="nav-link {{activeItem == 'editor' ? 'active' : 'text-white'}}">
 				<i class="fa fa-edit mx-1"></i>
-				<span>{{isLoggedIn ? "Editor" : "Editor (trial mode)"}}</span>
+				<span>Editor</span>
 			</a>
 		</li>
 		<li>
 			{% if not isLoggedIn %}
 				<a href="/sign-up" class="nav-link {{activeItem == 'user' ? 'active' : 'text-white'}}">
 					<i class="fa fa-user mx-1"></i>
-					<span>Sign up for free</span>
+					<span>Sign up</span>
 				</a>
 			{% endif %}
 			{% if order.plan == "lite" %}
@@ -34,7 +34,7 @@
 			{% endif %}
 		</li>
 		<li>
-			<a href="#" class="nav-link {{activeItem == 'support' ? 'active' : 'text-white'}}">
+			<a href="/support" class="nav-link {{activeItem == 'support' ? 'active' : 'text-white'}}">
 				<i class="fa fa-question mx-1"></i>
 				<span>Support</span>
 			</a>
@@ -59,6 +59,7 @@
 		</div>
 	{% endif %}
 
+
 	<ul class="nav nav-pills flex-column" style="display: block; overflow-y: scroll; overflow-x: hidden;">
 		{% if codeSteppers is defined %}
 			{% for codeStepper in codeSteppers %}
@@ -73,6 +74,28 @@
 		{% endif %}
 
 	</ul>
+
+	{% if not isLoggedIn %}
+		<div class="text-muted text-center bg-dark rounded p-1" style="position: fixed; bottom: 10px; left: 22px">
+			Note: Projects are
+			<br/>
+			deleted daily.
+			<br/>
+			<a href="/sign-up">Sign up</a>
+			to preserve them!
+		</div>
+	{% endif %}
+
+	{% if order.plan == "lite" %}
+		<div class="text-muted text-center bg-dark rounded p-1" style="position: fixed; bottom: 10px; left: 28px">
+			Note: You have only 200
+			<br/>
+			views in lite version.
+			<br/>
+			<a href="/active-plan">Upgrade</a>
+			for more!
+		</div>
+	{% endif %}
 </div>
 
 <div class="b-example-divider"></div>

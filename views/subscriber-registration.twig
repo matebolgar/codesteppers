@@ -10,8 +10,8 @@
 							Registration Successful
 							<i class="fa fa-check-circle"></i>
 						</h2>
-            <br/>
-            <a class="nav-link text-light p-2 pe-3 text-center" href="/edit">
+						<br/>
+						<a class="nav-link text-light p-2 pe-3 text-center" href="/edit">
 							<button class="btn btn-sm btn-primary">
 								<span>Edit my projects
 									<i class='fa fa-arrow-circle-right'></i>
@@ -23,7 +23,7 @@
 
 			{% else %}
 				<div class="row m-0">
-					<div class="col-md-12">
+					<div class="col-lg-6 offset-lg-3">
 						<div class="p-3">
 							{% include 'subscriber-registration-form.twig' with {'loginError': loginError, 'email': email, registrationPath: '/login', 'isPasswordModificationSuccess': isPasswordModificationSuccess}  %}
 						</div>
