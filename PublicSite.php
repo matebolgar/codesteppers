@@ -151,6 +151,11 @@ class PublicSite
 
       $getStatus = fn ($code) => json_encode(["status" => $code]);
 
+      if(isset($request->query['is-embedded'])) {
+        echo $getStatus(2);
+        return;
+      }
+
       $codeSteppers = (new CodestepperLister($conn))->list(new Query(
         1,
         0,
@@ -166,8 +171,6 @@ class PublicSite
       }
 
       $codeStepper = $codeSteppers->getEntities()[0];
-      $isLoggedIn = false;
-
 
       $order = getActiveOrder($conn, $codeStepper->getSubscriberId());
 
