@@ -216,7 +216,21 @@ class PublicSite
       $subscriberId = null;
       $guestId = null;
 
-      if (isset($_COOKIE["guestId"])) {
+      if (@$request->vars["subscriberId"]) {
+        $subscriberId = $request->vars["subscriberId"];
+        $q = new Query(
+          15,
+          0,
+          new Filter(
+            "and",
+            new Clause("eq", "subscriberId", $subscriberId),
+            new Clause("eq", "slug", $request->vars['codeStepperSlug'] ?? ''),
+
+          ),
+          new OrderBy('createdAt', "desc"),
+          []
+        );
+      } else {
         $guestId = $_COOKIE["guestId"];
         $q = new Query(
           15,
@@ -230,20 +244,7 @@ class PublicSite
           new OrderBy('createdAt', "desc"),
           []
         );
-      } else {
-        $subscriberId = $request->vars["subscriber"] ? $request->vars["subscriber"]->getId() : "";
-        $q = new Query(
-          15,
-          0,
-          new Filter(
-            "and",
-            new Clause("eq", "subscriberId", $subscriberId),
-            new Clause("eq", "slug", $request->vars['codeStepperSlug'] ?? ''),
-
-          ),
-          new OrderBy('createdAt', "desc"),
-          []
-        );
+        
       }
 
       $codeSteppersBySlug = (new CodestepperLister($conn))->list($q);
