@@ -51,7 +51,10 @@
 		<div class="row my-3 w-100 m-auto">
 
 			<div class="col-md-12 px-4">
-				<h1 class="display-6 text-center py-1">
+				<h1 class="display-6 text-center py-2">
+					Your plan: {{order.plan | upper}}
+				</h1>
+        <h1 class="lead text-center">
 					Current usage:
 				</h1>
 
@@ -79,7 +82,7 @@
 
 
 				{% if order.plan != "lite" %}
-					<h2 class="text-center py-3">
+					<h2 class="text-center py-1">
 						Valid until:
 						{{activeUntil | date("m/d/Y")}}
 					</h2>
@@ -125,7 +128,7 @@
 											<span class="popup-select-plan-table-price-block-currency">$</span>
 											<span class="popup-select-plan-table-price-block-value ng-binding">25</span>
 											<span class="popup-select-plan-table-price-block-delimiter">/</span>
-											<span class="popup-select-plan-table-price-block-period" translate="">mo</span>
+											<span class="popup-select-plan-table-price-block-period" >mo</span>
 										</div>
 
 										<div class="popup-select-plan-table-price-select-button-wrapper">
@@ -165,9 +168,9 @@
 
 									</div>
 
-									<div class="popup-select-plan-table-feature"  translate="">Free installation service</div>
+									<div class="popup-select-plan-table-feature"  >Free installation service</div>
 
-									<div class="popup-select-plan-table-feature"  translate="">CodeStepper logo removal</div>
+									<div class="popup-select-plan-table-feature"  >CodeStepper logo removal</div>
 								</div>
 							</div>
 
@@ -190,7 +193,7 @@
 											<span class="popup-select-plan-table-price-block-currency">$</span>
 											<span class="popup-select-plan-table-price-block-value ng-binding">10</span>
 											<span class="popup-select-plan-table-price-block-delimiter">/</span>
-											<span class="popup-select-plan-table-price-block-period" translate="">mo</span>
+											<span class="popup-select-plan-table-price-block-period" >mo</span>
 										</div>
 
 
@@ -230,9 +233,9 @@
 										</span>
 									</div>
 
-									<div class="popup-select-plan-table-feature"  translate="">Free installation service</div>
+									<div class="popup-select-plan-table-feature"  >Free installation service</div>
 
-									<div class="popup-select-plan-table-feature"  translate="">CodeStepper logo removal</div>
+									<div class="popup-select-plan-table-feature"  >CodeStepper logo removal</div>
 								</div>
 							</div>
 
@@ -253,7 +256,7 @@
 											<span class="popup-select-plan-table-price-block-currency">$</span>
 											<span class="popup-select-plan-table-price-block-value ng-binding">5</span>
 											<span class="popup-select-plan-table-price-block-delimiter">/</span>
-											<span class="popup-select-plan-table-price-block-period" translate="">mo</span>
+											<span class="popup-select-plan-table-price-block-period" >mo</span>
 										</div>
 
 										<div class="popup-select-plan-table-price-select-button-wrapper">
@@ -297,9 +300,9 @@
 
 									</div>
 
-									<div class="popup-select-plan-table-feature"  translate="">Free installation service</div>
+									<div class="popup-select-plan-table-feature"  >Free installation service</div>
 
-									<div class="popup-select-plan-table-feature"  translate="">CodeStepper logo removal</div>
+									<div class="popup-select-plan-table-feature"  >CodeStepper logo removal</div>
 								</div>
 							</div>
 
@@ -309,7 +312,7 @@
 									<div class="popup-select-plan-table-head-title ng-binding" >
 										Lite
 									</div>
-									<!-- end ngIf: plan.periods.monthly.price == 0 -->
+									
 
 
 									<div class="popup-select-plan-table-head-caption ng-binding" >Good for testing purposes and development stage</div>
@@ -322,10 +325,10 @@
 											<span class="popup-select-plan-table-price-block-currency">$</span>
 											<span class="popup-select-plan-table-price-block-value">0</span>
 											<span class="popup-select-plan-table-price-block-delimiter">/</span>
-											<span class="popup-select-plan-table-price-block-period" translate="">mo</span>
+											<span class="popup-select-plan-table-price-block-period" >mo</span>
 										</div>
 
-										<span class="popup-select-plan-table-price-current" ng-show="plan.name == subscription.plan.name" translate="">Current plan</span>
+										<span class="popup-select-plan-table-price-current"  >Current plan</span>
 
 									</div>
 
@@ -353,13 +356,13 @@
 									<div class="popup-select-plan-table-feature">
 
 										<span ng-if="plan.name === 'Lite'">Only bug fixes</span>
-										<!-- end ngIf: plan.name === 'Lite' -->
+										
 
 									</div>
 
-									<div class="popup-select-plan-table-feature popup-select-plan-table-cell-disable"  translate="">Free installation service</div>
+									<div class="popup-select-plan-table-feature popup-select-plan-table-cell-disable"  >Free installation service</div>
 
-									<div class="popup-select-plan-table-feature popup-select-plan-table-cell-disable"  translate="">CodeStepper logo removal</div>
+									<div class="popup-select-plan-table-feature popup-select-plan-table-cell-disable"  >CodeStepper logo removal</div>
 								</div>
 							</div>
 
@@ -376,6 +379,282 @@
 			</div>
 
 		{% endif %}
+
+
+    <div class="row mb-3 w-100 m-auto">
+
+				<div class="col-md-12">
+					<h1 class="display-6 text-center">
+						Select your Plan 14-day money back guarantee.
+					</h1>
+
+					<p class="text-center">
+						<i>Risk-free, you can cancel at anytime.</i>
+					</p>
+
+					<div class="popup-select-plan-table-container m-2" ng-if="(!subscription || subscription.plan.parameters.apps_count == 1) &amp;&amp; !config.showOnlyPacks">
+						<div class="popup-select-plan-table">
+
+							<div class="popup-select-plan-table-col" >
+								<div class="popup-select-plan-table-head popup-select-plan-table-cell">
+
+
+									<div class="popup-select-plan-table-head-title ng-binding" ng-if="plan.periods.monthly.price > 0">
+										Enterprise
+									</div>
+
+
+									<div class="popup-select-plan-table-head-caption ng-binding" >Best for high traffic websites and agencies</div>
+								</div>
+
+								<div class="popup-select-plan-table-price popup-select-plan-table-cell">
+
+
+									<div class="popup-select-plan-table-price" ng-if="plan.periods.monthly.price > 0">
+										<div class="popup-select-plan-table-price-block">
+											<span class="popup-select-plan-table-price-block-currency">$</span>
+											<span class="popup-select-plan-table-price-block-value ng-binding">25</span>
+											<span class="popup-select-plan-table-price-block-delimiter">/</span>
+											<span class="popup-select-plan-table-price-block-period" >mo</span>
+										</div>
+
+										<div class="popup-select-plan-table-price-select-button-wrapper">
+											
+												<button type="submit" disabled class="popup-select-plan-table-price-select-button button-40 button button-green">
+													<span>Pay yearly</span>
+												</button>
+											
+										</div>
+
+									</div>
+
+								</div>
+
+								<div class="popup-select-plan-table-cell">
+									<div class="popup-select-plan-table-feature ng-binding">
+										5,000,000
+										<translate>views</translate>
+										<br/>
+										<small class="small">(Resets monthly)</small>
+
+										<div class="popup-select-plan-table-cell-views-info tooltip">
+											<svg width="2" height="8" viewbox="0 0 2 8">
+												<rect y="3" width="2" height="5" rx="1" ry="1"></rect>
+												<rect width="2" height="2" rx="1" ry="1"></rect>
+											</svg>
+
+											
+										</div>
+									</div>
+
+									<div class="popup-select-plan-table-feature">
+
+
+										<span>
+											Premium support</span>
+
+									</div>
+
+									<div class="popup-select-plan-table-feature"  >Free installation service</div>
+
+									<div class="popup-select-plan-table-feature"  >CodeStepper logo removal</div>
+								</div>
+							</div>
+
+							<div class="popup-select-plan-table-col popup-select-plan-table-col-highlight">
+								<div class="popup-select-plan-table-head popup-select-plan-table-cell">
+
+
+									<div class="popup-select-plan-table-head-title ng-binding" ng-if="plan.periods.monthly.price > 0">
+										Pro
+									</div>
+
+
+									<div class="popup-select-plan-table-head-caption ng-binding" >Best for growing businesses</div>
+								</div>
+
+								<div class="popup-select-plan-table-price popup-select-plan-table-cell">
+
+									<div class="popup-select-plan-table-price" ng-if="plan.periods.monthly.price > 0">
+										<div class="popup-select-plan-table-price-block">
+											<span class="popup-select-plan-table-price-block-currency">$</span>
+											<span class="popup-select-plan-table-price-block-value ng-binding">10</span>
+											<span class="popup-select-plan-table-price-block-delimiter">/</span>
+											<span class="popup-select-plan-table-price-block-period" >mo</span>
+										</div>
+
+
+										<div class="popup-select-plan-table-price-select-button-wrapper">
+
+											
+												<button type="submit" disabled class="popup-select-plan-table-price-select-button button-40 button button-green">
+
+													<span>Pay yearly</span>
+												</button>
+											
+										</div>
+									</div>
+
+								</div>
+
+								<div class="popup-select-plan-table-cell">
+									<div class="popup-select-plan-table-feature ng-binding">
+										50,000 views
+										<br/>
+										<small class="small">(Resets monthly)</small>
+
+										<div class="popup-select-plan-table-cell-views-info tooltip">
+											<svg width="2" height="8" viewbox="0 0 2 8">
+												<rect y="3" width="2" height="5" rx="1" ry="1"></rect>
+												<rect width="2" height="2" rx="1" ry="1"></rect>
+											</svg>
+
+											
+										</div>
+									</div>
+
+
+									<div class="popup-select-plan-table-feature">
+										<span>
+											Premium support
+										</span>
+									</div>
+
+									<div class="popup-select-plan-table-feature"  >Free installation service</div>
+
+									<div class="popup-select-plan-table-feature"  >CodeStepper logo removal</div>
+								</div>
+							</div>
+
+							<div class="popup-select-plan-table-col">
+								<div class="popup-select-plan-table-head popup-select-plan-table-cell">
+
+									<div class="popup-select-plan-table-head-title ng-binding" ng-if="plan.periods.monthly.price > 0">
+										Basic
+									</div>
+
+
+									<div class="popup-select-plan-table-head-caption ng-binding" >Best for low-traffic websites</div>
+								</div>
+
+								<div class="popup-select-plan-table-price popup-select-plan-table-cell">
+									<div class="popup-select-plan-table-price" ng-if="plan.periods.monthly.price > 0">
+										<div class="popup-select-plan-table-price-block">
+											<span class="popup-select-plan-table-price-block-currency">$</span>
+											<span class="popup-select-plan-table-price-block-value ng-binding">5</span>
+											<span class="popup-select-plan-table-price-block-delimiter">/</span>
+											<span class="popup-select-plan-table-price-block-period" >mo</span>
+										</div>
+
+										<div class="popup-select-plan-table-price-select-button-wrapper">
+											
+												<button type="submit" disabled class="dipopup-select-plan-table-price-select-button button-40 button button-green">
+													<span>Pay yearly</span>
+												</button>
+											
+										</div>
+
+									</div>
+
+								</div>
+
+								<div class="popup-select-plan-table-cell">
+									<div class="popup-select-plan-table-feature ng-binding">
+										5,000
+										<translate>views</translate>
+										<br/>
+										<small class="small">(Resets monthly)</small>
+
+										<div class="popup-select-plan-table-cell-views-info tooltip">
+											<svg width="2" height="8" viewbox="0 0 2 8">
+												<rect y="3" width="2" height="5" rx="1" ry="1"></rect>
+												<rect width="2" height="2" rx="1" ry="1"></rect>
+											</svg>
+
+											
+										</div>
+									</div>
+
+
+									<div class="popup-select-plan-table-feature">
+
+
+										<span>
+											Premium support</span>
+
+									</div>
+
+									<div class="popup-select-plan-table-feature"  >Free installation service</div>
+
+									<div class="popup-select-plan-table-feature"  >CodeStepper logo removal</div>
+								</div>
+							</div>
+
+							<div class="popup-select-plan-table-col popup-select-plan-table-col-current">
+								<div class="popup-select-plan-table-head popup-select-plan-table-cell">
+
+									<div class="popup-select-plan-table-head-title ng-binding" >
+										Lite
+									</div>
+									
+
+
+									<div class="popup-select-plan-table-head-caption ng-binding" >Good for testing purposes and development stage</div>
+								</div>
+
+								<div class="popup-select-plan-table-price popup-select-plan-table-cell">
+
+									<div class="popup-select-plan-table-price popup-select-plan-table-price-free" >
+										<div class="popup-select-plan-table-price-block">
+											<span class="popup-select-plan-table-price-block-currency">$</span>
+											<span class="popup-select-plan-table-price-block-value">0</span>
+											<span class="popup-select-plan-table-price-block-delimiter">/</span>
+											<span class="popup-select-plan-table-price-block-period" >mo</span>
+										</div>
+
+										<span class="popup-select-plan-table-price-current" style="visibility: hidden">Current plan</span>
+
+									</div>
+
+								</div>
+
+								<div class="popup-select-plan-table-cell">
+
+									<div class="popup-select-plan-table-feature ng-binding">
+										200
+										<translate>views</translate>
+										<br/>
+										<small class="small">(Resets monthly)</small>
+
+										<div class="popup-select-plan-table-cell-views-info tooltip">
+											<svg width="2" height="8" viewbox="0 0 2 8">
+												<rect y="3" width="2" height="5" rx="1" ry="1"></rect>
+												<rect width="2" height="2" rx="1" ry="1"></rect>
+											</svg>
+
+											
+										</div>
+									</div>
+
+
+									<div class="popup-select-plan-table-feature">
+
+										<span ng-if="plan.name === 'Lite'">Only bug fixes</span>
+										
+
+									</div>
+
+									<div class="popup-select-plan-table-feature popup-select-plan-table-cell-disable"  >Free installation service</div>
+
+									<div class="popup-select-plan-table-feature popup-select-plan-table-cell-disable"  >CodeStepper logo removal</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+			</div>
 
 	</div>
 

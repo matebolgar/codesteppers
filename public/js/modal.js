@@ -44,7 +44,7 @@
           </div>
 
           <p class="text-dark text-center py-2" style="font-size: 0.9em">
-            Note: Even if you embed multiple CodeStepper apps in your website, only one "platform.js" is necessary!
+            Note: Even if you embed multiple CodeStepper apps in your website, only one "platform.js" script is necessary!
           </p>
         </div>
       </div>
