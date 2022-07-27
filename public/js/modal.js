@@ -36,12 +36,16 @@
             <button type="button" class="btn-close close-website-links-modal" ></button>
           </div>
 
-          <div class="modal-body menlo-font">
+          <div class="modal-body menlo-font px-3 py-0">
             <pre class="hljs"><code class="html">
             ${content}
             </code></pre>
            
           </div>
+
+          <p class="text-dark text-center py-2" style="font-size: 0.9em">
+            Note: Even if you embed multiple CodeStepper apps in your website, only one "platform.js" is necessary!
+          </p>
         </div>
       </div>
     </div>
