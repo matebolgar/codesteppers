@@ -96,11 +96,9 @@ class PublicSite
         'subscriberLabel' =>  getNick($request->vars),
         'structuredData' => self::organizationStructuredData(),
         'scripts' => [
-          ...getCodestepperEditorScripts(),
           ...getCodestepperScripts(),
         ],
         'styles' => [
-          ...getCodestepperEditorStyles(),
           ...getCodestepperStyles(),
         ],
       ]);
