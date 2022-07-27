@@ -65,7 +65,7 @@ class PublicSite
       "@context" => "https://schema.org",
       "@type" => "Organization",
       "url" => Router::siteUrl(),
-      "logo" => Router::siteUrl() . "/public/images/logo5.png"
+      "logo" => Router::siteUrl() . "/public/images/home.png"
     ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
   }
 
@@ -92,7 +92,19 @@ class PublicSite
           'siteUrl' => Router::siteUrl(),
         ]),
         'metaTitle' => 'CodeSteppers - Embeddable presentation for teachers and online schools',
-        'description' => 'CodeSteppers - Embeddable presentation for teachers and online schools',
+        'description' => 'Embeddable presentation for teachers and online schools',
+        'ogTags' => [
+          [
+            "property" => "og:image",
+            "content" => Router::siteUrl() . "/public/images/home.png",
+          ],[
+            "property" => "og:title",
+            "content" => "CodeSteppers",
+          ],[
+            "property" => "og:description",
+            "content" => "Embeddable presentation for teachers and online schools",
+          ],
+        ],
         'subscriberLabel' =>  getNick($request->vars),
         'structuredData' => self::organizationStructuredData(),
         'scripts' => [
