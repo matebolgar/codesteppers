@@ -288,14 +288,14 @@ class CodeStepper
 
       // Add CodeSurfer step
       $newStep = [
-        "fileName" => "",
+        "subtitle" => "",
         "language" => $code["steps"][$stepIndex]["language"] ?? "",
         "showNumbers" => true,
         "showButtons" => true,
         "title" => "",
         "focus" => "",
         "label" => "",
-        "content" => "",
+        "content" => "/*\n* New slide\n*/\n",
         "jumpFromPrev" => false,
       ];
 
@@ -355,7 +355,7 @@ class CodeStepper
 
 
       $newStep = [
-        "fileName" => $request->body["fileName"] ?? $code[$stepIndex]["fileName"],
+        "subtitle" => $request->body["subtitle"] ?? $code[$stepIndex]["subtitle"],
         "language" => $request->body["language"] ?? $code[$stepIndex]["language"],
         "title" => $request->body["title"] ?? $code[$stepIndex]['title'],
         "focus" => $request->body["focus"] ?? $code[$stepIndex]['focus'],
@@ -606,7 +606,7 @@ class CodeStepper
         "showButtons" => true,
         "steps" => [
           [
-            "fileName" => "subtitle",
+            "subtitle" => "subtitle",
             "language" => "javascript",
             "title" => "Title",
             "focus" => "",

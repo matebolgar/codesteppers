@@ -131,9 +131,20 @@ class Subscriber
       }
 
       $byToken = (new SubscriberPatcher($conn))->patch($subscriber->getId(), new PatchedSubscriber(null, null, 1, '', null, null));
+      
       (new OrderSaver($conn))->Save(new NewOrder(
         $subscriber->getId(),
         "lite",
+        "",
+        "SUCCESS",
+        0,
+        time() - 60,
+      ));
+      
+      // Initial offer - remove after beta period
+      (new OrderSaver($conn))->Save(new NewOrder(
+        $subscriber->getId(),
+        "basic",
         "",
         "SUCCESS",
         0,

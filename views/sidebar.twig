@@ -76,7 +76,7 @@
 	</ul>
 
 	{% if not isLoggedIn %}
-		<div class="text-muted text-center bg-dark rounded p-1" style="position: fixed; bottom: 10px; left: 22px">
+		<div class="text-light text-center bg-dark rounded p-1" style="position: fixed; bottom: 10px; left: 22px">
 			Note: Projects are
 			<br/>
 			deleted daily.
@@ -87,10 +87,10 @@
 	{% endif %}
 
 	{% if order.plan == "lite" %}
-		<div class="text-muted text-center bg-dark rounded p-1" style="position: fixed; bottom: 10px; left: 28px">
-			Note: You have only 200
+		<div class="text-light text-center bg-dark rounded p-1" style="position: fixed; bottom: 10px; left: 28px">
+			Note: You have only {{200 - order.count}}
 			<br/>
-			views in lite version.
+			views left in lite version.
 			<br/>
 			<a href="/active-plan">Upgrade</a>
 			for more!
