@@ -113,7 +113,20 @@ class Router
     {
         header('Content-Type: text/html; charset=UTF-8');
         http_response_code(404);
-        echo $this->twig->render('404.twig');
+        echo $this->twig->render('wrapper.twig', [
+          'navbar' => $this->twig->render("navbar.twig", [
+            'subscriberLabel' => "",
+          ]),
+          'content' => $this->twig->render("404.twig", [
+            'sidebar' => getSidebar($conn, $this->twig, $_SESSION['subscriberId'] ?? "", ""),
+          ]),
+          'metaTitle' => "Page Not Found",
+          'description' => "Page Not Found",
+          'structuredData' => PublicSite::organizationStructuredData(),
+          'scripts' => [],
+          'styles' => [],
+        ]);
+       
     }
 
     public static function saveImage($image)

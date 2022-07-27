@@ -505,6 +505,33 @@ class PublicSite
       }
     });
 
+    $r->post('/api/ipn', function (Request $request) use ($conn, $twig) {
+      header('Content-Type: application/json; charset=utf-8');
+      error_reporting(E_ALL);
+      ini_set("display_errors", 1);
+      mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+      if ($_SERVER['DEPLOYMENT_ENV'] === 'dev') {
+        return;
+      }
+      require_once 'simplepay/config.php';
+
+      require_once 'simplepay/SimplePayV21.php';
+
+      $trx = new \SimplePayIpn;
+
+      $trx->addConfig($config);
+      if (!$trx->isIpnSignatureCheck(json_encode($request->body))) {
+        return;
+      }
+
+      if (!$trx->runIpnConfirm()) {
+        return;
+      }
+
+      Invoice::sendReceipt($subscriber->getEmail(), $course->getInvoiceTitle(), getDiscountedPrice($course, $subscriberCourse->getSubscriberId(), $conn));
+    });
+
 
     $items = [
       [
