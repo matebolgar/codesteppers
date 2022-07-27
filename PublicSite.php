@@ -96,7 +96,7 @@ class PublicSite
         'ogTags' => [
           [
             "property" => "og:image",
-            "content" => Router::siteUrl() . "/public/images/home.png?v=4",
+            "content" => Router::siteUrl() . "/public/images/home.png?v=5",
           ],[
             "property" => "og:title",
             "content" => "CodeSteppers",
