@@ -571,6 +571,37 @@ class CodeStepper
     mkdir($root);
 
     $init = self::getInitialProject($codeStepperId, $partId);
+
+    $firstModule = [
+      "id" => uniqid(),
+      "type" => "codeSurfer",
+      "theme" => "dark",
+      "showNumbers" => true,
+      "showButtons" => true,
+      "steps" => [
+        [
+          "subtitle" => "subtitle",
+          "language" => "javascript",
+          "title" => "Title",
+          "focus" => "",
+          "label" => "First slide",
+          "content" => "/*\n  First slide\n\n  Click the \"View Result\" button in the upper right corner to \n  see how it's going to look on your website!\n\n  Click \"Add new slide\" for more slides!\n*/",
+        ],
+      ]
+    ];
+
+    $init['parts'][0]["modulePaths"][] = $firstModule["id"] . ".json";
+
+    $moduleDir = $root . "/" . $init["parts"][0]["slug"];
+    if (!is_dir($moduleDir)) {
+      mkdir($moduleDir);
+    }
+
+    file_put_contents(
+      $moduleDir . "/" . $firstModule["id"] . ".json",
+      json_encode($firstModule, JSON_UNESCAPED_UNICODE)
+    );
+
     file_put_contents($schemaPath, json_encode($init, JSON_UNESCAPED_UNICODE));
 
     (new CodestepperSaver($conn))->Save(new NewCodestepper($codeStepperId, null, $guestId, "New CodeStepper", time()));
