@@ -585,7 +585,7 @@ class CodeStepper
           "title" => "Title",
           "focus" => "",
           "label" => "First slide",
-          "content" => "/*\n  First slide\n\n  Click the \"View Result\" button in the upper right corner to \n  see how it's going to look on your website!\n\n  Click \"Add new slide\" for more slides!\n*/",
+          "content" => "/*\n  Click the \"View Result\" button in the upper right corner to \n  see how it's going to look on your website!\n\n  Click \"Add new slide\" for more slides!\n*/",
         ],
       ]
     ];
