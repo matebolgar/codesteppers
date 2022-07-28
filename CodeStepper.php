@@ -525,7 +525,7 @@ class CodeStepper
     return [
       "id" => $projectId,
       "slug" => $projectId,
-      "title" => "New CodeStepper",
+      "title" => "Title",
       "logoUrl" => "",
       "colorMode" => "dark",
       "primaryColor" => "#FFC73F",
@@ -535,7 +535,7 @@ class CodeStepper
       "parts" => [
         [
           "slug" => $partId,
-          "title" => "First page",
+          "title" => "Subtitle",
           "layout" => "cr-4",
           "modulePaths" => [],
         ],
@@ -604,7 +604,7 @@ class CodeStepper
 
     file_put_contents($schemaPath, json_encode($init, JSON_UNESCAPED_UNICODE));
 
-    (new CodestepperSaver($conn))->Save(new NewCodestepper($codeStepperId, null, $guestId, "New CodeStepper", time()));
+    (new CodestepperSaver($conn))->Save(new NewCodestepper($codeStepperId, null, $guestId, "Title", time()));
     return $codeStepperId;
   }
 
