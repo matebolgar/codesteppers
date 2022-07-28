@@ -584,7 +584,7 @@ class CodeStepper
           "language" => "javascript",
           "title" => "Title",
           "focus" => "",
-          "label" => "First slide",
+          "label" => "Label",
           "content" => "/*\n  Click the \"View Result\" button in the upper right corner to \n  see how it's going to look on your website!\n\n  Click \"Add new slide\" for more slides!\n*/",
         ],
       ]
