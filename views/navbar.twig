@@ -10,23 +10,25 @@
 		</div>
 		<div class="col-4 m-auto text-end px-2" style="word-break: break-all; word-wrap:break-word;">
 
-			{% if buttons is defined %}
-				{{buttons | raw}}
-			{% endif %}
-			{% if subscriberLabel != '' %}
-				<button id="subscriber-navbar-toggler" class="btn btn-sm text-light" style="border: none">
-					{{subscriberLabel}}
-					▾
-				</button>
-			{% else %}
-				{% if not isLoginButtonHidden %}
-					<a href="/login">
-						<button class="btn btn-sm btn-outline-primary fw-bold">
-							Login
-						</button>
-					</a>
-				{% endif %}
-			{% endif %}
+      <div class="d-flex justify-content-end">
+        {% if buttons is defined %}
+          {{buttons | raw}}
+        {% endif %}
+        {% if subscriberLabel != '' %}
+          <button id="subscriber-navbar-toggler" class="btn btn-sm text-light" style="border: none">
+            {{subscriberLabel}}
+            ▾
+          </button>
+        {% else %}
+          {% if not isLoginButtonHidden %}
+            <a href="/login">
+              <button class="btn btn-sm btn-outline-primary fw-bold">
+                Login
+              </button>
+            </a>
+          {% endif %}
+        {% endif %}
+      </div>
 		</div>
 
 	</div>
