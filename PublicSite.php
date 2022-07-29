@@ -288,10 +288,7 @@ class PublicSite
           'description' => 'Try out the CodeSteppers editor',
           'structuredData' => self::organizationStructuredData(),
           'scripts' => [
-            [
-              "path" => "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js",
-              "isCdn" => true,
-            ],
+            ["path" => "js/highlight.min.js"],
             ...getCodestepperEditorScripts(),
             ...getCodestepperScripts(),
             ["path" => "js/bootstrap.min.js"],
@@ -330,10 +327,7 @@ class PublicSite
         'description' => 'Editor - CodeSteppers',
         'structuredData' => self::organizationStructuredData(),
         'scripts' => [
-          [
-            "path" => "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js",
-            "isCdn" => true,
-          ],
+          ["path" => "js/highlight.min.js"],
           ...getCodestepperEditorScripts(),
           ...getCodestepperScripts(),
           ["path" => "js/bootstrap.min.js"],
