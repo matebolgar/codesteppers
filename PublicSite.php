@@ -97,10 +97,12 @@ class PublicSite
           [
             "property" => "og:image",
             "content" => Router::siteUrl() . "/public/images/home.png?v=5",
-          ],[
+          ],
+          [
             "property" => "og:title",
             "content" => "CodeSteppers",
-          ],[
+          ],
+          [
             "property" => "og:description",
             "content" => "Embeddable presentation for teachers and online schools",
           ],
@@ -244,7 +246,6 @@ class PublicSite
           new OrderBy('createdAt', "desc"),
           []
         );
-        
       }
 
       $codeSteppersBySlug = (new CodestepperLister($conn))->list($q);
@@ -302,8 +303,6 @@ class PublicSite
         ]);
         return;
       }
-
-      $order = getActiveOrder($conn, $subscriberId);
 
       echo $twig->render('wrapper.twig', [
         'navbar' => $twig->render("navbar.twig", [
