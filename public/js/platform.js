@@ -3,7 +3,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 (function () {
   var rootURL = "{{rootUrl}}";
 
-  var containers = Array.from(document.querySelectorAll("[class^=codestepper]"));
+  var containers = Array.from(document.querySelectorAll("[class^=codestepper-app-]"));
   if (!containers.length) {
     return;
   }
@@ -20,7 +20,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       if (!schemaId || element.dataset.isMounted) {
         continue;
       }
-      element.innerHTML = "<div class=\"code-stepper\" data-schema-url=\"" + rootURL + "/public/codestepper-files/" + schemaId + "\"></div>";
+      element.innerHTML = "<div class=\"code-stepper-root\" data-schema-url=\"" + rootURL + "/public/codestepper-files/" + schemaId + "\"></div>";
       element.dataset.isMounted = 1;
     }
   } catch (err) {

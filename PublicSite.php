@@ -345,8 +345,8 @@ class PublicSite
 
     $r->get("/api/init", function (Request $request) use ($conn, $twig) {
       echo json_encode([
-        'scripts' => getCodestepperScriptsFull(1),
-        'styles' => getCodestepperStylesFull(1),
+        'scripts' => getCodestepperScriptsFull(2),
+        'styles' => getCodestepperStylesFull(2),
       ]);
     });
 
