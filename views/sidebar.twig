@@ -12,6 +12,14 @@
 				<span>Editor</span>
 			</a>
 		</li>
+		{% if order.plan is empty %}
+			<li>
+				<a href="/pricing" class="nav-link {{activeItem == 'pricing' ? 'active' : 'text-white'}}">
+					<i class="fa fa-dollar-sign mx-2"></i>
+					<span>Pricing</span>
+				</a>
+			</li>
+		{% endif %}
 		<li>
 			{% if not isLoggedIn %}
 				<a href="/sign-up" class="nav-link {{activeItem == 'user' ? 'active' : 'text-white'}}">
@@ -32,6 +40,7 @@
 						{{order.plan | upper}}</span>
 				</a>
 			{% endif %}
+
 		</li>
 		<li>
 			<a href="/support" class="nav-link {{activeItem == 'support' ? 'active' : 'text-white'}}">
@@ -88,7 +97,8 @@
 
 	{% if order.plan == "lite" %}
 		<div class="text-light text-center bg-dark rounded p-1" style="position: fixed; bottom: 10px; left: 28px">
-			Note: You have only {{200 - order.count}}
+			Note: You have only
+			{{200 - order.count}}
 			<br/>
 			views left in lite version.
 			<br/>

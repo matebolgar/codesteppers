@@ -355,6 +355,32 @@ class PublicSite
       echo str_replace("{{rootUrl}}", Router::siteUrl(), file_get_contents("../public/js/platform.js"));
     });
 
+    $r->get('/pricing', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
+      echo $twig->render('wrapper.twig', [
+        'metaTitle' => 'Pricing - CodeSteppers',
+        'description' => 'Check out plans and pricing',
+        'navbar' => $twig->render("navbar.twig", [
+          'subscriberLabel' => getNick($request->vars) ?? "",
+        ]),
+        'structuredData' => PublicSite::organizationStructuredData(),
+        'subscriberLabel' =>  getNick($request->vars),
+        'content' => $twig->render('pricing.twig', [
+          'sidebar' => getSidebar($conn, $twig, $request->vars["subscriberId"] ?? "", "pricing"),
+          "planQuotaMap" => planQuotaMap(),
+          'error' => $_GET['error'] ?? '',
+          'transactionSuccessful' => $_GET['transactionSuccessful'] ?? '',
+          'transactionId' => $_GET['transactionId'] ?? '',
+          'orderRef' => $_GET['orderRef'] ?? '',
+          'isLoggedIn' => isset($request->vars["subscriberId"])
+        ]),
+        'scripts' => [],
+        'styles' => [
+          ["path" => "css/plans.css"],
+          ['path' => 'css/fonts/fontawesome/css/fontawesome-all.css'],
+        ],
+      ]);
+    });
+    
     $r->get('/active-plan', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
       $id = $request->vars["subscriber"] ? $request->vars["subscriber"]->getId() : -1;
 
