@@ -4,9 +4,6 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   var rootURL = "{{rootUrl}}";
 
   var containers = Array.from(document.querySelectorAll("[class^=codestepper-app-]"));
-  if (!containers.length) {
-    return;
-  }
 
   var _iteratorNormalCompletion = true;
   var _didIteratorError = false;
