@@ -138,6 +138,7 @@ class Subscriber
         "",
         "SUCCESS",
         0,
+        0,
         time() - 60,
       ));
       
@@ -147,6 +148,7 @@ class Subscriber
         "basic",
         "",
         "SUCCESS",
+        0,
         0,
         time(),
       ));

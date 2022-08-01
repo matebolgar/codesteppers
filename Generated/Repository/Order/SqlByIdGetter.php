@@ -28,7 +28,8 @@ class SqlByIdGetter implements ById
                         (string)$result['plan'],
                         (string)$result['ref'],
                         (string)$result['status'],
-                        $result['count'] === null ? null : (int)$result['count'],
+                        (int)$result['count'],
+                        (int)$result['totalCount'],
                         $result['createdAt'] === null ? null : (int)$result['createdAt']);
         
         } catch (\Error $exception) {

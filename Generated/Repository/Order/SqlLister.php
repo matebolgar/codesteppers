@@ -112,7 +112,7 @@ class SqlLister implements Lister
     
             return new CountedOrders(
                 array_map(function ($array) {
-                    return new Order((int)$array['id'], (int)$array['subscriberId'], (string)$array['plan'], (string)$array['ref'], (string)$array['status'], (int)$array['count'], (int)$array['createdAt']);
+                    return new Order((int)$array['id'], (int)$array['subscriberId'], (string)$array['plan'], (string)$array['ref'], (string)$array['status'], (int)$array['count'], (int)$array['totalCount'], (int)$array['createdAt']);
                 }, $results),
                 $count
             );

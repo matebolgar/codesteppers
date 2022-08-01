@@ -36,7 +36,7 @@
         public function update(array $entity, string $id): Order
         {    
             try {
-                $toUpdate = new UpdatedOrder($entity['status'] ?? '', $entity['count'] ?? 0);
+                $toUpdate = new UpdatedOrder($entity['status'] ?? '', $entity['count'] ?? 0, $entity['totalCount'] ?? 0);
                
                 return $this->updater->update($id, $toUpdate);
             } catch (Exception $err) {

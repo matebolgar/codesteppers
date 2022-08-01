@@ -11,17 +11,19 @@ private $plan;
 private $ref;
 private $status;
 private $count;
+private $totalCount;
 private $createdAt;
 
 
     
-public function __construct($subscriberId, $plan, $ref, $status, $count, $createdAt)
+public function __construct($subscriberId, $plan, $ref, $status, $count, $totalCount, $createdAt)
 {
         $this->subscriberId = $subscriberId;
 $this->plan = $plan;
 $this->ref = $ref;
 $this->status = $status;
 $this->count = $count;
+$this->totalCount = $totalCount;
 $this->createdAt = $createdAt;
 
 }
@@ -46,6 +48,10 @@ $this->createdAt = $createdAt;
     {
         return $this->count;
     }
+    public function getTotalCount(): ?int
+    {
+        return $this->totalCount;
+    }
     public function getCreatedAt(): ?int
     {
         return $this->createdAt;
@@ -60,6 +66,7 @@ $this->createdAt = $createdAt;
  'ref' => $this->ref,
  'status' => $this->status,
  'count' => $this->count,
+ 'totalCount' => $this->totalCount,
  'createdAt' => $this->createdAt,
 
         ];

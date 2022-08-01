@@ -22,9 +22,9 @@ class SqlSaver implements Saver
         try {
             $statement = $this->connection->prepare(
                 "INSERT INTO `orders` (
-                `id`, `subscriberId`, `plan`, `ref`, `status`, `count`, `createdAt`
+                `id`, `subscriberId`, `plan`, `ref`, `status`, `count`, `totalCount`, `createdAt`
                 ) 
-                VALUES (NULL, ?,?,?,?,?,?);"
+                VALUES (NULL, ?,?,?,?,?,?,?);"
             );
     
             $subscriberId = $new->getSubscriberId();
@@ -32,16 +32,17 @@ class SqlSaver implements Saver
         $ref = $new->getRef();
         $status = $new->getStatus();
         $count = $new->getCount();
+        $totalCount = $new->getTotalCount();
         $createdAt = $new->getCreatedAt();
         
     
             $statement->bind_param(
-                "isssii",
-                 $subscriberId, $plan, $ref, $status, $count, $createdAt        
+                "isssiii",
+                 $subscriberId, $plan, $ref, $status, $count, $totalCount, $createdAt        
              );
             $statement->execute();
     
-            return new Order((string)$statement->insert_id, $new->getSubscriberId(),$new->getPlan(),$new->getRef(),$new->getStatus(),$new->getCount(),$new->getCreatedAt());
+            return new Order((string)$statement->insert_id, $new->getSubscriberId(),$new->getPlan(),$new->getRef(),$new->getStatus(),$new->getCount(),$new->getTotalCount(),$new->getCreatedAt());
         } catch (\Error $exception) {
             if ($_SERVER['DEPLOYMENT_ENV'] === 'dev') {
                 var_dump($exception);

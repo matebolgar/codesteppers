@@ -8,13 +8,15 @@ class PatchedOrder implements JsonSerializable
 {
     private $status;
 private $count;
+private $totalCount;
 
 
     
-public function __construct($status, $count)
+public function __construct($status, $count, $totalCount)
 {
         $this->status = $status;
 $this->count = $count;
+$this->totalCount = $totalCount;
 
 }
     
@@ -26,6 +28,10 @@ $this->count = $count;
     {
         return $this->count;
     }
+    public function getTotalCount(): ?int
+    {
+        return $this->totalCount;
+    }
     
     
     public function jsonSerialize()
@@ -33,6 +39,7 @@ $this->count = $count;
         return [
             'status' => $this->status,
  'count' => $this->count,
+ 'totalCount' => $this->totalCount,
 
         ];
     }

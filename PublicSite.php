@@ -199,7 +199,10 @@ class PublicSite
         return;
       }
 
-      (new OrderPatcher($conn))->patch($order->getId(), new PatchedOrder(null, $order->getCount() + 1));
+      (new OrderPatcher($conn))->patch(
+        $order->getId(),
+        new PatchedOrder(null, $order->getCount() + 1, $order->getTotalCount() + 1)
+      );
 
       if ($isLite) {
         echo $getStatus(1);
@@ -460,6 +463,7 @@ class PublicSite
         $orderRef,
         "STARTED",
         0,
+        0,
         time(),
       ));
 
@@ -484,7 +488,7 @@ class PublicSite
       $orders = (new OrderLister($conn))->list(Router::where('ref', 'eq', $orderRef));
       $order = $orders->getEntities()[0];
 
-      $to = fn ($status) => (new OrderPatcher($conn))->patch($order->getId(), new PatchedOrder($status, null));
+      $to = fn ($status) => (new OrderPatcher($conn))->patch($order->getId(), new PatchedOrder($status, null, null));
       switch ($result['e']) {
         case 'SUCCESS':
           $to("SUCCESS");
@@ -533,7 +537,7 @@ class PublicSite
         return;
       }
 
-      Invoice::sendReceipt($subscriber->getEmail(), $course->getInvoiceTitle(), getDiscountedPrice($course, $subscriberCourse->getSubscriberId(), $conn));
+      //Invoice::sendReceipt($subscriber->getEmail(), $course->getInvoiceTitle(), getDiscountedPrice($course, $subscriberCourse->getSubscriberId(), $conn));
     });
 
 

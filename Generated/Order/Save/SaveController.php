@@ -36,7 +36,7 @@
     {
         $missing = array_map(function ($fieldName) {
             return Error::getValidationError($fieldName);
-        }, array_filter(['subscriberId', 'plan', 'ref', 'status'], function ($fieldName) use ($entity) {
+        }, array_filter(['subscriberId', 'plan', 'ref', 'status', 'count', 'totalCount'], function ($fieldName) use ($entity) {
             return empty($entity[$fieldName]);
         }));
 
@@ -65,7 +65,7 @@
         }
 
         try {
-          $toSave = new NewOrder((int)($entity['subscriberId']), (string)($entity['plan']), (string)($entity['ref']), (string)($entity['status']), (int)($entity['count'] ?? 0), (int)($entity['createdAt'] ?? 0));
+          $toSave = new NewOrder((int)($entity['subscriberId']), (string)($entity['plan']), (string)($entity['ref']), (string)($entity['status']), (int)($entity['count']), (int)($entity['totalCount']), (int)($entity['createdAt'] ?? 0));
               return $this->saver->Save($toSave);
         } catch (Exception $err) {
                 $this->operationError->addField(Error::getOperationError());
@@ -88,6 +88,7 @@
             'ref' => [$this, 'isString'],
             'status' => [$this, 'isString'],
             'count' => [$this, 'isInt'],
+            'totalCount' => [$this, 'isInt'],
             'createdAt' => [$this, 'isInt']
 
         ];
