@@ -652,6 +652,12 @@ class CodeStepper
         "scriptUrls" => [],
         "styleUrls" => [],
         "content" => "<h1 class=\"text-center display-2\">\n    App module HTML content\n</h1>"
+      ],
+      "vimeo" => [
+        "id" => uniqid(),
+        "type" => "vimeo",
+        "videoId" => "",
+        "items" => []
       ]
     ][$type];
   }
