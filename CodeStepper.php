@@ -290,12 +290,10 @@ class CodeStepper
       $newStep = [
         "subtitle" => "",
         "language" => $code["steps"][$stepIndex]["language"] ?? "",
-        "showNumbers" => true,
-        "showButtons" => true,
         "title" => "",
         "focus" => "",
         "label" => "",
-        "content" => "/*\n* New slide\n*/\n",
+        "content" => $code["steps"][$stepIndex]["content"] ?? "",
         "jumpFromPrev" => false,
       ];
 
