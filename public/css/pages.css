@@ -713,8 +713,8 @@ body {
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
   margin: 0;
-  font-size: 0.9rem !important;
-  line-height: 1.4 !important;
+  /* font-size: 0.9rem !important; */
+  /* line-height: 1.4 !important; */
   font-family: "Apercu Medium", "Helvetica", "Arial", sans-serif !important;
   font-weight: 500 !important;
   letter-spacing: -0.04em !important;
