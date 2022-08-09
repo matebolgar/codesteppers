@@ -88,7 +88,7 @@ class Invoice
         }
     }
 
-    public static function sendReceipt($email, $productName, $price)
+    public static function sendReceipt($email, $productName, $price, $ref)
     {
         require_once('szamlaagent/examples/autoload.php');
         try {
@@ -100,6 +100,8 @@ class Invoice
             $header = new \SzamlaAgent\Header\ReceiptHeader();
             $header->setPaymentMethod('bankcard');
             $header->setCurrency('USD');
+
+            $header->setComment($ref);
 
             $receipt->setHeader($header);
             // Nyugta előtag beállítása

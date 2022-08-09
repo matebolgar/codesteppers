@@ -563,7 +563,12 @@ class PublicSite
         return;
       }
 
-      //Invoice::sendReceipt($subscriber->getEmail(), $course->getInvoiceTitle(), getDiscountedPrice($course, $subscriberCourse->getSubscriberId(), $conn));
+      // Invoice::sendReceipt(
+      //   $subscriber->getEmail(), 
+      //   $course->getInvoiceTitle(), 
+      //   getDiscountedPrice($course, $subscriberCourse->getSubscriberId(), $conn),
+      //   $request->body["orderRef"],
+      // );
     });
 
 
