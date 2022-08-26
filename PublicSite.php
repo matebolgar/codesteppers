@@ -17,6 +17,7 @@ use CodeSteppers\Generated\Repository\Codestepper\SqlLister as CodestepperLister
 use CodeSteppers\Generated\Repository\Order\SqlSaver as OrderSaver;
 use CodeSteppers\Generated\Repository\Order\SqlLister as OrderLister;
 use CodeSteppers\Generated\Repository\Order\SqlPatcher as OrderPatcher;
+use CodeSteppers\Generated\Repository\Order\SqlDeleter as OrderDeleter;
 use CodeSteppers\Generated\Order\Save\NewOrder;
 use CodeSteppers\Generated\Repository\Message\SqlSaver as MessageSaver;
 use CodeSteppers\Generated\Repository\Message\SqlPatcher as MessagePatcher;
@@ -367,10 +368,6 @@ class PublicSite
         'content' => $twig->render('pricing.twig', [
           'sidebar' => getSidebar($conn, $twig, $request->vars["subscriberId"] ?? "", "pricing"),
           "planQuotaMap" => planQuotaMap(),
-          'error' => $_GET['error'] ?? '',
-          'transactionSuccessful' => $_GET['transactionSuccessful'] ?? '',
-          'transactionId' => $_GET['transactionId'] ?? '',
-          'orderRef' => $_GET['orderRef'] ?? '',
           'isLoggedIn' => isset($request->vars["subscriberId"])
         ]),
         'scripts' => [],
@@ -380,7 +377,18 @@ class PublicSite
         ],
       ]);
     });
-    
+
+    $r->post("/reset-subscription", $initSubscriberSession, function (Request $request) use ($conn, $twig) {
+      $email = $request->vars["subscriber"] ? $request->vars["subscriber"]->getEmail() : "";
+      if ($email !== "test@codesteppers.com") {
+        return;
+      }
+
+      $order = getActiveOrder($conn, $request->vars["subscriber"]->getId());
+      (new OrderDeleter($conn))->delete($order->getId());
+      header("Location: /active-plan");
+    });
+
     $r->get('/active-plan', $initSubscriberSession, function (Request $request) use ($conn, $twig) {
       $id = $request->vars["subscriber"] ? $request->vars["subscriber"]->getId() : -1;
 
@@ -407,6 +415,7 @@ class PublicSite
         'content' => $twig->render('plan-active.twig', [
           'sidebar' => getSidebar($conn, $twig, $request->vars["subscriberId"] ?? "", "plan"),
           "order" => $order,
+          "email" => $request->vars["subscriber"]->getEmail(),
           "planQuotaMap" => planQuotaMap(),
           'error' => $_GET['error'] ?? '',
           'transactionSuccessful' => $_GET['transactionSuccessful'] ?? '',
@@ -431,7 +440,7 @@ class PublicSite
 
       $trx = new \SimplePayStart;
 
-      $trx->addData('currency', 'USD');
+      $trx->addData('currency', 'EUR');
       $trx->addConfig($config);
 
       $priceMap = [
@@ -445,7 +454,7 @@ class PublicSite
       $trx->addItems(
         [
           'ref' => $request->vars["type"],
-          'title' => "Plan: " . strtoupper($request->vars["type"]),
+          'title' => "One year subscription for CodeSteppers - Plan: " . strtoupper($request->vars["type"]),
           'description' => "",
           'amount' => '1',
           'price' => $priceMap[$request->vars["type"]] * 12,

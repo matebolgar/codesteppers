@@ -36,7 +36,7 @@
 				</p>
 			</div>
 		{% endif %}
-		{% if transactionSuccessful is defined and transactionId != "" %}
+		{% if transactionSuccessful != "" and transactionId != "" %}
 			<div class="alert alert-success p-1 pe-2 ps-2 w-100 text-center">
 				<p style="font-size:14px">
 					<span>Successful transaction!</span>
@@ -135,7 +135,7 @@
 										<div class="popup-select-plan-table-price-select-button-wrapper">
 											<form action="/upgrade-plan/enterprise" method="POST">
 												<button type="submit" class="popup-select-plan-table-price-select-button button-40 button button-green">
-													<span>Pay yearly</span>
+													<span>Subscribe for <br /> one year</span>
 												</button>
 											</form>
 										</div>
@@ -203,7 +203,7 @@
 											<form action="/upgrade-plan/pro" method="POST">
 												<button type="submit" class="popup-select-plan-table-price-select-button button-40 button button-green">
 
-													<span>Pay yearly</span>
+													<span>Subscribe for <br /> one year</span>
 												</button>
 											</form>
 										</div>
@@ -264,7 +264,7 @@
 											<form action="/upgrade-plan/basic" method="POST">
 												<button type="submit" class="popup-select-plan-table-price-select-button button-40 button button-green">
 
-													<span>Pay yearly</span>
+													<span>Subscribe for <br /> one year</span>
 
 
 												</button>
@@ -379,7 +379,17 @@
 			</div>
 
 		{% else %}
-			<div class="row mb-3 w-100 m-auto">
+      {% if email == "test@codesteppers.com" %}
+				<div class="text-center">
+          <form action="/reset-subscription" method="POST">
+            <button type="submit" class="btn btn-danger">
+              <i class="fa fa-times-circle"></i>
+              <span>Reset (for SimplePay Test)</span>
+            </button>
+          </form>
+				</div>
+			{% endif %}
+			{# <div class="row mb-3 w-100 m-auto">
 
 				<div class="col-md-12">
 					<h1 class="display-6 text-center">
@@ -419,7 +429,7 @@
 										<div class="popup-select-plan-table-price-select-button-wrapper">
 
 											<button type="submit" disabled class="popup-select-plan-table-price-select-button button-40 button button-green">
-												<span>Pay yearly</span>
+												<span>Subscribe for <br /> one year</span>
 											</button>
 
 										</div>
@@ -487,7 +497,7 @@
 
 											<button type="submit" disabled class="popup-select-plan-table-price-select-button button-40 button button-green">
 
-												<span>Pay yearly</span>
+												<span>Subscribe for <br /> one year</span>
 											</button>
 
 										</div>
@@ -547,7 +557,7 @@
 										<div class="popup-select-plan-table-price-select-button-wrapper">
 
 											<button type="submit" disabled class="dipopup-select-plan-table-price-select-button button-40 button button-green">
-												<span>Pay yearly</span>
+												<span>Subscribe for <br /> one year</span>
 											</button>
 
 										</div>
@@ -651,7 +661,7 @@
 					</div>
 
 				</div>
-			</div>
+			</div> #}
 		{% endif %}
 
 

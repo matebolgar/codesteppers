@@ -864,9 +864,9 @@ svg.button-icon,
 }
 .button-40 {
   font-size: 15px;
-  line-height: 24px;
+  /* line-height: 1.4rem; */
   padding: 8px 40px;
-  height: 40px;
+  /* height: 40px; */
 }
 .button-40 .button-icon,
 .button-40 .button-icon svg {
@@ -2332,7 +2332,7 @@ svg.button-icon,
   right: 0;
 }
 .popup-select-plan-table-price-current {
-  line-height: 40px;
+  line-height: 55px;
 }
 .popup-select-plan-table-price-current-wrapper {
   display: flex;
