@@ -385,6 +385,9 @@ class PublicSite
       }
 
       $order = getActiveOrder($conn, $request->vars["subscriber"]->getId());
+      if($order->getType() === "lite") {
+        return;
+      }
       (new OrderDeleter($conn))->delete($order->getId());
       header("Location: /active-plan");
     });
