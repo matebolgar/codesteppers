@@ -11,12 +11,11 @@ class Invoice
         try {
           
             $agent = \SzamlaAgent\SzamlaAgentAPI::create($_SERVER['SZAMLAAGENT_API_KEY']);
-            $agent->setLogEmail($_SERVER['SZAMLAAGENT_LOG_EMAIL']);
-
-          
+            $agent->setLogEmail($_SERVER['SZAMLAAGENT_LOG_EMAIL']);      
             $invoice = new \SzamlaAgent\Document\Invoice\Invoice(\SzamlaAgent\Document\Invoice\Invoice::INVOICE_TYPE_E_INVOICE);
-
+            
             $header = $invoice->getHeader();
+            $header->setLanguage("en");
           
             $header->setPaymentMethod(\SzamlaAgent\Document\Invoice\Invoice::PAYMENT_METHOD_BANKCARD);
             $header->setCurrency('EUR');
