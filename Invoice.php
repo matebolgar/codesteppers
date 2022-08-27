@@ -9,26 +9,17 @@ class Invoice
         require_once('szamlaagent/examples/autoload.php');
 
         try {
-            /**
-             * Számla Agent létrehozása alapértelmezett adatokkal
-             *
-             * A számla sikeres kiállítása esetén a válasz (response) tartalmazni fogja
-             * a létrejött bizonylatot PDF formátumban (1 példányban)
-             */
+          
             $agent = \SzamlaAgent\SzamlaAgentAPI::create($_SERVER['SZAMLAAGENT_API_KEY']);
             $agent->setLogEmail($_SERVER['SZAMLAAGENT_LOG_EMAIL']);
 
-            /**
-             * Új papír alapú számla létrehozása
-             *
-             * Átutalással fizetendő magyar nyelvű (Ft) számla kiállítása mai keltezési és
-             * teljesítési dátummal, +8 nap fizetési határidővel, üres számlaelőtaggal.
-             */
+          
             $invoice = new \SzamlaAgent\Document\Invoice\Invoice(\SzamlaAgent\Document\Invoice\Invoice::INVOICE_TYPE_E_INVOICE);
 
             $header = $invoice->getHeader();
-            // Számla fizetési módja (bankkártya)
+          
             $header->setPaymentMethod(\SzamlaAgent\Document\Invoice\Invoice::PAYMENT_METHOD_BANKCARD);
+            $header->setCurrency('EUR');
 
             $header->setPaid(true);
             // Számla teljesítés dátuma
@@ -36,7 +27,6 @@ class Invoice
             // Számla fizetési határideje
             $header->setPaymentDue(date('Y-m-d'));
 
-            // Vevő adatainak hozzáadása (kötelezően kitöltendő adatokkal)
             $buyer = new \SzamlaAgent\Buyer($name, (string)$zip, $city, $address);
             $buyer->setTaxNumber($taxNumber);
             $buyer->setEmail($email);
@@ -44,12 +34,11 @@ class Invoice
             $invoice->setBuyer($buyer);
 
 
-
             // Eladó létrehozása
             $seller = new \SzamlaAgent\Seller();
-            $seller->setEmailSubject('Kódbázis számla');
+            $seller->setEmailSubject('CodeSteppers Invoice');
             $seller->setEmailReplyTo($_SERVER['SZAMLAAGENT_LOG_EMAIL']);
-            $seller->setEmailContent('Köszönjük a vásárlást!');
+            $seller->setEmailContent('Thank you for the purchase!');
             $invoice->setSeller($seller);
 
 
@@ -67,14 +56,8 @@ class Invoice
             // Tétel bruttó értéke
             $item->setGrossAmount($price);
 
-
-
-
-
-
             // Tétel hozzáadása a számlához
             $invoice->addItem($item);
-
 
             // Számla elkészítése
             $result = $agent->generateInvoice($invoice);
@@ -84,6 +67,7 @@ class Invoice
             }
         } catch (\Exception $e) {
             $agent->logError($e->getMessage());
+            echo "<pre>";
             var_dump($e);
         }
     }
@@ -99,7 +83,7 @@ class Invoice
 
             $header = new \SzamlaAgent\Header\ReceiptHeader();
             $header->setPaymentMethod('bankcard');
-            $header->setCurrency('USD');
+            $header->setCurrency('EUR');
 
             $header->setComment($ref);
 

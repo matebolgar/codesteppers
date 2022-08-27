@@ -1,2 +1,5 @@
 /public/codestepper-files
 /simplepay/log
+szamlaagent/logs
+szamlaagent/pdf
+szamlaagent/xmls

@@ -448,7 +448,7 @@ class PublicSite
 
       $isVatInfoReceived = true;
       foreach ($vatList as $vatItem) {
-        if ($request->body[$vatItem] === "") {
+        if (($request->body[$vatItem] ?? false) === "") {
           $isVatInfoReceived = false;
           break;
         }
@@ -456,12 +456,12 @@ class PublicSite
 
       if ($isVatInfoReceived) {
         $trx->addGroupData('invoice', 'name', $request->body["companyName"]);
-        $trx->addGroupData('invoice', 'company', $request->body["companyName"]);
+        $trx->addGroupData('invoice', 'company', $request->body["vatNumber"]);
         $trx->addGroupData('invoice', 'country', $request->body["country"]);
         $trx->addGroupData('invoice', 'state', $request->body["state"]);
         $trx->addGroupData('invoice', 'city', $request->body["city"]);
         $trx->addGroupData('invoice', 'zip', $request->body["zip"]);
-        $trx->addGroupData('invoice', 'address', $request->body["address"]);
+        $trx->addGroupData('invoice', 'address', $request->body["street"]);
       }
 
       $trx->addData('currency', 'EUR');
@@ -566,14 +566,16 @@ class PublicSite
       }
     });
 
+    $r->get('/api/test', function (Request $request) use ($conn, $twig) {
+      sendInvoiceOrReceipt($request->query["orderRef"], $conn);
+    });
+
     $r->post('/api/ipn', function (Request $request) use ($conn, $twig) {
       header('Content-Type: application/json; charset=utf-8');
       error_reporting(E_ALL);
       ini_set("display_errors", 1);
       mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-      var_dump($request->body);
-      exit;
 
       if ($_SERVER['DEPLOYMENT_ENV'] === 'dev') {
         return;
@@ -593,13 +595,60 @@ class PublicSite
         return;
       }
 
-      // Invoice::sendReceipt(
-      //   $subscriber->getEmail(), 
-      //   $course->getInvoiceTitle(), 
-      //   getDiscountedPrice($course, $subscriberCourse->getSubscriberId(), $conn),
-      //   $request->body["orderRef"],
-      // );
+      sendInvoiceOrReceipt($request->body["orderRef"], $conn);
     });
+
+    function sendInvoiceOrReceipt($orderRef, $conn)
+    {
+      require_once 'simplepay/config.php';
+
+      require_once 'simplepay/SimplePayV21.php';
+
+      $trx = new \SimplePayQuery();
+
+      $trx->addConfig($config);
+      $trx->addMerchantOrderId($orderRef);
+      $trx->addConfigData('merchantAccount', $config["EUR_MERCHANT"]);
+      $trx->addData('detailed', true);
+      $trx->runQuery();
+      $ret = $trx->getReturnData();
+
+      $transaction = $ret["transactions"][0] ?? [];
+      $name = $transaction["customer"] ?? "Customer";
+      $invoice = $transaction["invoice"] ?? null;
+
+      $order = (new OrderLister($conn))->list(Router::where("ref", "eq", $orderRef));
+
+      if (!$order->getCount()) {
+        echo "Invalid orderRef";
+        return;
+      }
+
+      $plan = $order->getEntities()[0]->getPlan();
+      $productName = "CodeSteppers one year subscription - Plan: " . strtoupper($plan);
+
+
+      if ($invoice) {
+        Invoice::sendInvoice(
+          $name,
+          $invoice["company"],
+          $invoice["zip"],
+          $invoice["city"],
+          $invoice["address"],
+          $transaction["customerEmail"],
+          $productName,
+          priceMap()[$plan],
+        );
+        return;
+      }
+
+      Invoice::sendReceipt(
+        $name,
+        $productName,
+        priceMap()[$plan],
+        $orderRef,
+      );
+    }
 
 
     $items = [

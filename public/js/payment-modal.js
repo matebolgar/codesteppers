@@ -9,7 +9,7 @@ let container;
 let vatValues = {
   vatNumber: "",
   companyName: "",
-  address: "",
+  street: "",
   city: "",
   state: "",
   zip: "",
@@ -102,7 +102,7 @@ const vatForm = () => `
       </div>
       
       <div class="mb-3">
-        <input <input type="text" value="${vatValues.address}" name="address" class="form-control" placeholder="Address">
+        <input <input type="text" value="${vatValues.street}" name="street" class="form-control" placeholder="Street">
       </div> 
     </div>
   `;
