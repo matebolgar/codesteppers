@@ -417,13 +417,17 @@ class PublicSite
           "order" => $order,
           "email" => $request->vars["subscriber"]->getEmail(),
           "planQuotaMap" => planQuotaMap(),
+          "priceMap" => priceMap(),
           'error' => $_GET['error'] ?? '',
           'transactionSuccessful' => $_GET['transactionSuccessful'] ?? '',
           'transactionId' => $_GET['transactionId'] ?? '',
           'orderRef' => $_GET['orderRef'] ?? '',
           "activeUntil" =>  strtotime("+1 year", $order->getCreatedAt()),
         ]),
-        'scripts' => [],
+        'scripts' => [
+          ["path" => "js/bootstrap.min.js"],
+          ["path" => "js/payment-modal.js"],
+        ],
         'styles' => [
           ["path" => "css/plans.css"],
           ['path' => 'css/promo.css'],
@@ -440,16 +444,30 @@ class PublicSite
 
       $trx = new \SimplePayStart;
 
+      $vatList = ["vatNumber", "companyName", "street", "city", "zip", "country"];
+
+      $isVatInfoReceived = true;
+      foreach ($vatList as $vatItem) {
+        if ($request->body[$vatItem] === "") {
+          $isVatInfoReceived = false;
+          break;
+        }
+      }
+
+      if ($isVatInfoReceived) {
+        $trx->addGroupData('invoice', 'name', $request->body["companyName"]);
+        $trx->addGroupData('invoice', 'company', $request->body["companyName"]);
+        $trx->addGroupData('invoice', 'country', $request->body["country"]);
+        $trx->addGroupData('invoice', 'state', $request->body["state"]);
+        $trx->addGroupData('invoice', 'city', $request->body["city"]);
+        $trx->addGroupData('invoice', 'zip', $request->body["zip"]);
+        $trx->addGroupData('invoice', 'address', $request->body["address"]);
+      }
+
       $trx->addData('currency', 'EUR');
       $trx->addConfig($config);
 
-      $priceMap = [
-        'basic' => 5,
-        'pro' => 10,
-        'enterprise' => 25
-      ];
-
-
+      $priceMap = priceMap();
 
       $trx->addItems(
         [
@@ -553,6 +571,9 @@ class PublicSite
       error_reporting(E_ALL);
       ini_set("display_errors", 1);
       mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+      var_dump($request->body);
+      exit;
 
       if ($_SERVER['DEPLOYMENT_ENV'] === 'dev') {
         return;
@@ -836,6 +857,15 @@ function planQuotaMap()
     "pro" => 50000,
     "enterprise" => 5000000,
     "admin" => 500000000,
+  ];
+}
+
+function priceMap()
+{
+  return [
+    'basic' => 5,
+    'pro' => 10,
+    'enterprise' => 25
   ];
 }
 
