@@ -640,7 +640,7 @@ class PublicSite
           $invoice["address"],
           $transaction["customerEmail"],
           $productName,
-          priceMap()[$plan],
+          priceMap()[$plan] * 12,
         );
         return;
       }
@@ -648,7 +648,7 @@ class PublicSite
       Invoice::sendReceipt(
         $name,
         $productName,
-        priceMap()[$plan],
+        priceMap()[$plan] * 12,
         $orderRef,
       );
     }
