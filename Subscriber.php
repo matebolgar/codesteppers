@@ -141,17 +141,6 @@ class Subscriber
         0,
         time() - 60,
       ));
-      
-      // Initial offer - remove after beta period
-      (new OrderSaver($conn))->Save(new NewOrder(
-        $subscriber->getId(),
-        "basic",
-        "",
-        "SUCCESS",
-        0,
-        0,
-        time(),
-      ));
 
       session_start();
       $_SESSION['subscriberId'] = $subscriber->getId();
