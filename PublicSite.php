@@ -385,7 +385,11 @@ class PublicSite
       }
 
       $order = getActiveOrder($conn, $request->vars["subscriber"]->getId());
-      if($order->getType() === "lite") {
+      if(!$order->getCount()) {
+        return;
+      }
+
+      if($order->getEntities()[0]->getType() === "lite") {
         return;
       }
       (new OrderDeleter($conn))->delete($order->getId());
