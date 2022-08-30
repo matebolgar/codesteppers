@@ -526,7 +526,7 @@ class CodeStepper
       "title" => "Title",
       "logoUrl" => "",
       "colorMode" => "dark",
-      "primaryColor" => "#FFC73F",
+      "primaryColor" => "#1E691A",
       "secondaryColor" => "#FD3459",
       "secondaryColorMode" => "custom",
       "isDrawerOpenByDefault" => false,
