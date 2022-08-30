@@ -759,3 +759,9 @@ body::backdrop {
   font-size: 1.2em;
   margin: 3px
 }
+
+@media (max-width: 576px) {
+  .width-sm-100 {
+      width: 100%;
+  }
+}
