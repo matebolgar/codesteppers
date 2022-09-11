@@ -675,7 +675,7 @@ class PublicSite
 
     foreach ($items as $item) {
 
-      $r->get($item["path"], function (Request $request) use ($conn, $twig, $item) {
+      $r->get($item["path"], $initSubscriberSession, function (Request $request) use ($conn, $twig, $item) {
         echo $twig->render('wrapper.twig', [
           'navbar' => $twig->render("navbar.twig", [
             'subscriberLabel' => getNick($request->vars) ?? "",
