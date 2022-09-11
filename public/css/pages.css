@@ -165,8 +165,9 @@ body {
 .content-body {
   width: 100%;
   margin: 0 auto;
-  /* min-height: 100vh; */
-  /* overflow-y: scroll; */
+}
+.overflow-y-scroll {
+  overflow-y: scroll;
 }
 
 .kodseged-inline {
