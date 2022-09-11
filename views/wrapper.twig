@@ -60,7 +60,7 @@
 		      gtag('config', 'UA-188538631-1');
 		    </script> #}
 	</head>
-	<body class="home" {{isHome is defined ? 'style="background: rgb(19 20 45);"' : ''}}>
+	<body class="home" {{isHome is defined ? 'style="background: #13142d;"' : ''}}>
 
 		{{ navbar | raw }}
 
@@ -76,8 +76,6 @@
 		    </div> #}
 
 		{# <div class="spacer layer1"></div> #}
-
-		{# {% include 'footer.html' %} #}
 
 			{% if scripts is defined %}
 				{% for script in scripts %}
