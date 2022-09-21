@@ -1,34 +1,37 @@
-<nav id="main-nav" class="navbar m-auto shadow nav-colored navbar-visible w-100" style='z-index: 9999;'>
+<nav id="main-nav" class="navbar m-auto shadow nav-colored navbar-visible w-100 py-1" style='z-index: 9999;'>
 	<div class="row w-100 m-auto">
 		<div class="col-8 m-auto p-0">
 			<a href="/">
-				<div id="main-navbar-toggler" class="navbar-toggler text-white" type="button">
-					CodeSteppers -
-					<span class="oswald-font">Embeddable presentation for teachers and online schools</span>
+				<div id="main-navbar-toggler" class="navbar-toggler text-white d-flex align-items-center" type="button">
+					<img src="/public/images/lightning-icon-26.png" class="mx-1" width="30" height="30" alt=""/>
+					<div class="d-inline-block">
+						CodeSteppers -
+						<span class="oswald-font">Embeddable presentation for teachers and online schools</span>
+					</div>
 				</div>
 			</a>
 		</div>
 		<div class="col-4 m-auto text-end px-2" style="word-break: break-all; word-wrap:break-word;">
 
-      <div class="d-flex justify-content-end flex-wrap align-items-center">
-        {% if buttons is defined %}
-          {{buttons | raw}}
-        {% endif %}
-        {% if subscriberLabel != '' %}
-          <button id="subscriber-navbar-toggler" class="btn btn-sm text-light" style="border: none">
-            {{subscriberLabel}}
-            ▾
-          </button>
-        {% else %}
-          {% if not isLoginButtonHidden %}
-            <a class="text-center mx-1 my-1 my-md-0 width-sm-100" href="/login">
-              <button class="btn btn-sm btn-outline-primary fw-bold width-sm-100">
-                Login
-              </button>
-            </a>
-          {% endif %}
-        {% endif %}
-      </div>
+			<div class="d-flex justify-content-end flex-wrap align-items-center">
+				{% if buttons is defined %}
+					{{buttons | raw}}
+				{% endif %}
+				{% if subscriberLabel != '' %}
+					<button id="subscriber-navbar-toggler" class="btn btn-sm text-light" style="border: none">
+						{{subscriberLabel}}
+						▾
+					</button>
+				{% else %}
+					{% if not isLoginButtonHidden %}
+						<a class="text-center mx-1 my-1 my-md-0 width-sm-100" href="/login">
+							<button class="btn btn-sm btn-outline-primary fw-bold width-sm-100">
+								Login
+							</button>
+						</a>
+					{% endif %}
+				{% endif %}
+			</div>
 		</div>
 
 	</div>
@@ -42,7 +45,7 @@
 							<form action="/api/subscriber-logout" method="post">
 								<button type="submit" class="btn btn-sm btn-outline-danger fw-bold">
 									Logout
-                  <i class='fa fa-sign-out-alt'></i>
+									<i class='fa fa-sign-out-alt'></i>
 								</button>
 							</form>
 						</a>
