@@ -92,8 +92,8 @@ class PublicSite
           'isLoggedIn' => isset($request->vars["subscriber"]),
           'siteUrl' => Router::siteUrl(),
         ]),
-        'metaTitle' => 'CodeSteppers - Embeddable presentation for teachers and online schools',
-        'description' => 'Embeddable presentation for teachers and online schools',
+        'metaTitle' => 'CodeSteppers - Embeddable presentation for your online school',
+        'description' => 'Embeddable presentation for your online school',
         'ogTags' => [
           [
             "property" => "og:image",
@@ -105,7 +105,7 @@ class PublicSite
           ],
           [
             "property" => "og:description",
-            "content" => "Embeddable presentation for teachers and online schools",
+            "content" => "Embeddable presentation for your online school",
           ],
         ],
         'subscriberLabel' =>  getNick($request->vars),
