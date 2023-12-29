@@ -24,6 +24,7 @@ use CodeSteppers\Generated\Repository\Message\SqlPatcher as MessagePatcher;
 use CodeSteppers\Generated\Repository\Message\SqlLister as MessageLister;
 use CodeSteppers\Mailer\Mailer;
 
+// error_reporting(E_ALL ^ E_DEPRECATED);
 
 class PublicSite
 {
@@ -92,8 +93,8 @@ class PublicSite
           'isLoggedIn' => isset($request->vars["subscriber"]),
           'siteUrl' => Router::siteUrl(),
         ]),
-        'metaTitle' => 'CodeSteppers - Embeddable presentation for your online school',
-        'description' => 'Embeddable presentation for your online school',
+        'metaTitle' => 'CodeSteppers - Create coding presentations',
+        'description' => 'Create coding presentations',
         'ogTags' => [
           [
             "property" => "og:image",
@@ -105,7 +106,7 @@ class PublicSite
           ],
           [
             "property" => "og:description",
-            "content" => "Embeddable presentation for your online school",
+            "content" => "Create coding presentations",
           ],
         ],
         'subscriberLabel' =>  getNick($request->vars),
@@ -163,6 +164,8 @@ class PublicSite
       header('Content-Type: application/json');
 
       $getStatus = fn ($code) => json_encode(["status" => $code]);
+      echo $getStatus(2);
+      return;
 
       if (isset($request->query['is-embedded'])) {
         echo $getStatus(2);
@@ -377,6 +380,64 @@ class PublicSite
         ],
       ]);
     });
+
+    $r->post("/api/prompt", function (Request $request) use ($conn) {
+      header('Content-Type: application/json');
+      $question = $request->body['question'] ?? '';
+      $language = $request->body['language'] ?? '';
+      $context = $request->body['context'] ?? '';
+      
+      if(!$question || !$language || !$context) {
+        return json_encode(['error' => 'Invalid request']);
+      }
+
+      // $answer = "A kód egy email ellenőrző validátor függvényt definiál. A validátor aszinkron módon ellenőrzi, hogy az adott email cím már foglalt-e a https://kodbazis.hu/api/is-email-taken végponton keresztül. A validátor visszatérési értéke egy RxJS Observable, amelyben a null érték azt jelenti, hogy az email cím még nem foglalt, míg egy objektum visszatérési értéke azt jelenti, hogy az email cím már foglalt, és a 'taken' kulcs értéke true.";
+      // echo json_encode(['answer' => $answer]);
+      // return;
+
+      $answer = getChatGPTAnswer($language, $question, $context);
+      echo $answer;
+    });
+
+    function getChatGPTAnswer($language, $question, $context) {
+      $data = [
+        'model' => 'gpt-3.5-turbo',
+        'messages' => [
+          [
+            'role' => 'user',
+            'content' => "You are giving explanation to a programming school student who is learning $language related topics. 
+            The student might give you an irrelevant question, in that case please instruct the student to provide a relevant question!
+            If the student's question is a valid question for the context, then please answer!
+            Student's question: [question: $question]  
+            Broader context [context: $context]
+            Your answer should be in Hungarian language!
+            Your answer cannot be longer than 600 characters!"
+          ]
+        ],
+        'temperature' => 1,
+        'max_tokens' => 512,
+        'top_p' => 1,
+        'frequency_penalty' => 0,
+        'presence_penalty' => 0,
+      ];
+    
+      $api_key = $_SERVER['OPENAI_API_KEY'];
+      $curl = curl_init();
+      curl_setopt($curl, CURLOPT_URL, 'https://api.openai.com/v1/chat/completions');
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($curl, CURLOPT_POST, true);
+      curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+      curl_setopt($curl, CURLOPT_HTTPHEADER, [
+          'Content-Type: application/json',
+          'Authorization: Bearer ' . $api_key,
+      ]);
+
+      $response = curl_exec($curl);
+      curl_close($curl);
+      $response_data = json_decode($response, true);
+      $answer = $response_data['choices'][0]['message']['content'] ?? '';
+      echo json_encode(['answer' => $answer]);
+    }
 
     $r->post("/reset-subscription", $initSubscriberSession, function (Request $request) use ($conn, $twig) {
       $email = $request->vars["subscriber"] ? $request->vars["subscriber"]->getEmail() : "";
