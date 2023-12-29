@@ -24,7 +24,9 @@ use CodeSteppers\Generated\Repository\Message\SqlPatcher as MessagePatcher;
 use CodeSteppers\Generated\Repository\Message\SqlLister as MessageLister;
 use CodeSteppers\Mailer\Mailer;
 
-// error_reporting(E_ALL ^ E_DEPRECATED);
+if ($_SERVER['DEPLOYMENT_ENV'] === 'dev') {
+  error_reporting(E_ALL ^ E_DEPRECATED);
+}
 
 class PublicSite
 {
