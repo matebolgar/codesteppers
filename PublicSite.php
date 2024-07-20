@@ -403,13 +403,11 @@ class PublicSite
 
     function getChatGPTAnswer($language, $question, $context) {
       $data = [
-        'model' => 'gpt-3.5-turbo',
+        'model' => 'gpt-4o-mini',
         'messages' => [
           [
             'role' => 'user',
             'content' => "You are giving explanation to a programming school student who is learning $language related topics. 
-            The student might give you an irrelevant question, in that case please instruct the student to provide a relevant question!
-            If the student's question is a valid question for the context, then please answer!
             Student's question: [question: $question]  
             Broader context [context: $context]
             Your answer should be in Hungarian language!
